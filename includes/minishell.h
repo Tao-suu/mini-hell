@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 19:00:25 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/03 22:54:46 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,6 @@ struct s_ast {
 		// fds
 	t_operator	*operator;
 	t_cmd	*cmds;
-	int		fd_in;
-	int		fd_out;
-	char	flag;
 	t_ast	*right;
 	t_ast	*left;
 };
@@ -77,13 +74,17 @@ struct s_cmd {
 	char	*path;
 	char 	**argv;
 	t_cmd	*next;
+	int		fdin;	// array ...💀
+	int		fdout;	// array ...💀
+	char	flag;	// array ...💀
+	char	*delimiter;
 };
 
 struct s_data {
 	char		**env;
 	char		**set;
 	t_operator	**operators;
-
+	
 	char		*line;
 	t_lexem		*head;
 	t_ast		*ast;
@@ -107,6 +108,10 @@ void		free_lexem_elem(t_lexem *elem);
 void		free_lexem_list(t_lexem *list);
 void		add_lexem_elem(t_lexem **list, t_lexem *elem);
 t_lexem		*create_lexem_elem(void);
+
+// struct_cmd.c
+void		free_cmd(t_cmd *elem);
+t_cmd		*create_cmd_elem(size_t argv_size);
 
 // init_operators.c
 int			create_operators_array(t_operator ***tab);
