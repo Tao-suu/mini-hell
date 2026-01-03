@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 16:11:58 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/03 18:40:11 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ void	free_data(t_data *data, char full)
 		return ;
 	if (data->line)
 		free(data->line);
+	data->line = NULL;
+	if (data->head)
+		free_lexem_list(data->head);
+	data->head = NULL;
+
 	// TODO: free head / ast
 	if (full == FALSE)
 		return ;
@@ -28,7 +33,8 @@ void	free_data(t_data *data, char full)
 		ft_tabclear(data->env);
 	if (data->set)
 		ft_tabclear(data->set);
-	// TODO: free operators
+	if (data->operators)
+		free_operator_tab(data->operators);
 }
 
 int	init_data(t_data *data)
@@ -37,11 +43,11 @@ int	init_data(t_data *data)
 	data->env = ft_tabdup(environ);
 	if (!data->env)
 		return (print_sys_error("ft_tabdup"));
-	ft_tabprint(data->env);
+	if (!create_operators_array(&(data->operators)))
+		return (FALSE);
 
 	// TODO
 		// init set
-		// init operators
 	
 	return (TRUE);
 }

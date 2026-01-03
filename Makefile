@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/03 16:06:31 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/03 18:45:42 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,14 @@ LIBS_FLAGS			= -lreadline
 NAME				= minishell
 SRCS_RAW			= main.c \
 					  struct_data.c \
+					  struct_operator.c \
+					  struct_lexem.c \
+					  init_operators.c \
 					  signal.c \
 					  loop.c \
+					  manage_line.c \
+					  manage_lexems.c \
+					  ast.c \
 					  print.c
 
 SRCS_DIR			= ./srcs/
