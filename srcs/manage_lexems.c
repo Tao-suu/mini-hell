@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:31:41 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 18:36:26 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/04 20:51:28 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	manage_lexems(t_data *data)
 	t_lexem	*elem;
 	t_lexem	*elem_prev;
 	int		lvl;
-	int		i;
 
 	elem = data->head;
 	lvl = 0;
@@ -52,7 +51,6 @@ int	manage_lexems(t_data *data)
 	{
 		if (!check_if_elem_can_be_after_prev(elem))
 			return (FALSE);
-		lvl += elem->type->lvl_up;
 		// If a closed parenthesis has not been previously opened
 		if (lvl < 0)
 			return (print_syntax_error(elem->value));
@@ -62,10 +60,13 @@ int	manage_lexems(t_data *data)
 			&& elem_prev && !ft_strcmp(elem_prev->type->name, "cmd"))
 			return (print_syntax_error(elem->next->value));
 		elem->lvl = lvl;
-		i = -1;
-		while (++i < lvl)
-			printf("\t");
-		printf("\t%s%s%s\t(%s)\n", CLR_GREEN, elem->value, CLR_RESET, elem->type->name);
+		if (elem->type->lvl_up <= 0)
+			elem->lvl += elem->type->lvl_up;
+		print_tabs(elem->lvl);
+		ft_printf("%s%s%s\t%d (%s)\n", CLR_GREEN, elem->value, CLR_RESET, elem->lvl, elem->type->name);
+		lvl = elem->lvl;
+		if (elem->type->lvl_up > 0)
+			lvl += elem->type->lvl_up;
 		elem_prev = elem;
 		elem = elem->next;
 	}

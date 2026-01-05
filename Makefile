@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/03 18:45:42 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/05 15:27:20 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,13 +19,17 @@ SRCS_RAW			= main.c \
 					  struct_data.c \
 					  struct_operator.c \
 					  struct_lexem.c \
+					  struct_cmd.c \
+					  struct_redirection.c \
+					  struct_ast.c \
 					  init_operators.c \
 					  signal.c \
 					  loop.c \
 					  manage_line.c \
 					  manage_lexems.c \
 					  ast.c \
-					  print.c
+					  print.c \
+					  print_debug.c
 
 SRCS_DIR			= ./srcs/
 OBJS_DIR			= ./objs/

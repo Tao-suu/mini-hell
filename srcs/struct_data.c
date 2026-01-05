@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 18:40:11 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/05 15:35:22 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ void	free_data(t_data *data, char full)
 	if (data->head)
 		free_lexem_list(data->head);
 	data->head = NULL;
-
-	// TODO: free head / ast
+	if (data->ast)
+		free_ast_tree(data->ast);
+	data->ast = NULL;
 	if (full == FALSE)
 		return ;
 	if (data->env)
