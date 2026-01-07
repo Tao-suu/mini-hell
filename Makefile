@@ -6,12 +6,12 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/05 15:27:20 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/07 04:53:50 by tbez--du         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 					= cc
-CFLAGS				= -Wall -Wextra -Werror
+CFLAGS				= -Wall -Wextra -Werror -g3
 LIBS_FLAGS			= -lreadline
 
 NAME				= minishell
@@ -29,7 +29,10 @@ SRCS_RAW			= main.c \
 					  manage_lexems.c \
 					  ast.c \
 					  print.c \
-					  print_debug.c
+					  print_debug.c \
+					  exec/exec_cmd.c \
+					  exec/exec_pipe.c \
+					  exec/exec_ast.c \
 
 SRCS_DIR			= ./srcs/
 OBJS_DIR			= ./objs/
@@ -59,7 +62,7 @@ $(NAME): $(OBJS)
 	@echo "$(SYMBOL)$(C_BLUE)$(NAME) compiled !$(C_NONE)"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	@mkdir -p $(OBJS_DIR)
+	@mkdir -p $(OBJS_DIR)exec
 	@$(CC) $(CFLAGS) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_INC_DIR)
 
 clean:

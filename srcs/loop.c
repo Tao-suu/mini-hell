@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 18:49:32 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/07 05:42:02 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ void	main_loop(t_data *data)
 			print_error("parse error");
 		else
 		{
-			if (manage_line(data) && manage_lexems(data))
-				create_ast(data);
-			add_history(data->line);
+			if (manage_line(data) && manage_lexems(data) && create_ast(data))
+			{
+				exec_ast(data, data->ast);
+				add_history(data->line);
+			}
 			free_data(data, FALSE);
 		}
 	}

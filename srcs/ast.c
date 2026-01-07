@@ -165,8 +165,8 @@ int		create_ast(t_data *data)
 {
 	if (!create_ast_recurse(&(data->ast), data->head, NULL, 0))
 		return (FALSE);
-	ft_printf("\n");
-	print_ast(data->ast, 0);
+	//ft_printf("\n");
+	//print_ast(data->ast, 0);
 	return (TRUE);
 }
 /*

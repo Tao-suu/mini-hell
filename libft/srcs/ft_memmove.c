@@ -6,7 +6,7 @@
 /*   By: picheval <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 18:37:01 by picheval          #+#    #+#             */
-/*   Updated: 2025/11/12 17:26:56 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/07 04:40:21 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	if (dest > src)
 	{
 		i = n;
-		while (--i >= 0)
+		while (--i + 1)
 		{
 			((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
 			if (i == 0)

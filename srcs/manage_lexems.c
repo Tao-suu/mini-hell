@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:31:41 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/04 20:51:28 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/07 06:25:18 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	check_if_elem_can_be_after_prev(t_lexem *elem)
 {
-	t_operator	*start;
 	char		*op_name;
 
 	op_name = OP_START;
@@ -22,18 +21,16 @@ static int	check_if_elem_can_be_after_prev(t_lexem *elem)
 		op_name = elem->prev->type->name;
 	if (!elem->type->before)
 		return (print_error("Manage lexem: No before in elem"));
-	if (!(start = find_operator_by_name(elem->type->before, op_name)))
+	if (!(find_operator_by_name(elem->type->before, op_name)))
 		return (print_syntax_error(elem->value));
 	return (TRUE);
 }
 
 static int	check_if_elem_can_be_last(t_lexem *elem)
 {
-	t_operator	*end;
-
 	if (!elem->type->after)
 		return (print_error("Manage lexem: No after in elem"));
-	if (!(end = find_operator_by_name(elem->type->after, OP_END)))
+	if (!(find_operator_by_name(elem->type->after, OP_END)))
 		return (print_syntax_error("newline"));
 	return (TRUE);
 }
@@ -62,8 +59,8 @@ int	manage_lexems(t_data *data)
 		elem->lvl = lvl;
 		if (elem->type->lvl_up <= 0)
 			elem->lvl += elem->type->lvl_up;
-		print_tabs(elem->lvl);
-		ft_printf("%s%s%s\t%d (%s)\n", CLR_GREEN, elem->value, CLR_RESET, elem->lvl, elem->type->name);
+		//print_tabs(elem->lvl);
+//		ft_printf("%s%s%s\t%d (%s)\n", CLR_GREEN, elem->value, CLR_RESET, elem->lvl, elem->type->name);
 		lvl = elem->lvl;
 		if (elem->type->lvl_up > 0)
 			lvl += elem->type->lvl_up;

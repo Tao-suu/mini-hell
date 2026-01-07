@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/05 16:09:02 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/06 17:35:07 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <readline/history.h>	// readline
 # include <fcntl.h>				// open
 # include "libft.h"
+# include <sys/wait.h>
+# include <unistd.h>
 
 # define GRAMMAR_FILE		"grammar.txt"
 # define GRAMMAR_NB_FIELDS	6
@@ -82,6 +84,7 @@ struct s_redirection {
 struct s_cmd {
 	char			*path;
 	char			**argv;
+	int				pid;
 
 	t_ast			*ast;
 
@@ -164,5 +167,10 @@ int				print_bash_error(char *msg);
 void			print_tabs(int nb_tabs);
 void			print_cmd(t_cmd *cmd, int lvl);
 void			print_ast(t_ast *ast, int lvl);
+
+// exec/*.c
+int	exec_pipe(t_data *data, t_cmd *cmds);
+int	exec_ast(t_data *data, t_ast *ast);
+int	exec_cmd(t_data *data, t_cmd *cmd, char **path);
 
 #endif
