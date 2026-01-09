@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 16:23:52 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/09 18:43:02 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,8 @@ void			print_operators(t_operator **tab);
 int				exec_pipe(t_data *data, t_cmd *cmds);
 int				exec_ast(t_data *data, t_ast *ast);
 int				exec_cmd(t_data *data, t_cmd *cmd, char **path);
+int				redir_out(t_redirection *red);
+int				redir_in(t_redirection *red);
 
 // env_set_utils.c
 char			*get_var(char **tab, char *var_name);
@@ -199,5 +201,10 @@ char			*get_set_var(t_data *data, char *var_name);
 int				unset_set_key(t_data *data, char *key);
 int				set_set_var(t_data *data, char *var);
 int				set_set_key_value(t_data *data, char *key, char *value);
+
+// builtin
+int	exec_builtin(t_data *data, t_cmd *cmd);
+int	is_builtin(t_cmd *cmd);
+int				pwd(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 02:33:36 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 19:02:55 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	free_data(t_data *data, char full)
 
 static int	init_data_env(t_data *data)
 {
+	char	buff[1000];
+
 	data->env = ft_tabdup(environ, TAB_EXTRA_SPACE);
 	if (!data->env)
 		return (print_sys_error("init_data_env ft_tabdup"));
@@ -50,6 +52,8 @@ static int	init_data_env(t_data *data)
 		return (FALSE);
 	if (get_env_var(data, "SHLVL"))
 		return (TRUE);
+	if (!get_env_var(data, "PWD") && !set_env_key_value(data, "PWD", getcwd(buff, 1000)))
+		return (FALSE);
 	return (set_env_key_value(data, "SHLVL", "0"));
 }
 
@@ -83,9 +87,9 @@ int	init_data(t_data *data)
 	ft_memset((void *)data, 0, sizeof(t_data));
 	if (!init_data_env(data) || !init_data_set(data))
 		return (FALSE);
-	ft_tabprint(data->env);
-	ft_printf("\n");
-	ft_tabprint(data->set);
+//	ft_tabprint(data->env);
+//	ft_printf("\n");
+//	ft_tabprint(data->set);
 	if (!create_operators_array(&(data->operators)))
 		return (FALSE);
 	return (TRUE);

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/09 01:16:33 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 18:46:58 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ int	redir_in(t_redirection *red)
 
 int	exec_cmd(t_data *data, t_cmd *cmd, char **path)
 {
-	(void)path;
+	if (!cmd->ast && is_builtin(cmd))
+		return (exec_builtin(data, cmd));
 	if (!redir_in(cmd->in))
 		exit(1);
 	if (!redir_out(cmd->out))
