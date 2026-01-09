@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:31:41 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/07 06:25:18 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/09 02:26:26 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,23 @@ static int	check_if_elem_can_be_last(t_lexem *elem)
 	return (TRUE);
 }
 
+static int	apply_level_and_print(t_lexem *elem, int *lvl)
+{
+	elem->lvl = *lvl;
+	if (elem->type->lvl_up <= 0)
+		elem->lvl += elem->type->lvl_up;
+	// print_tabs(elem->lvl);
+	// ft_printf("%s%s%s\t%d (%s)\n", CLR_GREEN, elem->value, CLR_RESET,
+	//	elem->lvl, elem->type->name);
+	*lvl = elem->lvl;
+	if (elem->type->lvl_up > 0)
+		*lvl += elem->type->lvl_up;
+	// If a closed parenthesis has not been previously opened
+	if (*lvl < 0)
+		return (print_syntax_error(elem->value));
+	return (TRUE);
+}
+
 int	manage_lexems(t_data *data)
 {
 	t_lexem	*elem;
@@ -48,22 +65,13 @@ int	manage_lexems(t_data *data)
 	{
 		if (!check_if_elem_can_be_after_prev(elem))
 			return (FALSE);
-		// If a closed parenthesis has not been previously opened
-		if (lvl < 0)
-			return (print_syntax_error(elem->value));
 		// WTF this case seems stupid "ls (cat)" => "syntax error near 'cat'""
 		// Is there a case where "cmd (something)" is valid ?
 		if (!ft_strcmp(elem->type->name, "PO") && elem->next
 			&& elem_prev && !ft_strcmp(elem_prev->type->name, "cmd"))
 			return (print_syntax_error(elem->next->value));
-		elem->lvl = lvl;
-		if (elem->type->lvl_up <= 0)
-			elem->lvl += elem->type->lvl_up;
-		//print_tabs(elem->lvl);
-//		ft_printf("%s%s%s\t%d (%s)\n", CLR_GREEN, elem->value, CLR_RESET, elem->lvl, elem->type->name);
-		lvl = elem->lvl;
-		if (elem->type->lvl_up > 0)
-			lvl += elem->type->lvl_up;
+		if (!apply_level_and_print(elem, &lvl))
+			return (FALSE);
 		elem_prev = elem;
 		elem = elem->next;
 	}

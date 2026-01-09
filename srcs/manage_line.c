@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:35:28 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 18:38:55 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 02:59:38 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static int	skip_quoted_area(char *line, int *i, char c)
 		j++;
 	if (!line[j])
 	{
+		// TODO: better error message ?
 		ft_printf("Error: Unclosed '%c', opened at %d\n", c, *i);
 		return (FALSE);
 	}
@@ -31,7 +32,8 @@ static int	skip_quoted_area(char *line, int *i, char c)
 	return (TRUE);
 }
 
-static int	detect_operator(t_data *data, char *line, int *i, t_operator **tmp_op)
+static int	detect_operator(t_data *data, char *line, int *i,
+	t_operator **tmp_op)
 {
 	t_operator	*operator;
 
@@ -85,12 +87,15 @@ static int	find_next_word(t_data *data, char *line, t_lexem *new_elem)
 	}
 	if (i == 0)
 		return (0);
-	if (!(new_elem->value = ft_substr(line, 0, i)))
+	new_elem->value = ft_substr(line, 0, i);
+	if (!new_elem->value)
 	{
 		ft_printf("ft_substr() error\n");
 		return (-1);
 	}
-	if (!tmp_op && !(tmp_op = find_appropriate_string_op(data)))
+	if (!tmp_op)
+		tmp_op = find_appropriate_string_op(data);
+	if (!tmp_op)
 	{
 		print_syntax_error(new_elem->value);
 		return (-1);
@@ -110,7 +115,8 @@ int	manage_line(t_data *data)
 	{
 		while (ft_isspace(data->line[i]))
 			i++;
-		if (!(tmp_elem = create_lexem_elem()))
+		tmp_elem = create_lexem_elem();
+		if (!tmp_elem)
 			return (FALSE);
 		ret = find_next_word(data, &(data->line[i]), tmp_elem);
 		if (ret <= 0)
@@ -118,7 +124,7 @@ int	manage_line(t_data *data)
 			free_lexem_elem(tmp_elem);
 			if (ret < 0)
 				return (FALSE);
-			continue ; 
+			continue ;
 		}
 		add_lexem_elem(&data->head, tmp_elem);
 		i += ret;

@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/07 04:53:33 by tbez--du         ###   ########.fr        #
+#    Updated: 2026/01/08 15:56:11 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -116,3 +116,5 @@ clean:
 fclean: clean
 	@echo "$(SYMBOL)$(C_BLUE)$(NAME) fclean done !$(C_NONE)"
 	@rm -f $(NAME)
+
+.PHONY: all re clean fclean

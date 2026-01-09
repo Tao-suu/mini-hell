@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:21:25 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 18:30:21 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 02:32:42 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,32 +27,6 @@ static void	free_operator_elem(t_operator *elem)
 	if (elem->after)
 		free(elem->after);
 	free(elem);
-}
-
-t_operator	*find_operator_by_value(t_operator **tab, char *value)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-	{
-		if (tab[i]->value && !ft_strncmp(value, tab[i]->value, ft_strlen(tab[i]->value)))
-			return (tab[i]);
-	}
-	return (NULL);
-}
-
-t_operator	*find_operator_by_name(t_operator **tab, char *name)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-	{
-		if (tab[i]->name && !ft_strncmp(name, tab[i]->name, ft_strlen(tab[i]->name)))
-			return (tab[i]);
-	}
-	return (NULL);
 }
 
 void	free_operator_list(t_operator *list)
@@ -77,50 +51,14 @@ void	free_operator_tab(t_operator **tab)
 	free(tab);
 }
 
-void	add_operator_elem(t_operator **list, t_operator *elem)
+static int	create_operator_field(char **value, char *field)
 {
-	t_operator	*cursor;
-
-	if (!*list)
-	{
-		*list = elem;
-		return ;
-	}
-	cursor = *list;
-	while (cursor->next)
-		cursor = cursor->next;
-	cursor->next = elem;
-}
-
-static int	compute_operator_list_size(t_operator *list)
-{
-	int	i;
-
-	i = 0;
-	while (list)
-	{
-		i++;
-		list = list->next;
-	}
-	return (i);
-}
-
-t_operator	**create_operator_tab_from_list(t_operator *list)
-{
-	t_operator	**ret;
-	int			list_size;
-	int			i;
-
-	list_size = compute_operator_list_size(list);
-	if (!(ret = (t_operator **)ft_calloc(sizeof(t_operator *), list_size + 1)))
-		return (NULL);
-	i = -1;
-	while (list)
-	{
-		ret[++i] = list;
-		list = list->next;
-	}
-	return (ret);
+	if (!ft_strcmp(field, GRAMMAR_NULL))
+		return (TRUE);
+	*value = ft_strdup(field);
+	if (!*value)
+		return (print_sys_error("create_operator_field ft_strdup"));
+	return (TRUE);
 }
 
 t_operator	*create_operator_elem(char **fields)
@@ -132,16 +70,18 @@ t_operator	*create_operator_elem(char **fields)
 		print_error("Lexer grammar file: Invalid fields count");
 		return (NULL);
 	}
-	if (!(ret = (t_operator *)ft_calloc(sizeof(t_operator), 1)))
+	ret = (t_operator *)ft_calloc(sizeof(t_operator), 1);
+	if (!ret)
 	{
 		print_sys_error("create_operator_elem / ft_calloc");
 		return (NULL);
 	}
 	ret->id = atoi(fields[0]);
-	if (!(ret->name = ft_strdup(fields[1]))
-		|| (ft_strcmp(fields[2], GRAMMAR_NULL) && !(ret->value = ft_strdup(fields[2])))
-		|| (ft_strcmp(fields[4], GRAMMAR_NULL) && !(ret->tmp_before = ft_strdup(fields[4])))
-		|| (ft_strcmp(fields[5], GRAMMAR_NULL) && !(ret->tmp_after = ft_strdup(fields[5]))))
+	ret->name = ft_strdup(fields[1]);
+	if (!ret->name
+		|| !create_operator_field(&(ret->value), fields[2])
+		|| !create_operator_field(&(ret->tmp_before), fields[4])
+		|| !create_operator_field(&(ret->tmp_after), fields[5]))
 	{
 		free_operator_elem(ret);
 		return (NULL);

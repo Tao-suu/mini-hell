@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbez--du <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/07 09:36:01 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/09 02:50:43 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,23 @@ int	wait_cmd_pid(t_cmd *cmd)
 	return (WEXITSTATUS(ret));
 }
 
-char **get_path(t_data *data)
+char	**get_path(t_data *data)
 {
-	int	i;
+	char	*path_var;
 
-	i = 0;
-	while (data->env[i])
-	{
-		if (!ft_strncmp(data->env[i], "PATH=", 5))
-			return (ft_split(data->env[i] + 5, ':'));
-		i++;
-	}
-	return (NULL);
+	path_var = get_env_var(data, "PATH");
+	if (!path_var)
+		return (NULL);
+	return (ft_split(path_var, ':'));
 }
 
 int	exec_pipe(t_data *data, t_cmd *cmds)
 {
-	char	**path; 
+	char	**path;
 	int		pipefd[2];
 	t_cmd	*cmd;
+	int		save_in;
+	int		ret;
 
 	if (cmds->ast)
 		return (exec_ast(data, cmds->ast));
@@ -51,7 +49,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 	//expand_all_cmd(cmd);
 	//if (!cmd->next && is_builtin(cmd))
 	//	return (exec_builtin(data, cmd));
-	int	save_in = dup(STDIN_FILENO);
+	save_in = dup(STDIN_FILENO);
 	while (cmd)
 	{
 		if (cmd->next)
@@ -80,9 +78,9 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 		}
 		cmd = cmd->next;
 	}
-	int ret = wait_cmd_pid(cmds);
+	ret = wait_cmd_pid(cmds);
 	dup2(save_in, STDIN_FILENO);
 	close(save_in);
 	//dprintf(2, "fini d'attendre\n");
-	return ret;
+	return (ret);
 }

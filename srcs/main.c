@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 13:51:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 16:06:11 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 02:27:06 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,6 @@ int	main(void)
 		// env -i
 		// !! export set vs env (ex SHLVL)
 
-	// Base struct
-	/* * *
-		struct s_data
-		{
-			char		**env;
-			char		**set;
-			t_operator	**operator
-
-			char		*line;
-			t_lexem		*head;
-			t_ast		*ast;
-		} 
-	* * */
 	free_data(&data, TRUE);
 	return (0);
 }

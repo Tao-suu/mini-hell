@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:40:45 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/04 21:56:44 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/08 15:21:50 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,38 @@ void	print_ast(t_ast *ast, int lvl)
 	{
 		print_cmd(cursor, lvl);
 		cursor = cursor->next;
+	}
+}
+
+static void	print_deps(t_operator **deps, char *prefix)
+{
+	int	i;
+
+	ft_printf("\t%s:\t", prefix);
+	if (!deps)
+	{
+		ft_printf("NONE\n");
+		return ;
+	}
+	i = -1;
+	while (deps[++i])
+	{
+		if (i > 0)
+			ft_printf(", ");
+		ft_printf("%s", deps[i]->name);
+	}
+	ft_printf("\n");
+}
+
+void	print_operators(t_operator **tab)
+{
+	int	i;
+
+	i = -1;
+	while (tab[++i])
+	{
+		ft_printf("%s%d\t%s\t%s%s\n", CLR_GREEN, tab[i]->id, tab[i]->name, tab[i]->value, CLR_RESET);
+		print_deps(tab[i]->before, "before");
+		print_deps(tab[i]->after, "after");
 	}
 }

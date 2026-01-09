@@ -6,13 +6,13 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:20:22 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 15:31:40 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/08 18:22:38 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	**ft_tabdup(char **tab)
+char	**ft_tabdup(char **tab, size_t extra_space)
 {
 	char	**ret;
 	size_t	size;
@@ -21,7 +21,7 @@ char	**ft_tabdup(char **tab)
 	size = 0;
 	if (tab)
 		size = ft_tablen(tab);
-	ret = (char **)ft_calloc(size + 1, sizeof(char *));
+	ret = (char **)ft_calloc(size + extra_space + 1, sizeof(char *));
 	if (!ret)
 		return (NULL);
 	i = -1;

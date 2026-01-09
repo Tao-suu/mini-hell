@@ -6,16 +6,16 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/06 17:35:07 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/09 02:58:22 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/readline.h>	// readline
-# include <readline/history.h>	// readline
-# include <fcntl.h>				// open
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <fcntl.h>
 # include "libft.h"
 # include <sys/wait.h>
 # include <unistd.h>
@@ -28,6 +28,8 @@
 
 # define OP_START			"START"
 # define OP_END				"END"
+
+# define TAB_EXTRA_SPACE	2
 
 # define CLR_RED			"\x1b[31m"
 # define CLR_GREEN			"\x1b[32m"
@@ -57,18 +59,12 @@ struct s_operator {
 struct s_lexem {
 	char			*value;
 	t_operator		*type;
-	int				lvl; // usefull ?
+	int				lvl;
 	t_lexem			*prev;
 	t_lexem			*next;
 };
 
 struct s_ast {
-	// global
-		// type (&& || pipeline)
-
-	// pipeline
-		// cmd list
-		// fds
 	char	*node_type;
 	t_cmd	*cmds;
 	t_ast	*right;
@@ -76,8 +72,8 @@ struct s_ast {
 };
 
 struct s_redirection {
-	t_operator		*operator;
 	char			*name;
+	t_operator		*operator;
 	t_redirection	*next;
 };
 
@@ -85,9 +81,7 @@ struct s_cmd {
 	char			*path;
 	char			**argv;
 	int				pid;
-
 	t_ast			*ast;
-
 	t_cmd			*next;
 	t_redirection	*in;
 	t_redirection	*out;
@@ -96,8 +90,9 @@ struct s_cmd {
 struct s_data {
 	char		**env;
 	char		**set;
+	size_t		env_size; // total size of env, not just it's content length
+	size_t		set_size; // total size of env, not just it's content length
 	t_operator	**operators;
-	
 	char		*line;
 	t_lexem		*head;
 	t_ast		*ast;
@@ -108,13 +103,15 @@ void			free_data(t_data *data, char full);
 int				init_data(t_data *data);
 
 // struct_operator.c
-t_operator		*find_operator_by_value(t_operator **tab, char *value);
-t_operator		*find_operator_by_name(t_operator **tab, char *name);
 void			free_operator_list(t_operator *list);
 void			free_operator_tab(t_operator **tab);
+t_operator		*create_operator_elem(char **fields);
+
+// struct_operator_tools.c
 void			add_operator_elem(t_operator **list, t_operator *elem);
 t_operator		**create_operator_tab_from_list(t_operator *list);
-t_operator		*create_operator_elem(char **fields);
+t_operator		*find_operator_by_value(t_operator **tab, char *value);
+t_operator		*find_operator_by_name(t_operator **tab, char *name);
 
 // struct_lexem.c
 void			free_lexem_elem(t_lexem *elem);
@@ -131,7 +128,8 @@ t_cmd			*create_cmd_elem(size_t nb_argv);
 // struct_redirection.c
 void			free_redirection(t_redirection *elem);
 void			free_redirection_list(t_redirection *list);
-void			add_redirection_in_list(t_redirection **list, t_redirection *elem);
+void			add_redirection_in_list(t_redirection **list,
+					t_redirection *elem);
 t_redirection	*create_redirection_elem(t_operator *operator, char *name);
 
 // struct_ast.c
@@ -156,9 +154,17 @@ void			main_loop(t_data *data);
 // ast.c
 int				create_ast(t_data *data);
 
+// ast_utlis.c
+t_lexem			*find_first_operator_in_level(t_lexem *start, t_lexem *end,
+					int level);
+void			skip_parenthesis(t_lexem **start, t_lexem *end);
+size_t			compute_nb_params(t_lexem *start, t_lexem *end);
+
 // print.c
 int				print_error(char *msg);
 int				print_sys_error(char *msg);
+
+// print_bash.c
 int				print_syntax_error(char *token);
 int				print_matching_error(void);
 int				print_bash_error(char *msg);
@@ -167,10 +173,30 @@ int				print_bash_error(char *msg);
 void			print_tabs(int nb_tabs);
 void			print_cmd(t_cmd *cmd, int lvl);
 void			print_ast(t_ast *ast, int lvl);
+void			print_operators(t_operator **tab);
 
 // exec/*.c
-int	exec_pipe(t_data *data, t_cmd *cmds);
-int	exec_ast(t_data *data, t_ast *ast);
-int	exec_cmd(t_data *data, t_cmd *cmd, char **path);
+int				exec_pipe(t_data *data, t_cmd *cmds);
+int				exec_ast(t_data *data, t_ast *ast);
+int				exec_cmd(t_data *data, t_cmd *cmd, char **path);
+
+// env_set_utils.c
+char			*get_var(char **tab, char *var_name);
+int				unset_key(char **tab, char *key);
+int				set_var(char ***tab, size_t *tab_size, char *var);
+int				set_key_value(char ***tab, size_t *tab_size, char *key,
+					char *value);
+
+// env_utils.c
+char			*get_env_var(t_data *data, char *var_name);
+int				unset_env_key(t_data *data, char *key);
+int				set_env_var(t_data *data, char *var);
+int				set_env_key_value(t_data *data, char *key, char *value);
+
+// set_utils.c
+char			*get_set_var(t_data *data, char *var_name);
+int				unset_set_key(t_data *data, char *key);
+int				set_set_var(t_data *data, char *var);
+int				set_set_key_value(t_data *data, char *key, char *value);
 
 #endif

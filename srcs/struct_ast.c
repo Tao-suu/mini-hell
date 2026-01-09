@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:24:16 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/05 16:09:08 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 02:33:24 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ t_ast	*create_ast_elem(void)
 {
 	t_ast	*ret;
 
-	if (!(ret = (t_ast *)ft_calloc(sizeof(t_ast), 1)))
+	ret = (t_ast *)ft_calloc(sizeof(t_ast), 1);
+	if (!ret)
 	{
 		print_sys_error("create_ast_elem / ft_calloc");
 		return (NULL);

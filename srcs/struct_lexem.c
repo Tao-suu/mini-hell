@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:34:54 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 18:36:12 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 02:32:25 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ t_lexem	*create_lexem_elem(void)
 {
 	t_lexem	*ret;
 
-	if (!(ret = (t_lexem *)ft_calloc(sizeof(t_lexem), 1)))
+	ret = (t_lexem *)ft_calloc(sizeof(t_lexem), 1);
+	if (!ret)
 	{
 		print_sys_error("create_lexem_elem / ft_calloc");
 		return (NULL);

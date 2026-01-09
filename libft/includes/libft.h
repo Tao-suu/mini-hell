@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:48:44 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/03 15:37:50 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/08 17:17:19 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ size_t			ft_putnbr_ull_base(unsigned long long value, char *base,
 void			ft_tabclear(char **tab);
 char			*ft_tabjoin(char **tab, char *sep);
 size_t			ft_tablen(char **tab);
-char			**ft_tabdup(char **tab);
+char			**ft_tabdup(char **tab, size_t extra_space);
 void			ft_tabprint(char **tab);
 int				ft_abs(int nb);
 int				ft_max(int nb1, int nb2);

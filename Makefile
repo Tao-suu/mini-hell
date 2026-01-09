@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/07 04:53:50 by tbez--du         ###   ########.fr        #
+#    Updated: 2026/01/09 03:03:32 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ NAME				= minishell
 SRCS_RAW			= main.c \
 					  struct_data.c \
 					  struct_operator.c \
+					  struct_operator_utils.c \
 					  struct_lexem.c \
 					  struct_cmd.c \
 					  struct_redirection.c \
@@ -28,11 +29,16 @@ SRCS_RAW			= main.c \
 					  manage_line.c \
 					  manage_lexems.c \
 					  ast.c \
+					  ast_utils.c \
 					  print.c \
+					  print_bash.c \
 					  print_debug.c \
 					  exec/exec_cmd.c \
 					  exec/exec_pipe.c \
 					  exec/exec_ast.c \
+					  env_set_utils.c \
+					  env_utils.c \
+					  set_utils.c
 
 SRCS_DIR			= ./srcs/
 OBJS_DIR			= ./objs/
@@ -53,7 +59,7 @@ C_BLUE				= \033[36m
 SYMBOL				= $(C_RED)==> $(C_NONE)
 
 
-all: libft_cc $(NAME)
+all: libft $(NAME)
 
 re: fclean all
 
@@ -75,5 +81,12 @@ fclean: clean
 	@rm -f $(NAME)
 	@echo "$(SYMBOL)$(C_BLUE)$(NAME) fclean done !$(C_NONE)"
 
-libft_cc:
+libft:
 	@make --no-print-directory -C $(LIBFT_DIR)
+
+valgrind: re
+	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes \
+		--trace-children-skip="*ls","*cat","*grep" \
+		--suppressions=valgrind_filter.supp env -i ./$(NAME)
+
+.PHONY: all re clean fclean libft valgrind

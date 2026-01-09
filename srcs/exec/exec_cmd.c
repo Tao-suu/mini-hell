@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbez--du <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/07 09:50:50 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/09 01:16:33 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,16 @@ int	exec_cmd(t_data *data, t_cmd *cmd, char **path)
 {
 	(void)path;
 	if (!redir_in(cmd->in))
-			exit(1);
+		exit(1);
 	if (!redir_out(cmd->out))
-			exit(1);
+		exit(1);
 	if (cmd->ast)
 		exec_ast(data, cmd->ast);
 	else
 	{
 		cmd->path = get_cmd_path(path, cmd->argv[0]);
 		execve(cmd->path, cmd->argv, data->env);
+		free_data(data, TRUE);
 		perror("");
 	}
 	ft_tabclear(path);

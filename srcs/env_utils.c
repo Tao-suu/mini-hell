@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/03 15:50:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 02:30:08 by picheval         ###   ########.fr       */
+/*   Created: 2026/01/08 16:02:19 by picheval          #+#    #+#             */
+/*   Updated: 2026/01/09 00:30:42 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
 #include "minishell.h"
 
-static void	handler(int signal)
+char	*get_env_var(t_data *data, char *var_name)
 {
-	if (signal == SIGINT)
-	{
-		rl_replace_line("", 0);
-		ft_putchar('\n');
-	}
-	rl_on_new_line();
-	rl_redisplay();
+	return (get_var(data->env, var_name));
 }
 
-void	init_signal(void)
+int	unset_env_key(t_data *data, char *key)
 {
-	struct sigaction	sig;
+	return (unset_key(data->env, key));
+}
 
-	sig.sa_flags = 0;
-	sigemptyset(&(sig.sa_mask));
-	sig.sa_handler = handler;
-	sigaction(SIGINT, &sig, NULL);
-	sigaction(SIGQUIT, &sig, NULL);
+int	set_env_var(t_data *data, char *var)
+{
+	return (set_var(&(data->env), &(data->env_size), var));
+}
+
+int	set_env_key_value(t_data *data, char *key, char *value)
+{
+	return (set_key_value(&(data->env), &(data->env_size), key, value));
 }
