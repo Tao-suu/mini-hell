@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:50:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 02:30:08 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 16:23:16 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,20 @@ static void	handler(int signal)
 	rl_redisplay();
 }
 
+void	dfl_signal(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void	ign_signal(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 void	init_signal(void)
 {
-	struct sigaction	sig;
-
-	sig.sa_flags = 0;
-	sigemptyset(&(sig.sa_mask));
-	sig.sa_handler = handler;
-	sigaction(SIGINT, &sig, NULL);
-	sigaction(SIGQUIT, &sig, NULL);
+	signal(SIGINT, &handler);
+	signal(SIGQUIT, SIG_IGN);
 }

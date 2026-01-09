@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 02:58:22 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 16:23:52 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,8 @@ int				manage_lexems(t_data *data);
 
 // signal.c
 void			init_signal(void);
-
+void			ign_signal(void);
+void			dfl_signal(void);
 // loop.c
 void			main_loop(t_data *data);
 
