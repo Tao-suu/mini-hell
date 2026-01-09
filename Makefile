@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/09 03:03:32 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/09 03:20:04 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,34 +15,39 @@ CFLAGS				= -Wall -Wextra -Werror -g3
 LIBS_FLAGS			= -lreadline
 
 NAME				= minishell
-SRCS_RAW			= main.c \
-					  struct_data.c \
-					  struct_operator.c \
-					  struct_operator_utils.c \
-					  struct_lexem.c \
-					  struct_cmd.c \
-					  struct_redirection.c \
-					  struct_ast.c \
-					  init_operators.c \
-					  signal.c \
-					  loop.c \
-					  manage_line.c \
-					  manage_lexems.c \
-					  ast.c \
-					  ast_utils.c \
-					  print.c \
-					  print_bash.c \
-					  print_debug.c \
-					  exec/exec_cmd.c \
-					  exec/exec_pipe.c \
-					  exec/exec_ast.c \
-					  env_set_utils.c \
-					  env_utils.c \
-					  set_utils.c
 
 SRCS_DIR			= ./srcs/
 OBJS_DIR			= ./objs/
 INC_DIR				= ./includes/
+EXEC_DIR			= exec/
+PARSE_DIR			= parse/
+STRUCT_DIR			= structs/
+BUILTIN_DIR			= builtins/
+
+SRCS_RAW			= main.c \
+					  $(STRUCT_DIR)struct_data.c \
+					  $(STRUCT_DIR)struct_operator.c \
+					  $(STRUCT_DIR)struct_operator_utils.c \
+					  $(STRUCT_DIR)struct_lexem.c \
+					  $(STRUCT_DIR)struct_cmd.c \
+					  $(STRUCT_DIR)struct_redirection.c \
+					  $(STRUCT_DIR)struct_ast.c \
+					  $(PARSE_DIR)init_operators.c \
+					  $(PARSE_DIR)manage_line.c \
+					  $(PARSE_DIR)manage_lexems.c \
+					  $(PARSE_DIR)ast.c \
+					  $(PARSE_DIR)ast_utils.c \
+					  $(EXEC_DIR)exec_cmd.c \
+					  $(EXEC_DIR)exec_pipe.c \
+					  $(EXEC_DIR)exec_ast.c \
+					  $(BUILTIN_DIR)env_set_utils.c \
+					  $(BUILTIN_DIR)env_utils.c \
+					  $(BUILTIN_DIR)set_utils.c \
+					  signal.c \
+					  loop.c \
+					  print.c \
+					  print_bash.c \
+					  print_debug.c
 
 OBJS_RAW			= $(SRCS_RAW:.c=.o)
 SRCS				= $(addprefix $(SRCS_DIR), $(SRCS_RAW))
@@ -68,7 +73,10 @@ $(NAME): $(OBJS)
 	@echo "$(SYMBOL)$(C_BLUE)$(NAME) compiled !$(C_NONE)"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	@mkdir -p $(OBJS_DIR)exec
+	@mkdir -p $(OBJS_DIR)$(STRUCT_DIR)
+	@mkdir -p $(OBJS_DIR)$(PARSE_DIR)
+	@mkdir -p $(OBJS_DIR)$(EXEC_DIR)
+	@mkdir -p $(OBJS_DIR)$(BUILTIN_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_INC_DIR)
 
 clean:
