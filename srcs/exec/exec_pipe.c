@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/09 19:13:54 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/10 01:08:43 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 		return (exec_ast(data, cmds->ast));
 	cmd = cmds;
 	//expand_all_cmd(cmd);
-	//if (!cmd->next && is_builtin(cmd))
-	//	return (exec_cmd(data, cmd, NULL));
+	if (!cmd->next && is_builtin(cmd))
+		return (exec_builtin(data, cmd, 0));
 	save_in = dup(STDIN_FILENO);
 	while (cmd)
 	{
@@ -71,6 +71,8 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 				dup2(pipefd[1], STDOUT_FILENO);
 				close(pipefd[1]);
 			}
+			if (is_builtin(cmd))
+				return (exec_builtin(data, cmd, 1));
 			exec_cmd(data, cmd, path);
 		}
 		else
