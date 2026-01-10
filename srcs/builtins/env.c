@@ -1,29 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/09 18:00:44 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/10 01:38:53 by tbez--du         ###   ########.fr       */
+/*   Created: 2026/01/10 01:36:14 by tbez--du          #+#    #+#             */
+/*   Updated: 2026/01/10 01:37:54 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_pwd(t_data *data)
+int	builtin_env(t_data *data)
 {
-	char	buffer[1000];
-
-	if (get_env_var(data, "PWD") && !ft_strcmp(getcwd(buffer, 1000), "PWD"))
-		printf("%s\n", get_env_var(data, "PWD"));
-	else if (!getcwd(buffer, 1000))
-	{
-		perror("");
-		return (0);
-	}
-	else
-		printf("%s\n", buffer);
+	ft_tabprint(data->env);
 	return (1);
 }

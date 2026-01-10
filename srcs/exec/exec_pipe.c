@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/10 01:08:43 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/10 01:19:49 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 		if (cmd->pid == 0)
 		{
 			close(save_in);
-			path = get_path(data);
 			dfl_signal();
 			if (cmd->next)
 			{
@@ -73,6 +72,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 			}
 			if (is_builtin(cmd))
 				return (exec_builtin(data, cmd, 1));
+			path = get_path(data);
 			exec_cmd(data, cmd, path);
 		}
 		else

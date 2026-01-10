@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/10 01:09:14 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/10 01:41:20 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,8 @@ int				set_set_key_value(t_data *data, char *key, char *value);
 // builtin
 int				exec_builtin(t_data *data, t_cmd *cmd, int flag);
 int				is_builtin(t_cmd *cmd);
-int				pwd(t_data *data);
+int				builtin_pwd(t_data *data);
+int				builtin_env(t_data *data);
+int				builtin_exit(t_data *data);
 
 #endif
