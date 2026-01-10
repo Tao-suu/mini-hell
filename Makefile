@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/10 01:42:33 by tbez--du         ###   ########.fr        #
+#    Updated: 2026/01/10 12:52:57 by tbez--du         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,9 @@ SRCS_RAW			= main.c \
 					  $(BUILTIN_DIR)pwd.c \
 					  $(BUILTIN_DIR)exit.c \
 					  $(BUILTIN_DIR)env.c \
+					  $(BUILTIN_DIR)cd.c \
+					  $(BUILTIN_DIR)unset.c \
+					  $(BUILTIN_DIR)export.c \
 					  signal.c \
 					  loop.c \
 					  print.c \

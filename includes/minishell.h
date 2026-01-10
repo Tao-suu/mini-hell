@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/10 01:41:20 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/10 12:53:42 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,5 +208,8 @@ int				is_builtin(t_cmd *cmd);
 int				builtin_pwd(t_data *data);
 int				builtin_env(t_data *data);
 int				builtin_exit(t_data *data);
+int				builtin_cd(t_data *data, t_cmd *cmd);
+int				builtin_unset(t_data *data, t_cmd *cmd);
+int				builtin_export(t_data *data, t_cmd *cmd);
 
 #endif
