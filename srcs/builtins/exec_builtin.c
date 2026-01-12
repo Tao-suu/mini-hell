@@ -6,7 +6,7 @@
 /*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:12:34 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/10 12:56:20 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/12 00:28:18 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 		ret = builtin_unset(data, cmd);
 	else if (!ft_strcmp(cmd->argv[0], "export"))
 		ret = builtin_export(data, cmd);
+	else if (!ft_strcmp(cmd->argv[0], "echo"))
+		ret = builtin_echo(cmd);
 	else
 		ret = 1;
 	dup2(1, fd[1]);
@@ -58,6 +60,8 @@ int	is_builtin(t_cmd *cmd)
 	if (!ft_strcmp(cmd->argv[0], "unset"))
 		return (1);
 	if (!ft_strcmp(cmd->argv[0], "export"))
+		return (1);
+	if (!ft_strcmp(cmd->argv[0], "echo"))
 		return (1);
 	return (0);
 }
