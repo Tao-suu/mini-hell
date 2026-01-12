@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 04:04:49 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 05:10:53 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ struct s_cmd {
 enum e_env_state {
 	STATE_ENV = 0,
 	STATE_SET = 1,
-	STATE_DEAD = 2
+	STATE_HIDDEN = 2,
+	STATE_DEAD = 3
 };
 
 struct s_env {
@@ -123,7 +124,10 @@ void			free_env(t_env *elem);
 void			free_env_list(t_env *list);
 void			add_env_elem_in_list(t_env **list, t_env *elem);
 t_env			*create_env_elem(char *key, char *value, int state);
+t_env			*find_env_var(t_env *env, char *key);
+int				create_or_update_env(t_env **env, char *key, char *value, int state);
 int				create_env_from_string(t_env **env, char *string, int state);
+char			 **get_env_tab_from_list(t_env *env);
 
 // struct_operator.c
 void			free_operator_list(t_operator *list);
@@ -201,11 +205,12 @@ void			print_tabs(int nb_tabs);
 void			print_cmd(t_cmd *cmd, int lvl);
 void			print_ast(t_ast *ast, int lvl);
 void			print_operators(t_operator **tab);
+void			print_debug_env(t_env *env);
 
 // exec/*.c
 int				exec_pipe(t_data *data, t_cmd *cmds);
 int				exec_ast(t_data *data, t_ast *ast);
-int				exec_cmd(t_data *data, t_cmd *cmd, char **path);
+int				exec_cmd(t_data *data, t_cmd *cmd, char **env, char **path);
 int				redir_out(t_redirection *red);
 int				redir_in(t_redirection *red);
 

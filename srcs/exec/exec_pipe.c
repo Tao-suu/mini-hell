@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/12 03:56:25 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 05:16:36 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,20 @@ int	wait_cmd_pid(t_cmd *cmd)
 	return (code);
 }
 
-char	**get_path(t_data *data)
+static char	**get_path(t_env *env)
 {
-	char	*path_var;
+	t_env	*path_var;
 
-	// path_var = get_env_var(data, "PATH");
-	(void)data;
-	path_var = "";
-	if (!path_var)
+	path_var = find_env_var(env, "PATH");
+	if (!path_var || !path_var->value)
 		return (NULL);
-	return (ft_split(path_var, ':'));
+	return (ft_split(path_var->value, ':'));
 }
 
 int	exec_pipe(t_data *data, t_cmd *cmds)
 {
 	char	**path;
+	char	**env;
 	int		pipefd[2];
 	t_cmd	*cmd;
 	int		save_in;
@@ -56,6 +55,8 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 	//expand_all_cmd(cmd);
 	if (!cmd->next && is_builtin(cmd))
 		return (exec_builtin(data, cmd, 0));
+	path = get_path(data->env);
+	env = get_env_tab_from_list(data->env);
 	save_in = dup(STDIN_FILENO);
 	while (cmd)
 	{
@@ -74,8 +75,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 			}
 			if (is_builtin(cmd))
 				return (exec_builtin(data, cmd, 1));
-			path = get_path(data);
-			exec_cmd(data, cmd, path);
+			exec_cmd(data, cmd, env, path);
 		}
 		else
 		{
@@ -91,6 +91,5 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 	ret = wait_cmd_pid(cmds);
 	dup2(save_in, STDIN_FILENO);
 	close(save_in);
-	//dprintf(2, "fini d'attendre\n");
 	return (ret);
 }

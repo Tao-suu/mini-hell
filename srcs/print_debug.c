@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:40:45 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/08 15:21:50 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 04:10:50 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,14 @@ void	print_operators(t_operator **tab)
 		ft_printf("%s%d\t%s\t%s%s\n", CLR_GREEN, tab[i]->id, tab[i]->name, tab[i]->value, CLR_RESET);
 		print_deps(tab[i]->before, "before");
 		print_deps(tab[i]->after, "after");
+	}
+}
+
+void	print_debug_env(t_env *env)
+{
+	while (env)
+	{
+		ft_printf("%d\t%s\t%s%s%s\n", env->state, env->key, CLR_RED, env->value, CLR_RESET);
+		env = env->next;
 	}
 }

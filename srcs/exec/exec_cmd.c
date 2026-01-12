@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/12 03:53:27 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 05:11:12 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	redir_in(t_redirection *red)
 	return (1);
 }
 
-int	exec_cmd(t_data *data, t_cmd *cmd, char **path)
+int	exec_cmd(t_data *data, t_cmd *cmd, char **env, char **path)
 {
 	//if (!cmd->ast && is_builtin(cmd))
 	//	return (exec_builtin(data, cmd));
@@ -96,7 +96,7 @@ int	exec_cmd(t_data *data, t_cmd *cmd, char **path)
 		cmd->path = get_cmd_path(path, cmd->argv[0]);
 		// check cmd->path != NULL
 		//execve(cmd->path, cmd->argv, data->env);
-		execve(cmd->path, cmd->argv, NULL);
+		execve(cmd->path, cmd->argv, env);
 		free_data(data, TRUE);
 		perror(NULL);
 	}

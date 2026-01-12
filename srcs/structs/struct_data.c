@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 03:58:41 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 04:41:15 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,36 @@ void	free_data(t_data *data, char full)
 // 	return (set_set_key_value(data, "SHLVL", value));
 // }
 
+
+static int	init_env_shlvl(t_env **env)
+{
+	t_env	*elem;
+	char	*tmp;
+
+	elem = find_env_var(*env, "SHLVL");
+	if (!elem)
+		return (create_or_update_env(env, "SHLVL", "0", STATE_ENV));
+	tmp = ft_itoa(ft_atoi(elem->value) + 1);
+	if (!tmp)
+		return (print_sys_error("ft_itoa"));
+	free(elem->value);
+	elem->value = tmp;
+	return (TRUE);
+}
+static int	init_env_pwd(t_env **env)
+{
+	char	buff[5000];
+
+	if (!find_env_var(*env, "PWD") && !create_or_update_env(env, "PWD", getcwd(buff, 1000), STATE_ENV))
+		return (FALSE);
+	if (!find_env_var(*env, "OLDPWD") && !create_or_update_env(env, "OLDPWD", NULL, STATE_ENV))
+		return (FALSE);
+	return (TRUE);
+}
+
 static int	init_env(t_env **env)
 {
-	int	i;
+	int		i;
 
 	i = -1;
 	while (environ[++i])
@@ -96,7 +123,11 @@ static int	init_env(t_env **env)
 			return (FALSE);
 		}
 	}
-	return (TRUE);
+	if (!init_env_shlvl(env))
+		return (FALSE);
+	if (!init_env_pwd(env))
+		return (FALSE);
+	return (create_or_update_env(env, "?", "0", STATE_SET));
 }
 
 int	init_data(t_data *data)
@@ -104,6 +135,7 @@ int	init_data(t_data *data)
 	ft_memset((void *)data, 0, sizeof(t_data));
 	if (!init_env(&(data->env)))
 		return (FALSE);
+	print_debug_env(data->env);
 	// if (!init_data_env(data) || !init_data_set(data))
 	// 	return (FALSE);
 	if (!create_operators_array(&(data->operators)))
