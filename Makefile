@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/12 00:27:36 by tbez--du         ###   ########.fr        #
+#    Updated: 2026/01/12 04:04:03 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ BUILTIN_DIR			= builtins/
 
 SRCS_RAW			= main.c \
 					  $(STRUCT_DIR)struct_data.c \
+					  $(STRUCT_DIR)struct_env.c \
 					  $(STRUCT_DIR)struct_operator.c \
 					  $(STRUCT_DIR)struct_operator_utils.c \
 					  $(STRUCT_DIR)struct_lexem.c \
@@ -40,22 +41,24 @@ SRCS_RAW			= main.c \
 					  $(EXEC_DIR)exec_cmd.c \
 					  $(EXEC_DIR)exec_pipe.c \
 					  $(EXEC_DIR)exec_ast.c \
-					  $(BUILTIN_DIR)env_set_utils.c \
-					  $(BUILTIN_DIR)env_utils.c \
-					  $(BUILTIN_DIR)set_utils.c \
 					  $(BUILTIN_DIR)exec_builtin.c \
-					  $(BUILTIN_DIR)pwd.c \
-					  $(BUILTIN_DIR)exit.c \
-					  $(BUILTIN_DIR)env.c \
-					  $(BUILTIN_DIR)cd.c \
-					  $(BUILTIN_DIR)unset.c \
-					  $(BUILTIN_DIR)export.c \
-					  $(BUILTIN_DIR)echo.c \
 					  signal.c \
 					  loop.c \
 					  print.c \
 					  print_bash.c \
 					  print_debug.c
+
+# 					  $(BUILTIN_DIR)pwd.c \
+# 					  $(BUILTIN_DIR)exit.c \
+# 					  $(BUILTIN_DIR)cd.c \
+#					  $(BUILTIN_DIR)echo.c \
+
+# 					  $(BUILTIN_DIR)env_set_utils.c \
+# 					  $(BUILTIN_DIR)env_utils.c \
+# 					  $(BUILTIN_DIR)set_utils.c \
+# 					  $(BUILTIN_DIR)env.c \
+# 					  $(BUILTIN_DIR)unset.c \
+# 					  $(BUILTIN_DIR)export.c \
 
 OBJS_RAW			= $(SRCS_RAW:.c=.o)
 SRCS				= $(addprefix $(SRCS_DIR), $(SRCS_RAW))
@@ -102,6 +105,7 @@ libft:
 
 valgrind: re
 	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes \
+		--track-fds=yes \
 		--trace-children-skip="*ls","*cat","*grep" \
 		--suppressions=valgrind_filter.supp env -i ./$(NAME)
 

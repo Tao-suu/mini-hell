@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 00:20:04 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/12 04:04:49 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ typedef struct s_lexem			t_lexem;
 typedef struct s_ast			t_ast;
 typedef struct s_redirection	t_redirection;
 typedef struct s_cmd			t_cmd;
+typedef enum e_env_state		t_env_state;
+typedef struct s_env			t_env;
 typedef struct s_data			t_data;
 
 struct s_operator {
@@ -87,11 +89,25 @@ struct s_cmd {
 	t_redirection	*out;
 };
 
+enum e_env_state {
+	STATE_ENV = 0,
+	STATE_SET = 1,
+	STATE_DEAD = 2
+};
+
+struct s_env {
+	char		*key;
+	char		*value;
+	t_env_state	state;
+	t_env		*next;
+};
+
 struct s_data {
-	char		**env;
-	char		**set;
-	size_t		env_size; // total size of env, not just it's content length
-	size_t		set_size; // total size of env, not just it's content length
+	t_env		*env;
+	// char		**env;
+	// char		**set;
+	// size_t		env_size; // total size of env, not just it's content length
+	// size_t		set_size; // total size of env, not just it's content length
 	t_operator	**operators;
 	char		*line;
 	t_lexem		*head;
@@ -101,6 +117,13 @@ struct s_data {
 // struct_data.c
 void			free_data(t_data *data, char full);
 int				init_data(t_data *data);
+
+// struct_env.c
+void			free_env(t_env *elem);
+void			free_env_list(t_env *list);
+void			add_env_elem_in_list(t_env **list, t_env *elem);
+t_env			*create_env_elem(char *key, char *value, int state);
+int				create_env_from_string(t_env **env, char *string, int state);
 
 // struct_operator.c
 void			free_operator_list(t_operator *list);
@@ -149,6 +172,7 @@ int				manage_lexems(t_data *data);
 void			init_signal(void);
 void			ign_signal(void);
 void			dfl_signal(void);
+
 // loop.c
 void			main_loop(t_data *data);
 
@@ -168,6 +192,8 @@ int				print_sys_error(char *msg);
 // print_bash.c
 int				print_syntax_error(char *token);
 int				print_matching_error(void);
+int				print_bash_cd_error(char *filename, char *msg);
+int				print_bash_export_error(char *arg);
 int				print_bash_error(char *msg);
 
 // print_debug.c
@@ -183,34 +209,34 @@ int				exec_cmd(t_data *data, t_cmd *cmd, char **path);
 int				redir_out(t_redirection *red);
 int				redir_in(t_redirection *red);
 
-// env_set_utils.c
-char			*get_var(char **tab, char *var_name);
-int				unset_key(char **tab, char *key);
-int				set_var(char ***tab, size_t *tab_size, char *var);
-int				set_key_value(char ***tab, size_t *tab_size, char *key,
-					char *value);
+// // env_set_utils.c
+// char			*get_var(char **tab, char *var_name);
+// int				unset_key(char **tab, char *key);
+// int				set_var(char ***tab, size_t *tab_size, char *var);
+// int				set_key_value(char ***tab, size_t *tab_size, char *key,
+// 					char *value);
 
-// env_utils.c
-char			*get_env_var(t_data *data, char *var_name);
-int				unset_env_key(t_data *data, char *key);
-int				set_env_var(t_data *data, char *var);
-int				set_env_key_value(t_data *data, char *key, char *value);
+// // env_utils.c
+// char			*get_env_var(t_data *data, char *var_name);
+// int				unset_env_key(t_data *data, char *key);
+// int				set_env_var(t_data *data, char *var);
+// int				set_env_key_value(t_data *data, char *key, char *value);
 
-// set_utils.c
-char			*get_set_var(t_data *data, char *var_name);
-int				unset_set_key(t_data *data, char *key);
-int				set_set_var(t_data *data, char *var);
-int				set_set_key_value(t_data *data, char *key, char *value);
+// // set_utils.c
+// char			*get_set_var(t_data *data, char *var_name);
+// int				unset_set_key(t_data *data, char *key);
+// int				set_set_var(t_data *data, char *var);
+// int				set_set_key_value(t_data *data, char *key, char *value);
 
 // builtin
 int				exec_builtin(t_data *data, t_cmd *cmd, int flag);
 int				is_builtin(t_cmd *cmd);
 int				builtin_pwd(t_data *data);
-int				builtin_env(t_data *data);
 int				builtin_exit(t_data *data);
 int				builtin_cd(t_data *data, t_cmd *cmd);
-int				builtin_unset(t_data *data, t_cmd *cmd);
-int				builtin_export(t_data *data, t_cmd *cmd);
 unsigned char	builtin_echo(t_cmd *cmd);
+// int				builtin_env(t_data *data);
+// int				builtin_unset(t_data *data, t_cmd *cmd);
+// int				builtin_export(t_data *data, t_cmd *cmd);
 
 #endif

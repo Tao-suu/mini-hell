@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/09 19:13:24 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/12 03:53:27 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_cmd_path(char **path, char *cmd)
 	while (path && *path)
 	{
 		len = ft_strlen(cmd) + ft_strlen(*path) + 2;
-		ret = malloc(len);
+		ret = (char *)ft_calloc(len, sizeof(char));
 		if (!ret)
 			return (NULL);
 		ft_strlcpy(ret, *path, len);
@@ -94,9 +94,11 @@ int	exec_cmd(t_data *data, t_cmd *cmd, char **path)
 	else
 	{
 		cmd->path = get_cmd_path(path, cmd->argv[0]);
-		execve(cmd->path, cmd->argv, data->env);
+		// check cmd->path != NULL
+		//execve(cmd->path, cmd->argv, data->env);
+		execve(cmd->path, cmd->argv, NULL);
 		free_data(data, TRUE);
-		perror("");
+		perror(NULL);
 	}
 	ft_tabclear(path);
 	exit(1);

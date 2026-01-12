@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/10 01:19:49 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/12 03:56:25 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ char	**get_path(t_data *data)
 {
 	char	*path_var;
 
-	path_var = get_env_var(data, "PATH");
+	// path_var = get_env_var(data, "PATH");
+	(void)data;
+	path_var = "";
 	if (!path_var)
 		return (NULL);
 	return (ft_split(path_var, ':'));

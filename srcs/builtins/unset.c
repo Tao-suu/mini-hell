@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 12:29:02 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/10 12:33:48 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/11 23:37:44 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,15 @@
 
 int	builtin_unset(t_data *data, t_cmd *cmd)
 {
-	if (cmd->argv[1])
-		unset_env_key(data, cmd->argv[1]);
+	int	i;
+
+	i = -1;
+	while (cmd->argv[++i])
+	{
+		// if invalid key format, then continue ;
+		if (ft_strchr(cmd->argv[i], '='))
+			continue ;
+		unset_env_key(data, cmd->argv[i]);
+	}
 	return (0);
 }

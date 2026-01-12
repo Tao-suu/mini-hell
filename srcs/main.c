@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 13:51:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 02:27:06 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/09 20:20:18 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,32 @@ int	main(void)
 		// env / set
 			// recreate if not exist (SHLVL TERM LINES COLUMNS PWD SHELL/BASH HOSTNAME?/USERNAME?)
 			// .bash_history ?
-			// SHLVL management
 		// signaux / t_data
 
 	// every read loop
-		// store & parse line
-		// store ast in data
 		// built-in management before execve
 		// execve
-			// reparse PATH
+			// reparse PATH ?
 
 	// heredoc(s): fork ? singleton ?
 
 	// env variables : d'abord check dans env, PUIS dans set uniquement si pas trouve avant
 		// env -i
 		// !! export set vs env (ex SHLVL)
+
+	// Builtins
+		// Easy ---> Hard
+
+		// env
+		// pwd
+		// echo
+		// unset
+		// exit --> exit status --> cast unsigned char --> % 255 --> atoll --> no numeri si depasse long long max == char * != int 
+			// 1) check numeri
+			// 2) nb args
+			// 3) nb_args = 0 exit exit_status
+		// cd
+		// export
 
 	free_data(&data, TRUE);
 	return (0);

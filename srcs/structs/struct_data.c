@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 19:02:55 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/12 03:58:41 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,65 +31,81 @@ void	free_data(t_data *data, char full)
 	if (full == FALSE)
 		return ;
 	if (data->env)
-		ft_tabclear(data->env);
-	if (data->set)
-		ft_tabclear(data->set);
+		free_env_list(data->env);
 	if (data->operators)
 		free_operator_tab(data->operators);
 }
 
-static int	init_data_env(t_data *data)
+// static int	init_data_env(t_data *data)
+// {
+// 	char	*value;
+// 	char	*tmp;
+// 	char	buff[1000];
+// 	int		ret;
+
+// 	data->env = ft_tabdup(environ, TAB_EXTRA_SPACE);
+// 	if (!data->env)
+// 		return (print_sys_error("init_data_env ft_tabdup"));
+// 	data->env_size = ft_tablen(data->env) + TAB_EXTRA_SPACE;
+// 	if (!get_env_var(data, "PATH")
+// 		&& !set_env_key_value(data, "PATH", "/usr/local/sbin:/usr/local/bin:"
+// 			"/usr/sbin:/usr/bin:/sbin:/bin"))
+// 		return (FALSE);
+// 	if (!get_env_var(data, "PWD") && !set_env_key_value(data, "PWD", getcwd(buff, 1000)))
+// 		return (FALSE);
+// 	value = get_env_var(data, "SHLVL");
+// 	if (!value)
+// 		return (set_env_key_value(data, "SHLVL", "0"));
+// 	tmp = ft_itoa(ft_atoi(value) + 1);
+// 	if (!tmp)
+// 		return (print_sys_error("init_data_env ft_atoi"));
+// 	ret = set_env_key_value(data, "SHLVL", tmp);
+// 	free(tmp);
+// 	return (ret);
+// }
+
+// static int	init_data_set(t_data *data)
+// {
+// 	char	*value;
+
+// 	data->set = ft_tabdup(NULL, TAB_EXTRA_SPACE);
+// 	if (!data->set)
+// 		return (print_sys_error("init_data_set ft_tabdup"));
+// 	data->set_size = 0 + TAB_EXTRA_SPACE;
+// 	value = get_env_var(data, "PATH");
+// 	if (!value)
+// 		return (print_error("WTF no PATH in env"));
+// 	if (!set_set_key_value(data, "PATH", value))
+// 		return (FALSE);
+// 	value = get_env_var(data, "SHLVL");
+// 	if (!value)
+// 		return (print_error("WTF no SHLVL in env"));
+// 	return (set_set_key_value(data, "SHLVL", value));
+// }
+
+static int	init_env(t_env **env)
 {
-	char	buff[1000];
+	int	i;
 
-	data->env = ft_tabdup(environ, TAB_EXTRA_SPACE);
-	if (!data->env)
-		return (print_sys_error("init_data_env ft_tabdup"));
-	data->env_size = ft_tablen(data->env) + TAB_EXTRA_SPACE;
-	if (!get_env_var(data, "PATH")
-		&& !set_env_key_value(data, "PATH", "/usr/local/sbin:/usr/local/bin:"
-			"/usr/sbin:/usr/bin:/sbin:/bin"))
-		return (FALSE);
-	if (get_env_var(data, "SHLVL"))
-		return (TRUE);
-	if (!get_env_var(data, "PWD") && !set_env_key_value(data, "PWD", getcwd(buff, 1000)))
-		return (FALSE);
-	return (set_env_key_value(data, "SHLVL", "0"));
-}
-
-static int	init_data_set(t_data *data)
-{
-	char	*value;
-	char	*tmp;
-	int		ret;
-
-	data->set = ft_tabdup(NULL, TAB_EXTRA_SPACE);
-	if (!data->set)
-		return (print_sys_error("init_data_set ft_tabdup"));
-	value = get_env_var(data, "PATH");
-	if (!value)
-		return (print_error("WTF no PATH in env"));
-	if (!set_set_key_value(data, "PATH", value))
-		return (FALSE);
-	value = get_env_var(data, "SHLVL");
-	if (!value)
-		return (print_error("WTF no SHLVL in env"));
-	tmp = ft_itoa(ft_atoi(value) + 1);
-	if (!tmp)
-		return (print_sys_error("init_data_set ft_atoi malloc"));
-	ret = set_set_key_value(data, "SHLVL", tmp);
-	free(tmp);
-	return (ret);
+	i = -1;
+	while (environ[++i])
+	{
+		if (!create_env_from_string(env, environ[i], STATE_ENV))
+		{
+			free_env_list(*env);
+			return (FALSE);
+		}
+	}
+	return (TRUE);
 }
 
 int	init_data(t_data *data)
 {
 	ft_memset((void *)data, 0, sizeof(t_data));
-	if (!init_data_env(data) || !init_data_set(data))
+	if (!init_env(&(data->env)))
 		return (FALSE);
-//	ft_tabprint(data->env);
-//	ft_printf("\n");
-//	ft_tabprint(data->set);
+	// if (!init_data_env(data) || !init_data_set(data))
+	// 	return (FALSE);
 	if (!create_operators_array(&(data->operators)))
 		return (FALSE);
 	return (TRUE);
