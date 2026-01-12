@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 02:57:08 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 01:07:31 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 07:36:52 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@ int	print_matching_error(void)
 {
 	return (print_syntax_token_error("unexpected EOF while looking for "
 			"matching", ")"));
+}
+
+int	print_bash_exit_error(char *arg, char *msg)
+{
+	print_bash_name();
+	ft_putstr_fd("exit: ", 2);
+	if (arg)
+	{
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	ft_putendl_fd(msg, 2);
+	return (1);
 }
 
 int	print_bash_cd_error(char *filename, char *msg)

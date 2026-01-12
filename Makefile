@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/12 05:18:19 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/12 07:13:27 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,18 +46,14 @@ SRCS_RAW			= main.c \
  					  $(BUILTIN_DIR)exit.c \
  					  $(BUILTIN_DIR)cd.c \
 					  $(BUILTIN_DIR)echo.c \
+					  $(BUILTIN_DIR)env.c \
+					  $(BUILTIN_DIR)unset.c \
+					  $(BUILTIN_DIR)export.c \
 					  signal.c \
 					  loop.c \
 					  print.c \
 					  print_bash.c \
 					  print_debug.c
-
-# 					  $(BUILTIN_DIR)env_set_utils.c \
-# 					  $(BUILTIN_DIR)env_utils.c \
-# 					  $(BUILTIN_DIR)set_utils.c \
-# 					  $(BUILTIN_DIR)env.c \
-# 					  $(BUILTIN_DIR)unset.c \
-# 					  $(BUILTIN_DIR)export.c \
 
 OBJS_RAW			= $(SRCS_RAW:.c=.o)
 SRCS				= $(addprefix $(SRCS_DIR), $(SRCS_RAW))

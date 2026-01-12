@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 12:46:22 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/12 01:28:16 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 06:55:50 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,47 @@ static int	export_valid_arg(char *arg)
 	return (TRUE);
 }
 
-int	builtin_export(t_data *data, t_cmd *cmd)
+static int	export_print(t_env *env)
+{
+	while (env)
+	{
+		if (env->state <= STATE_SET)
+		{
+			ft_printf("export %s", env->key);
+			if (env->value)
+				ft_printf("=\"%s\"", env->value);
+			ft_printf("\n");
+		}
+		env = env->next;
+	}
+	return (0);
+}
+
+int	builtin_export(t_env **env, t_cmd *cmd)
 {
 	char	*equal_index;
 	int		i;
 	int		ret;
 
 	if (!cmd->argv[1])
-		return (builtin_env(data));
+		return (export_print(*env));
 	ret = 0;
-	i = -1;
+	i = 0;
 	while (cmd->argv[++i])
 	{
-		equal_index = ft_strchr(cmd->argv[i], '=');
-		if (!equal_index)
+		if (!export_valid_arg(cmd->argv[i]))
+		{
+			ret = !print_bash_export_error(cmd->argv[i]);
 			continue ;
-		if (equal_index == cmd->argv[i] || !export_valid_arg(cmd->argv[i]))
-		{
-			ret = 1;
-			print_bash_export_error(cmd->argv[i]);
 		}
-		else if (!set_env_var(data, cmd->argv[i]))
+		equal_index = ft_strchr(cmd->argv[i], '=');
+		if (equal_index)
 		{
-			ret = 1;
-			break ;
+			*equal_index = 0;
+			equal_index++;
 		}
+		if (!create_or_update_env(env, cmd->argv[i], equal_index, STATE_ENV))
+			return (1);
 	}
 	return (ret);
 }

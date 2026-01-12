@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 03:38:16 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 05:12:05 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 07:13:10 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	add_env_elem_in_list(t_env **list, t_env *elem)
 	cursor->next = elem;
 }
 
-t_env	*create_env_elem(char *key, char *value, int state)
+t_env	*create_env_elem(char *key, char *value, t_env_state state)
 {
 	t_env	*ret;
 
@@ -119,7 +119,7 @@ char **get_env_tab_from_list(t_env *env)
 	return (arr);
 }
 
-int	create_or_update_env(t_env **env, char *key, char *value, int state)
+int	create_or_update_env(t_env **env, char *key, char *value, t_env_state state)
 {
 	t_env	*elem;
 	char	*tmp_key;
@@ -137,6 +137,7 @@ int	create_or_update_env(t_env **env, char *key, char *value, int state)
 	{
 		if (elem->value)
 			free(elem->value);
+		elem->state = state;
 		elem->value = tmp_value;
 		return (TRUE);
 	}
@@ -151,7 +152,7 @@ int	create_or_update_env(t_env **env, char *key, char *value, int state)
 }
 
 
-int	create_env_from_string(t_env **env, char *string, int state)
+int	create_env_from_string(t_env **env, char *string, t_env_state state)
 {
 	t_env	*elem;
 	char	*equal_index;

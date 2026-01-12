@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 05:10:53 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 07:37:05 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,6 @@ struct s_env {
 
 struct s_data {
 	t_env		*env;
-	// char		**env;
-	// char		**set;
-	// size_t		env_size; // total size of env, not just it's content length
-	// size_t		set_size; // total size of env, not just it's content length
 	t_operator	**operators;
 	char		*line;
 	t_lexem		*head;
@@ -123,10 +119,10 @@ int				init_data(t_data *data);
 void			free_env(t_env *elem);
 void			free_env_list(t_env *list);
 void			add_env_elem_in_list(t_env **list, t_env *elem);
-t_env			*create_env_elem(char *key, char *value, int state);
+t_env			*create_env_elem(char *key, char *value, t_env_state state);
 t_env			*find_env_var(t_env *env, char *key);
-int				create_or_update_env(t_env **env, char *key, char *value, int state);
-int				create_env_from_string(t_env **env, char *string, int state);
+int				create_or_update_env(t_env **env, char *key, char *value, t_env_state state);
+int				create_env_from_string(t_env **env, char *string, t_env_state state);
 char			 **get_env_tab_from_list(t_env *env);
 
 // struct_operator.c
@@ -196,6 +192,7 @@ int				print_sys_error(char *msg);
 // print_bash.c
 int				print_syntax_error(char *token);
 int				print_matching_error(void);
+int				print_bash_exit_error(char *arg, char *msg);
 int				print_bash_cd_error(char *filename, char *msg);
 int				print_bash_export_error(char *arg);
 int				print_bash_error(char *msg);
@@ -214,34 +211,15 @@ int				exec_cmd(t_data *data, t_cmd *cmd, char **env, char **path);
 int				redir_out(t_redirection *red);
 int				redir_in(t_redirection *red);
 
-// // env_set_utils.c
-// char			*get_var(char **tab, char *var_name);
-// int				unset_key(char **tab, char *key);
-// int				set_var(char ***tab, size_t *tab_size, char *var);
-// int				set_key_value(char ***tab, size_t *tab_size, char *key,
-// 					char *value);
-
-// // env_utils.c
-// char			*get_env_var(t_data *data, char *var_name);
-// int				unset_env_key(t_data *data, char *key);
-// int				set_env_var(t_data *data, char *var);
-// int				set_env_key_value(t_data *data, char *key, char *value);
-
-// // set_utils.c
-// char			*get_set_var(t_data *data, char *var_name);
-// int				unset_set_key(t_data *data, char *key);
-// int				set_set_var(t_data *data, char *var);
-// int				set_set_key_value(t_data *data, char *key, char *value);
-
 // builtin
 int				exec_builtin(t_data *data, t_cmd *cmd, int flag);
 int				is_builtin(t_cmd *cmd);
-int				builtin_pwd(t_data *data);
-int				builtin_exit(t_data *data);
-int				builtin_cd(t_data *data, t_cmd *cmd);
+int				builtin_pwd(t_env *env);
+int				builtin_exit(t_data *data, t_cmd *cmd);
+int				builtin_cd(t_env **env, t_cmd *cmd);
 unsigned char	builtin_echo(t_cmd *cmd);
-// int				builtin_env(t_data *data);
-// int				builtin_unset(t_data *data, t_cmd *cmd);
-// int				builtin_export(t_data *data, t_cmd *cmd);
+int				builtin_env(t_env *env);
+int				builtin_unset(t_env *env, t_cmd *cmd);
+int				builtin_export(t_env **env, t_cmd *cmd);
 
 #endif

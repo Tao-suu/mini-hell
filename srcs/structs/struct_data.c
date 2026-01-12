@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 04:41:15 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/12 06:16:35 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ static int	init_env(t_env **env)
 		return (FALSE);
 	if (!init_env_pwd(env))
 		return (FALSE);
-	return (create_or_update_env(env, "?", "0", STATE_SET));
+	return (create_or_update_env(env, "?", "0", STATE_HIDDEN));
 }
 
 int	init_data(t_data *data)
