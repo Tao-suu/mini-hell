@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:12:34 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/12 07:20:58 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:38:05 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 		ret = builtin_export(&data->env, cmd);
 	else
 		ret = 1;
-	dup2(1, fd[1]);
-	dup2(0, fd[0]);
+	dup2(fd[1], 1);
+	dup2(fd[0], 0);
 	close(fd[0]);
 	close(fd[1]);
 	if (flag)

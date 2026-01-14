@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 06:16:35 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:07:10 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	init_data(t_data *data)
 	ft_memset((void *)data, 0, sizeof(t_data));
 	if (!init_env(&(data->env)))
 		return (FALSE);
-	print_debug_env(data->env);
+	//print_debug_env(data->env);
 	// if (!init_data_env(data) || !init_data_set(data))
 	// 	return (FALSE);
 	if (!create_operators_array(&(data->operators)))

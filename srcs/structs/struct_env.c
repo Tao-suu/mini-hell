@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 03:38:16 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 12:15:01 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:30:51 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ char **get_env_tab_from_list(t_env *env)
 	arr = ft_calloc(len + 1, sizeof(char *));
 	if (!arr)
 		return (NULL);
-	i = -1;
-	while (++i < len)
+	i = 0;
+	while (i < len)
 	{
 		if (!env->value || env->state != STATE_ENV)
 		{
@@ -119,6 +119,7 @@ char **get_env_tab_from_list(t_env *env)
 		ft_strlcat(arr[i], "=", line_len);
 		ft_strlcat(arr[i], env->value, line_len);
 		env = env->next;
+		i++;
 	}
 	return (arr);
 }
@@ -154,7 +155,6 @@ int	create_or_update_env(t_env **env, char *key, char *value, t_env_state state)
 	add_env_elem_in_list(env, elem);
 	return (TRUE);
 }
-
 
 int	create_env_from_string(t_env **env, char *string, t_env_state state)
 {

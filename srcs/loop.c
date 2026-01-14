@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/10 10:22:21 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:53:27 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	main_loop(t_data *data)
 			{
 				ign_signal();
 				exec_ast(data, data->ast);
-				add_history(data->line);
 				init_signal();
 			}
+			add_history(data->line);
 			free_data(data, FALSE);
 		}
 	}
