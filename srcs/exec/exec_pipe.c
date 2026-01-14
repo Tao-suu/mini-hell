@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/12 05:16:36 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 12:21:34 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 		}
 		cmd = cmd->next;
 	}
+	ft_tabclear(path);
+	ft_tabclear(env);
 	ret = wait_cmd_pid(cmds);
 	dup2(save_in, STDIN_FILENO);
 	close(save_in);

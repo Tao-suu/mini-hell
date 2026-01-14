@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 03:38:16 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 07:13:10 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 12:15:01 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ void	free_env(t_env *elem)
 {
 	if (!elem)
 		return ;
+	if (elem->key)
+		free(elem->key);
+	if (elem->value)
+		free(elem->value);
 	free(elem);
 }
 
