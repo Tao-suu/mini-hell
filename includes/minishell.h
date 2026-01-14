@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 07:37:05 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 12:54:35 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
-# include "libft.h"
 # include <sys/wait.h>
 # include <unistd.h>
+# include "libft.h"
 
 # define GRAMMAR_FILE		"grammar.txt"
 # define GRAMMAR_NB_FIELDS	6

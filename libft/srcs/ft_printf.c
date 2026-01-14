@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: picheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:39:29 by picheval          #+#    #+#             */
-/*   Updated: 2025/11/28 17:57:51 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:10:37 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,15 @@ static void	manage_printf(t_printf_env *e)
 
 int	ft_printf(const char *str, ...)
 {
-	t_printf_env	*e;
+	t_printf_env	e;
 	int				ret;
 
 	if (!str)
 		return (-1);
-	e = init_printf_env(str);
-	if (!e)
-		return (-1);
-	va_start(e->ap, str);
-	manage_printf(e);
-	ret = e->ret;
-	free_printf_env(e);
+	init_printf_env(&e, str);
+	va_start(e.ap, str);
+	manage_printf(&e);
+	ret = e.ret;
+	free_printf_env(&e);
 	return (ret);
 }

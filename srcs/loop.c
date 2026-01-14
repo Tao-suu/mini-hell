@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 14:53:27 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:25:21 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	main_loop(t_data *data)
 		//	printf("\n");
 		//}
 		data->line = readline("$> ");
+		//data->line = NULL;
 		if (!data->line)
 			break ;
 		if (!is_balanced(data->line))

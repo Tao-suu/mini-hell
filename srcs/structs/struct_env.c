@@ -6,10 +6,9 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 03:38:16 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 14:30:51 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:25:11 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -148,10 +147,19 @@ int	create_or_update_env(t_env **env, char *key, char *value, t_env_state state)
 	}
 	tmp_key = ft_strdup(key);
 	if (!tmp_key)
+	{
+		if (tmp_value)
+			free(tmp_value);
 		return (print_sys_error("ft_strdup"));
+	}
 	elem = create_env_elem(tmp_key, tmp_value, state);
 	if (!elem)
+	{
+		free(tmp_key);
+		if (tmp_value)
+			free(tmp_value);
 		return (print_sys_error("create_env_elem"));
+	}
 	add_env_elem_in_list(env, elem);
 	return (TRUE);
 }
@@ -169,12 +177,21 @@ int	create_env_from_string(t_env **env, char *string, t_env_state state)
 	if (equal_index == string)
 		return (print_error("'=' at the begining of environ variable"));
 	key = ft_substr(string, 0, equal_index - string);
+	if (!key)
+		return (print_sys_error("ft_substr key"));
 	value = ft_substr(equal_index + 1, 0, ft_strlen(equal_index + 1));
-	if (!key || !value)
-		return (print_sys_error("ft_substr"));
+	if (!value)
+	{
+		free(key);
+		return (print_sys_error("ft_substr value"));
+	}
 	elem = create_env_elem(key, value, state);
 	if (!elem)
+	{
+		free(key);
+		free(value);
 		return (print_sys_error("create_env_elem"));
+	}
 	add_env_elem_in_list(env, elem);
 	return (TRUE);
 }

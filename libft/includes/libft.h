@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:48:44 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/08 17:17:19 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:10:03 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int				add_number_prefix(t_printf_param p, size_t size, char sign);
 int				add_number_suffix(t_printf_param p, size_t size);
 int				add_padding(t_printf_param p, size_t size, char before);
 void			free_printf_env(t_printf_env *e);
-t_printf_env	*init_printf_env(const char *str);
+void			init_printf_env(t_printf_env *e, const char *str);
 
 char			*get_next_line(int c, int purge);
 int				remove_file(t_file **files, t_file *file);
