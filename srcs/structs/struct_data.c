@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 13:07:10 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:04:11 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,16 @@ static int	init_env_shlvl(t_env **env)
 	elem->value = tmp;
 	return (TRUE);
 }
-static int	init_env_pwd(t_env **env)
+
+static int	init_env_pwd_path(t_env **env)
 {
 	char	buff[5000];
 
 	if (!find_env_var(*env, "PWD") && !create_or_update_env(env, "PWD", getcwd(buff, 1000), STATE_ENV))
 		return (FALSE);
 	if (!find_env_var(*env, "OLDPWD") && !create_or_update_env(env, "OLDPWD", NULL, STATE_ENV))
+		return (FALSE);
+	if (!find_env_var(*env, "PATH") && !create_or_update_env(env, "PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", STATE_SET))
 		return (FALSE);
 	return (TRUE);
 }
@@ -125,7 +128,7 @@ static int	init_env(t_env **env)
 	}
 	if (!init_env_shlvl(env))
 		return (FALSE);
-	if (!init_env_pwd(env))
+	if (!init_env_pwd_path(env))
 		return (FALSE);
 	return (create_or_update_env(env, "?", "0", STATE_HIDDEN));
 }

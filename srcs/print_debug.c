@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:40:45 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 04:10:50 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:09:21 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void	print_ast(t_ast *ast, int lvl)
 {
 	t_cmd	*cursor;
 
-	if (ft_strcmp(ast->node_type, "cmd"))
+	if (ast->node_type != NODE_TYPE_CMD)
 	{
 		print_ast(ast->left, lvl + 1);
 		print_tabs(lvl);
 		print_color(lvl);
-		ft_printf("%s%s\n", ast->node_type, CLR_RESET);
+		ft_printf("%s%s\n", (ast->node_type == NODE_TYPE_AND ? "&&" : "||"), CLR_RESET);
 		print_ast(ast->right, lvl + 1);
 		return ;
 	}

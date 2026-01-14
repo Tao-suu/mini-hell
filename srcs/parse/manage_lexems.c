@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:31:41 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 02:26:26 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:01:08 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ int	manage_lexems(t_data *data)
 	}
 	if (elem_prev && !check_if_elem_can_be_last(elem_prev))
 		return (FALSE);
-	// If some opened parenthesis are not closed
-	// TODO: better error message ?
 	if (lvl != 0)
-		return (print_matching_error());
-		// return (print_bash_error("unclosed parenthesis"));
+		return (print_matching_error(')'));
 	return (TRUE);
 }

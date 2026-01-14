@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 03:38:16 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 16:25:11 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:07:15 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	get_env_size(t_env *env, t_env_state state)
 	i = 0;
 	while (env)
 	{
-		if (env->state <= state)
+		if (env->value && env->state <= state)
 			i++;
 		env = env->next;		
 	}

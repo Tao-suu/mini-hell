@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:45:34 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/12 08:19:34 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:53:37 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static int	manage_cmd_redir(t_cmd *cmd, t_lexem **start, t_lexem *end)
 		&& ft_strcmp((*start)->type->name, "APPEND")
 		&& ft_strcmp((*start)->type->name, "HEREDOC"))
 		return (TRUE);
+	// If suivant inutile ? (pas reussi a le declencher)
+	// En theorie il est deja gere par le parser
 	if (!(*start)->next || (*start)->next == end
 		|| ft_strcmp((*start)->next->type->name, "file"))
 		return (print_error("cmd_redir: no file"));
@@ -99,16 +101,15 @@ static int	create_ast_recurse(t_ast **root, t_lexem *start, t_lexem *end,
 	sep = find_first_operator_in_level(start, end, level);
 	if (sep)
 	{
-		new_elem->node_type = ft_strdup(sep->type->value);
-		if (!new_elem->node_type)
-			return (print_sys_error("ft_strdup"));
+		if (!ft_strcmp(sep->type->name, "AND"))
+			new_elem->node_type = NODE_TYPE_AND;
+		else
+			new_elem->node_type = NODE_TYPE_OR;
 		if (!create_ast_recurse(&(new_elem->left), start, sep, level))
 			return (FALSE);
 		return (create_ast_recurse(&(new_elem->right), sep->next, end, level));
 	}
-	new_elem->node_type = ft_strdup("cmd");
-	if (!new_elem->node_type)
-		return (print_sys_error("ft_strdup"));
+	new_elem->node_type = NODE_TYPE_CMD;
 	return (create_cmd_pipeline(&(new_elem)->cmds, start, end));
 }
 

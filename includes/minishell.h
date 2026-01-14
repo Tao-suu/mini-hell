@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 12:54:35 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:00:38 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@
 # define OP_END				"END"
 
 # define TAB_EXTRA_SPACE	2
+
+# define NODE_TYPE_CMD		0
+# define NODE_TYPE_AND		1
+# define NODE_TYPE_OR		2
 
 # define CLR_RED			"\x1b[31m"
 # define CLR_GREEN			"\x1b[32m"
@@ -67,7 +71,7 @@ struct s_lexem {
 };
 
 struct s_ast {
-	char	*node_type;
+	char	node_type;
 	t_cmd	*cmds;
 	t_ast	*right;
 	t_ast	*left;
@@ -191,11 +195,12 @@ int				print_sys_error(char *msg);
 
 // print_bash.c
 int				print_syntax_error(char *token);
-int				print_matching_error(void);
+int				print_matching_error(char c);
+int				print_bash_cmd_error(char *cmd, char *filename, char *msg);
+int				print_bash_error(char *msg);
 int				print_bash_exit_error(char *arg, char *msg);
 int				print_bash_cd_error(char *filename, char *msg);
 int				print_bash_export_error(char *arg);
-int				print_bash_error(char *msg);
 
 // print_debug.c
 void			print_tabs(int nb_tabs);

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:12:34 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/14 14:38:05 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/14 22:03:57 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 
 int	is_builtin(t_cmd *cmd)
 {
+	if (!cmd->argv)
+		return (0);
 	if (!ft_strcmp(cmd->argv[0], "pwd"))
 		return (1);
 	if (!ft_strcmp(cmd->argv[0], "env"))

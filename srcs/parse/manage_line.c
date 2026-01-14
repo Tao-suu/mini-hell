@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:35:28 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 02:59:38 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:01:00 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,7 @@ static int	skip_quoted_area(char *line, int *i, char c)
 	while (line[j] && line[j] != c)
 		j++;
 	if (!line[j])
-	{
-		// TODO: better error message ?
-		ft_printf("Error: Unclosed '%c', opened at %d\n", c, *i);
-		return (FALSE);
-	}
+		return (print_matching_error(c));
 	*i = j;
 	return (TRUE);
 }

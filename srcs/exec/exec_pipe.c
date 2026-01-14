@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/14 12:21:34 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:07:46 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 		return (exec_builtin(data, cmd, 0));
 	path = get_path(data->env);
 	env = get_env_tab_from_list(data->env);
+	if (!env)
+		return (print_sys_error("get_env_tab_from_list"));
 	save_in = dup(STDIN_FILENO);
 	while (cmd)
 	{
@@ -88,7 +90,8 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 		}
 		cmd = cmd->next;
 	}
-	ft_tabclear(path);
+	if (path)
+		ft_tabclear(path);
 	ft_tabclear(env);
 	ret = wait_cmd_pid(cmds);
 	dup2(save_in, STDIN_FILENO);

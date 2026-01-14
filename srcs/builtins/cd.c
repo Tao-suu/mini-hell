@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 10:42:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/12 07:19:46 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/14 21:19:25 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static int builtin_cd_other(t_env **env, t_cmd *cmd)
 		return (0);
 	if (chdir(cmd->argv[1]) < 0)
 		return (print_bash_cd_error(cmd->argv[1], NULL));
-	getcwd(buffer, 5000);
+	if (!getcwd(buffer, 5000))
+		return (print_bash_cd_error(cmd->argv[1], NULL));
 	create_or_update_env(env, "PWD", buffer, STATE_ENV);
 	return (0);
 }
