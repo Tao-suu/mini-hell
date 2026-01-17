@@ -6,22 +6,41 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 10:42:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/14 21:19:25 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/17 21:59:22 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int builtin_cd_join_home_path(t_cmd *cmd, char *home)
+{
+	char	*new;
+
+	new = NULL;
+	if (cmd->argv[1] && cmd->argv[1][0] == '~' && cmd->argv[1][1])
+	{
+		new = ft_strjoin(home, &cmd->argv[1][1]);
+		if (!new)
+			return (1);
+		free(cmd->argv[1]);
+		cmd->argv[1] = new;
+		return (0);
+	}
+	else
+		return (0);
+}
+
 static int builtin_cd_home(t_env **env, t_cmd *cmd)
 {
 	t_env	*home_var;
 
-	if (cmd->argv[1] && ft_strcmp(cmd->argv[1], "~"))
+	if (cmd->argv[1] && ft_strncmp(cmd->argv[1], "~", 1))
 		return (0);
-	// TODO : "cd ~" works even if HOME doesn't exist ... how ????
 	home_var = find_env_var(*env, "HOME");
 	if (!home_var || !home_var->value)
 		return (print_bash_cd_error(NULL, "HOME not set"));
+	if (builtin_cd_join_home_path(cmd, home_var->value))
+		return (1);
 	if (chdir(home_var->value) < 0)
 		return (print_bash_cd_error(home_var->value, NULL));
 	create_or_update_env(env, "PWD", home_var->value, STATE_ENV);
