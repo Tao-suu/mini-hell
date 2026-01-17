@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:45:34 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 18:53:37 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/17 12:00:15 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,7 @@ static int	manage_cmd_redir(t_cmd *cmd, t_lexem **start, t_lexem *end)
 	tmp = create_redirection_elem((*start)->type, (*start)->next->value);
 	if (!tmp)
 		return (FALSE);
-	if (!ft_strcmp((*start)->type->name, "OUT")
-		|| !ft_strcmp((*start)->type->name, "APPEND"))
-		add_redirection_in_list(&(cmd->out), tmp);
-	else
-		add_redirection_in_list(&(cmd->in), tmp);
+	add_redirection_in_list(&(cmd->redir), tmp);
 	*start = (*start)->next;
 	return (TRUE);
 }

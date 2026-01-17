@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:40:45 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 19:09:21 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/17 12:13:59 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,12 @@ void	print_cmd(t_cmd *cmd, int lvl)
 	else
 		ft_printf("NO CMD");
 	ft_printf(" / ");
-	cursor = cmd->in;
+	cursor = cmd->redir;
 	if (!cursor)
-		ft_printf("NO REDIR IN");
+		ft_printf("NO REDIR");
 	while (cursor)
 	{
-		ft_printf("%s%s(%s)", (cursor == cmd->in ? "" : " "), cursor->name, cursor->operator->name);
-		cursor = cursor->next;
-	}
-	ft_printf(" / ");
-	cursor = cmd->out;
-	if (!cursor)
-		ft_printf("NO REDIR OUT");
-	while (cursor)
-	{
-		ft_printf("%s%s(%s)", (cursor == cmd->out ? "" : " "), cursor->name, cursor->operator->name);
+		ft_printf("%s%s(%s)", (cursor == cmd->redir ? "" : " "), cursor->name, cursor->operator->name);
 		cursor = cursor->next;
 	}
 	ft_printf("%s\n", CLR_RESET);

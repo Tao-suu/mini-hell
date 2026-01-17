@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 21:40:47 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/05 15:31:56 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/17 12:11:42 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,8 @@ void	free_cmd(t_cmd *elem)
 		ft_tabclear(elem->argv);
 	if (elem->ast)
 		free_ast_tree(elem->ast);
-	if (elem->in)
-		free_redirection_list(elem->in);
-	if (elem->out)
-		free_redirection_list(elem->out);
+	if (elem->redir)
+		free_redirection_list(elem->redir);
 	free(elem);
 }
 

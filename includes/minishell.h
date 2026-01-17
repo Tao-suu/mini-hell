@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 19:00:38 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/17 12:12:38 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,7 @@ struct s_cmd {
 	int				pid;
 	t_ast			*ast;
 	t_cmd			*next;
-	t_redirection	*in;
-	t_redirection	*out;
+	t_redirection	*redir;
 };
 
 enum e_env_state {
@@ -212,9 +211,8 @@ void			print_debug_env(t_env *env);
 // exec/*.c
 int				exec_pipe(t_data *data, t_cmd *cmds);
 int				exec_ast(t_data *data, t_ast *ast);
-int				exec_cmd(t_data *data, t_cmd *cmd, char **env, char **path);
-int				redir_out(t_redirection *red);
-int				redir_in(t_redirection *red);
+void			exec_cmd(t_data *data, t_cmd *cmd);
+int				manage_redirections(t_redirection *red);
 
 // builtin
 int				exec_builtin(t_data *data, t_cmd *cmd, int flag);
