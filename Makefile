@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/14 12:56:31 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/17 13:13:48 by tbez--du         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRCS_RAW			= main.c \
 					  $(EXEC_DIR)exec_cmd.c \
 					  $(EXEC_DIR)exec_pipe.c \
 					  $(EXEC_DIR)exec_ast.c \
+					  $(EXEC_DIR)expand.c \
 					  $(BUILTIN_DIR)exec_builtin.c \
  					  $(BUILTIN_DIR)pwd.c \
  					  $(BUILTIN_DIR)exit.c \
