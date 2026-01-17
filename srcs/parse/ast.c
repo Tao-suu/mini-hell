@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:45:34 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/17 12:00:15 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/17 14:54:04 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static int	create_cmd_pipeline(t_cmd **list, t_lexem *start, t_lexem *end)
 {
 	t_cmd	*cmd;
 	size_t	nb_argv;
-	int		i_argv;
 
 	while (start && start != end)
 	{
@@ -65,12 +64,11 @@ static int	create_cmd_pipeline(t_cmd **list, t_lexem *start, t_lexem *end)
 		if (!cmd)
 			return (FALSE);
 		add_cmd_elem_in_list(list, cmd);
-		i_argv = -1;
 		while (start && start != end && ft_strcmp(start->type->name, "PIPE"))
 		{
 			if (!ft_strcmp(start->type->name, "cmd")
 				|| !ft_strcmp(start->type->name, "param"))
-				cmd->argv[++i_argv] = ft_strdup(start->value);
+				cmd->argv[cmd->argc++] = ft_strdup(start->value);
 			else if (!manage_cmd_redir(cmd, &start, end))
 				return (FALSE);
 			else if (!manage_parenthesis(&(cmd->ast), &start, end))

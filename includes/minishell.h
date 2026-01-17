@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/17 13:13:19 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/17 14:53:39 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ struct s_redirection {
 
 struct s_cmd {
 	char			*path;
+	int				argc;
 	char			**argv;
 	int				pid;
 	t_ast			*ast;
