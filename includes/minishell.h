@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/20 21:10:09 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/20 22:00:27 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,11 @@ t_redirection	*create_redirection_elem(t_operator *operator, char *name);
 // struct_ast.c
 t_ast			*create_ast_elem(void);
 void			free_ast_tree(t_ast *ast);
+
+// struct_list_utils.c
+char			**create_tab_from_lst(t_list *lst);
+int				create_lst_empty(t_list **lst);
+int				lst_add_or_join_back(t_list **lst, char *value);
 
 // init_operators.c
 int				create_operators_array(t_operator ***tab);

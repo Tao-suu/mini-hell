@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 03:38:16 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 18:07:15 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:10:26 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,11 @@ int	create_or_update_env(t_env **env, char *key, char *value, t_env_state state)
 	tmp_value = NULL;
 	if (value)
 	{
-		tmp_value = ft_strdup(value);
+		// TODO: degager quand expand OK
+		if (value[0] == '"' && value[ft_strlen(value) - 1] == '"')
+			tmp_value = ft_substr(value, 1, ft_strlen(value) - 2);
+		else
+			tmp_value = ft_strdup(value);
 		if (!tmp_value)
 			return (print_sys_error("ft_strdup"));
 	}

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:12:34 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/17 12:11:14 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/19 18:57:05 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 
 	if (!ft_strcmp(cmd->argv[0], "exit"))
 		builtin_exit(data, cmd);
-	fd[0] = dup(0);
-	fd[1] = dup(1);
 	if (!manage_redirections(cmd->redir))
 		return (1);
+		
+	fd[0] = dup(0);
+	fd[1] = dup(1);
 
 	if (!ft_strcmp(cmd->argv[0], "pwd"))
 		ret = builtin_pwd(data->env);
@@ -52,7 +53,7 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 
 int	is_builtin(t_cmd *cmd)
 {
-	if (!cmd->argv)
+	if (!cmd->argv || !cmd->argv[0])
 		return (0);
 	if (!ft_strcmp(cmd->argv[0], "pwd"))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 12:46:22 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/12 06:55:50 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:30:41 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	export_valid_arg(char *arg)
 
 	if (!ft_isalpha(arg[0]) && arg[0] != '_')
 		return (FALSE);
-	i = 0;
+	i = 1;
 	while (arg[i] && arg[i] != '=')
 	{
 		if (!ft_isalnum(arg[i]) && arg[i] != '_')

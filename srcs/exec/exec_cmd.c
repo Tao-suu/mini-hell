@@ -6,37 +6,11 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/20 21:49:28 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/20 22:01:24 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// char	*get_cmd_path(char **path, char *cmd)
-// {
-// 	char	*ret;
-// 	size_t	len;
-
-// 	if (!cmd)
-// 		return (ft_strdup(""));
-// 	if ((!path || !path[0]) && access(cmd, X_OK) >= 0)
-// 		return (ft_strdup(cmd));
-// 	while (path && *path)
-// 	{
-// 		len = ft_strlen(cmd) + ft_strlen(*path) + 2;
-// 		ret = (char *)ft_calloc(len, sizeof(char));
-// 		if (!ret)
-// 			return (NULL);
-// 		ft_strlcpy(ret, *path, len);
-// 		ft_strlcat(ret, "/", len);
-// 		ft_strlcat(ret, cmd, len);
-// 		if (access(ret, X_OK) >= 0)
-// 			return (ret);
-// 		free(ret);
-// 		path++;
-// 	}
-// 	return (ft_strdup(cmd));
-// }
 
 static int	test_cmd_paths(char **path, char *cmd_name, char **cmd_path)
 {
@@ -44,7 +18,7 @@ static int	test_cmd_paths(char **path, char *cmd_name, char **cmd_path)
 	int		i;
 
 	i = -1;
-	while (path && path[++i])
+	while (*cmd_name && path && path[++i])
 	{
 		size = ft_strlen(cmd_name) + ft_strlen(path[i]) + 2;
 		*cmd_path = (char *)ft_calloc(size, sizeof(char));
@@ -65,7 +39,7 @@ static int	create_cmd_path(char **path, char *cmd_name, char **cmd_path, int *ex
 {
 	int		ret;
 
-	if (cmd_name[0] == '/' || !ft_strncmp(cmd_name, "./", 2))
+	if (ft_strchr(cmd_name, '/'))
 	{
 		if (access(cmd_name, F_OK) < 0)
 		{
