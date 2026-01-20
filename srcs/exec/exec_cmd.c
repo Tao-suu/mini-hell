@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/20 22:01:24 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/20 22:22:46 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,6 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 			print_sys_error("get_env_tab_from_list");
 		else
 		{
-			dprintf(2, "here\n");
 			execve(cmd->path, cmd->argv, env);
 			perror(NULL);
 			ft_tabclear(env);

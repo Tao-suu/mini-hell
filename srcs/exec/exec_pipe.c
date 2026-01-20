@@ -6,13 +6,13 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/19 18:55:36 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/20 22:21:54 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	wait_cmd_pid(t_cmd *cmd)
+static int	wait_cmd_pid(t_cmd *cmd, t_env **env)
 {
 	int	ret;
 
@@ -27,6 +27,7 @@ static int	wait_cmd_pid(t_cmd *cmd)
 		code = WEXITSTATUS(ret);
 	else if (WIFSIGNALED(ret))
 		code = WTERMSIG(ret);
+	create_or_update_env(env, "?", ft_itoa(code), STATE_SET);
 	return (code);
 }
 
@@ -75,7 +76,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 		}
 		cmd = cmd->next;
 	}
-	ret = wait_cmd_pid(cmds);
+	ret = wait_cmd_pid(cmds, &data->env);
 	dup2(save_in, STDIN_FILENO);
 	close(save_in);
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/20 20:51:56 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/20 22:12:08 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	count_var_key_size(char *arg)
 	int size;
 	
 	size = 0;
+	if (arg[0] == '?')
+		return (1);
 	if (!ft_isalpha(arg[size]) && arg[size] != '_')
 		return (size);
 	size++;
