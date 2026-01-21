@@ -14,7 +14,8 @@
 
 static int	wait_cmd_pid(t_cmd *cmd, t_env **env)
 {
-	int	ret;
+	int		ret;
+	char 	*ret2;
 
 	while (cmd->next)
 	{
@@ -27,7 +28,9 @@ static int	wait_cmd_pid(t_cmd *cmd, t_env **env)
 		code = WEXITSTATUS(ret);
 	else if (WIFSIGNALED(ret))
 		code = WTERMSIG(ret);
-	create_or_update_env(env, "?", ft_itoa(code), STATE_SET);
+	ret2 = ft_itoa(code);
+	create_or_update_env(env, "?", ret2, STATE_SET);
+	free(ret2);
 	return (code);
 }
 

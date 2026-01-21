@@ -18,7 +18,7 @@ int	builtin_pwd(t_env *env)
 	char	buffer[5000];
 
 	if (!getcwd(buffer, 5000))
-		return (print_bash_cmd_error(NULL, "pwd: error retrieving current directory: getcwd: cannot access parent directories", NULL));
+		return (print_bash_cmd_error(NULL, "pwd: error retrieving current directory: getcwd: cannot access parent directories", NULL) + 1);
 	printf("%s\n", buffer);
 	return (FALSE);
 }

@@ -46,5 +46,5 @@ void	main_loop(t_data *data)
 			free_data(data, FALSE);
 		}
 	}
-	ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("exit\n", 1);
 }

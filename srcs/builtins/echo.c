@@ -32,6 +32,7 @@ unsigned char	builtin_echo(t_cmd *cmd)
 {
 	int	i;
 	int	flag;
+	int	j;
 
 	i = 1;
 	flag = 0;
@@ -42,16 +43,21 @@ unsigned char	builtin_echo(t_cmd *cmd)
 	}
 	while (cmd->argv[i])
 	{
-		if (printf("%s", cmd->argv[i]) < 0)
-		{
-			perror("");
-			return (1);
+		j = 0;
+		while (cmd->argv[i][j])
+		{	
+			if (write(1, &cmd->argv[i][j], 1) < 0)
+			{
+				perror("");
+				return (1);
+			}
+			j++;
 		}
 		if (cmd->argv[i + 1])
-			printf(" ");
+			write(1, " ", 1);
 		i++;
 	}
-	if (!flag && printf("\n") < 0)
+	if (!flag && write(1, "\n", 1) < 0)
 	{
 		perror("");
 		return (1);
