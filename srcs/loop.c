@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 08:30:23 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 11:27:36 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	main_loop(t_data *data)
 		{
 			printf("quit (core dumped)\n");
 		}
-		data->line = readline("$> ");
+		data->line = readline("blop $> ");
 		//data->line = NULL;
 		if (!data->line)
 			break ;
