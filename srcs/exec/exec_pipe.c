@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 08:28:20 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 11:18:03 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,18 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 	int		ret;
 
 	if (cmds->ast)
-		return (exec_ast(data, cmds->ast));
+	{
+		int toto = fork();
+		if (toto == 0)
+		{
+			manage_redirections(cmds->redir);
+			ret = exec_ast(data, cmds->ast);
+			free_data(data, TRUE);
+			exit(ret);
+		}
+		waitpid(toto, &ret, 0);
+		return (ret);
+	}
 	cmd = cmds;
 	if (!expand_pipe(data, cmd))
 		return (FALSE);
