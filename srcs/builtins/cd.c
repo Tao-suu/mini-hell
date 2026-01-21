@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 10:42:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 05:33:07 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:40:58 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,9 @@ int	builtin_cd(t_env **env, t_cmd *cmd)
 		return (print_bash_cd_error(NULL, "too many arguments"));
 	pwd_var = find_env_var(*env, "PWD");
 	if (!pwd_var || !pwd_var->value)
-	{
-		print_error("Aie PWD");
-		return (1);
-	}
-	pwd_var_tmp = ft_strdup(pwd_var->value);
+		pwd_var_tmp = ft_strdup("");
+	else
+		pwd_var_tmp = ft_strdup(pwd_var->value);
 	if (!pwd_var_tmp)
 		return (print_sys_error("ft_strdup") + 1);
 	if (builtin_cd_home(env, cmd) || builtin_cd_old(env, cmd)

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 05:45:47 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:42:41 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,10 +136,10 @@ int	manage_redirections(t_redirection *redir)
 
 	while (redir)
 	{
-		if (!ft_strcmp(redir->operator->value, ">"))
-			fd = open(redir->name, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-		else if (!ft_strcmp(redir->operator->value, ">>"))
+		if (!ft_strcmp(redir->operator->value, ">>"))
 			fd = open(redir->name, O_CREAT | O_APPEND | O_WRONLY, 0644);
+		else if (!ft_strcmp(redir->operator->value, ">"))
+			fd = open(redir->name, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 		else if (!ft_strcmp(redir->operator->value, "<<"))
 			// TODO: gerer le delimiter de <<
 			fd = open(redir->name, O_RDONLY);

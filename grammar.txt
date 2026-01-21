@@ -1,19 +1,20 @@
 # Lexer grammar file
-# id;name;value;lvl_up;before;after
+# id,name,value,lvl_up,before,after
 # Always add the longest value before the shortest (eg: << before <)
 # Always keep "cmd" as first operator
 # TODO ? Are START and END rules really useful ?
-0;cmd;NULL;0;file|AND|OR|PIPE|PO|START;param|AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PO|PC|END
-1;param;NULL;0;cmd|param;param|AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PC|END
-2;file;NULL;0;HEREDOC|APPEND|IN|OUT;cmd|AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PO|PC|END
-3;AND;&&;0;cmd|file|param|PC;cmd|HEREDOC|APPEND|IN|OUT|PO
-4;OR;||;0;cmd|file|param|PC;cmd|HEREDOC|APPEND|IN|OUT|PO
-5;PIPE;|;0;cmd|file|param|PC;cmd|HEREDOC|APPEND|IN|OUT|PO
-6;HEREDOC;<<;0;cmd|file|param|AND|OR|PIPE|PO|PC|START;file
-7;APPEND;>>;0;cmd|file|param|AND|OR|PIPE|PO|PC|START;file
-8;IN;<;0;cmd|file|param|AND|OR|PIPE|PO|PC|START;file
-9;OUT;>;0;cmd|file|param|AND|OR|PIPE|PO|PC|START;file
-10;PO;(;1;cmd|AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PO|START;cmd|HEREDOC|APPEND|IN|OUT|PO
-11;PC;);-1;cmd|file|param|PC;AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PC|END
-12;START;NULL;0;NULL;cmd|HEREDOC|APPEND|IN|OUT|PO|END
-13;END;NULL;0;cmd|file|param|PC|START;NULL
+0,cmd,NULL,0,file|AND|OR|PIPE|PO|START,param|AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PO|PC|END
+1,param,NULL,0,cmd|param,param|AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PC|END
+2,file,NULL,0,HEREDOC|APPEND|IN|OUT,cmd|AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PO|PC|END
+3,AND,&&,0,cmd|file|param|PC,cmd|HEREDOC|APPEND|IN|OUT|PO
+4,OR,||,0,cmd|file|param|PC,cmd|HEREDOC|APPEND|IN|OUT|PO
+5,PIPE,|,0,cmd|file|param|PC,cmd|HEREDOC|APPEND|IN|OUT|PO
+6,HEREDOC,<<,0,cmd|file|param|AND|OR|PIPE|PO|PC|START,file
+7,APPEND,>>,0,cmd|file|param|AND|OR|PIPE|PO|PC|START,file
+8,IN,<,0,cmd|file|param|AND|OR|PIPE|PO|PC|START,file
+9,OUT,>,0,cmd|file|param|AND|OR|PIPE|PO|PC|START,file
+10,PO,(,1,cmd|AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PO|START,cmd|HEREDOC|APPEND|IN|OUT|PO
+11,PC,),-1,cmd|file|param|PC,AND|OR|PIPE|HEREDOC|APPEND|IN|OUT|PC|END
+12,START,NULL,0,NULL,cmd|HEREDOC|APPEND|IN|OUT|PO|END
+13,END,NULL,0,cmd|file|param|PC|START,NULL
+14,SEMI,;,0,NULL,NULL

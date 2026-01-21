@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 01:32:33 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:40:27 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 # define GRAMMAR_FILE		"grammar.txt"
 # define GRAMMAR_NB_FIELDS	6
-# define GRAMMAR_FIELD_SEP	';'
+# define GRAMMAR_FIELD_SEP	','
 # define GRAMMAR_DEP_SEP	'|'
 # define GRAMMAR_NULL		"NULL"
 
@@ -190,7 +190,7 @@ void			main_loop(t_data *data);
 int				create_ast(t_data *data);
 
 // ast_utlis.c
-t_lexem			*find_first_operator_in_level(t_lexem *start, t_lexem *end,
+t_lexem			*find_last_operator_in_level(t_lexem *start, t_lexem *end,
 					int level);
 void			skip_parenthesis(t_lexem **start, t_lexem *end);
 size_t			compute_nb_params(t_lexem *start, t_lexem *end);
@@ -216,6 +216,7 @@ void			print_operators(t_operator **tab);
 void			print_debug_env(t_env *env);
 
 // exec/*.c
+int				set_exit_code(t_env **env, int code);
 int				exec_pipe(t_data *data, t_cmd *cmds);
 int				exec_ast(t_data *data, t_ast *ast);
 void			exec_cmd(t_data *data, t_cmd *cmd);

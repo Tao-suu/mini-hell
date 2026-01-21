@@ -6,24 +6,27 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 02:54:51 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 02:56:13 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 05:20:43 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_lexem	*find_first_operator_in_level(t_lexem *start, t_lexem *end,
+t_lexem	*find_last_operator_in_level(t_lexem *start, t_lexem *end,
 		int level)
 {
+	t_lexem	*ret;
+
+	ret = NULL;
 	while (start && start != end)
 	{
 		if ((!ft_strcmp(start->type->name, "AND")
 				|| !ft_strcmp(start->type->name, "OR"))
 			&& (start->lvl == level))
-			return (start);
+			ret = start;
 		start = start->next;
 	}
-	return (NULL);
+	return (ret);
 }
 
 void	skip_parenthesis(t_lexem **start, t_lexem *end)

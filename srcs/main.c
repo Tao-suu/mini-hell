@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 13:51:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 12:54:43 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 02:41:43 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ int	main(void)
 
 	init_signal();
 	if (!init_data(&data))
+	{
+		free_data(&data, TRUE);
 		return (1);
+	}
 	main_loop(&data);
 
 

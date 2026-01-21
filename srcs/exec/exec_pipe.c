@@ -6,11 +6,24 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 05:46:57 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:42:52 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	set_exit_code(t_env **env, int code)
+{
+	char	*value;
+	int		ret;
+
+	value = ft_itoa(code);
+	if (!value)
+		return (print_sys_error("ft_itoa"));
+	ret = create_or_update_env(env, "?", value, STATE_HIDDEN);
+	free(value);
+	return (ret);
+}
 
 static int	wait_cmd_pid(t_cmd *cmd, t_env **env)
 {
@@ -28,7 +41,7 @@ static int	wait_cmd_pid(t_cmd *cmd, t_env **env)
 		code = WEXITSTATUS(ret);
 	else if (WIFSIGNALED(ret))
 		code = WTERMSIG(ret);
-	create_or_update_env(env, "?", ft_itoa(code), STATE_SET);
+	set_exit_code(env, code);
 	return (code);
 }
 

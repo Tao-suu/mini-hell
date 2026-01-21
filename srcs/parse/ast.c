@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:45:34 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/17 14:54:04 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 05:21:35 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static int	create_ast_recurse(t_ast **root, t_lexem *start, t_lexem *end,
 	if (!new_elem)
 		return (FALSE);
 	*root = new_elem;
-	sep = find_first_operator_in_level(start, end, level);
+	sep = find_last_operator_in_level(start, end, level);
 	if (sep)
 	{
 		if (!ft_strcmp(sep->type->name, "AND"))

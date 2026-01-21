@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:31:41 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 19:01:08 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 02:46:43 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	check_if_elem_can_be_after_prev(t_lexem *elem)
 	if (elem->prev)
 		op_name = elem->prev->type->name;
 	if (!elem->type->before)
-		return (print_error("Manage lexem: No before in elem"));
+		return (print_syntax_error(elem->value));
 	if (!(find_operator_by_name(elem->type->before, op_name)))
 		return (print_syntax_error(elem->value));
 	return (TRUE);
@@ -29,7 +29,7 @@ static int	check_if_elem_can_be_after_prev(t_lexem *elem)
 static int	check_if_elem_can_be_last(t_lexem *elem)
 {
 	if (!elem->type->after)
-		return (print_error("Manage lexem: No after in elem"));
+		return (print_syntax_error("newline"));
 	if (!(find_operator_by_name(elem->type->after, OP_END)))
 		return (print_syntax_error("newline"));
 	return (TRUE);

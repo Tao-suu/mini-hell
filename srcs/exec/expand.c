@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/20 22:12:08 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 01:40:34 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ static int	expand_cmd(t_data *data, t_cmd *cmd)
 
 	i = 0;
 	lst = NULL;
-	while (cmd->argv[i])
+	while (cmd->argv && cmd->argv[i])
 	{
 		if (!create_lst_empty(&lst) || !expand_token(data, &lst, cmd->argv[i]))
 		{
@@ -272,7 +272,8 @@ static int	expand_cmd(t_data *data, t_cmd *cmd)
 		ft_lstclear(&lst, free);
 		return (print_sys_error("create_tab_from_lst"));
 	}
-	ft_tabclear(cmd->argv);
+	if (cmd->argv)
+		ft_tabclear(cmd->argv);
 	cmd->argv = argv;
 	// ft_putchar('\n');
 	// ft_tabprint(cmd->argv);
