@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/21 03:25:14 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/21 11:09:19 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,7 +103,7 @@ libft:
 valgrind: re
 	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes \
 		--track-fds=yes \
-		--trace-children-skip="*ls","*cat","*grep" \
+		--trace-children-skip="*ls","*cat","*grep","*clear" \
 		--suppressions=valgrind_filter.supp ./$(NAME)
 
 .PHONY: all re clean fclean libft valgrind

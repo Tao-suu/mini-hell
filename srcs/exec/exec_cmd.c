@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 08:14:36 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 09:47:40 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,10 @@ static int	redir_is_last(t_redirection *redir, char is_out)
 	redir = redir->next;
 	while (redir)
 	{
-		if (is_out && (!ft_strcmp(redir->operator->value, ">>")
+		if ((is_out && (!ft_strcmp(redir->operator->value, ">>")
 				|| !ft_strcmp(redir->operator->value, ">")))
-			return (FALSE);
-		if (!is_out && (!ft_strcmp(redir->operator->value, "<<")
-				|| !ft_strcmp(redir->operator->value, "<")))
+			|| (!is_out && (!ft_strcmp(redir->operator->value, "<<")
+				|| !ft_strcmp(redir->operator->value, "<"))))
 			return (FALSE);
 		redir = redir->next;
 	}
@@ -132,7 +131,6 @@ static int	redir_is_last(t_redirection *redir, char is_out)
 
 int	manage_redirections(t_redirection *redir)
 {
-
 	int	fd;
 
 	while (redir)
@@ -184,7 +182,6 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 	exit_code = 0;
 	path = get_path(data->env);
 	cmd->path = get_cmd_path(path, cmd->argv, &exit_code);
-	//is_argv0_dir(cmd->argv[0], &exit_code);
 	if (path)
 		ft_tabclear(path);
 	if (cmd->path && !exit_code)

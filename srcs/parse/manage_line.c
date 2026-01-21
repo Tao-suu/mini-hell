@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:35:28 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 19:01:00 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 10:15:06 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static t_operator	*find_appropriate_string_op(t_data *data)
 			if (data->operators[i]->before[j]->id == prev_lexem->type->id)
 				return (data->operators[i]);
 	}
-	return (NULL);
+	return (data->operators[i]);
 }
 
 static int	find_next_word(t_data *data, char *line, t_lexem *new_elem)
@@ -91,11 +91,6 @@ static int	find_next_word(t_data *data, char *line, t_lexem *new_elem)
 	}
 	if (!tmp_op)
 		tmp_op = find_appropriate_string_op(data);
-	if (!tmp_op)
-	{
-		print_syntax_error(new_elem->value);
-		return (-1);
-	}
 	new_elem->type = tmp_op;
 	return (i);
 }

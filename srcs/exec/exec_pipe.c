@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 11:18:03 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 11:20:25 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static int	wait_cmd_pid(t_cmd *cmd, t_env **env)
 	code = 0;
 	while (cmd->next)
 	{
-		waitpid(cmd->pid, NULL, 0);
+		if (cmd->pid > 0)
+			waitpid(cmd->pid, NULL, 0);
 		cmd = cmd->next;
 	}
 	waitpid(cmd->pid, &ret, 0);
@@ -73,9 +74,22 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 	save_in = dup(STDIN_FILENO);
 	while (cmd)
 	{
-		if (cmd->next)
-			pipe(pipefd);
+		if (cmd->next && pipe(pipefd) < 0)
+		{
+			print_sys_error("pipe");
+			break ;
+		}
 		cmd->pid = fork();
+		if (cmd->pid < 0)
+		{
+			print_sys_error("fork");
+			if (cmd->next)
+			{
+				close(pipefd[0]);
+				close(pipefd[1]);
+			}
+			break ;
+		}
 		if (cmd->pid == 0)
 		{
 			close(save_in);
@@ -87,7 +101,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 				close(pipefd[1]);
 			}
 			if (is_builtin(cmd))
-				return (exec_builtin(data, cmd, 1));
+				exec_builtin(data, cmd, 1);
 			exec_cmd(data, cmd);
 		}
 		else
