@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 16:25:21 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 05:47:31 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ void	main_loop(t_data *data)
 			free_data(data, FALSE);
 		}
 	}
-	ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("exit\n", 1);
 }

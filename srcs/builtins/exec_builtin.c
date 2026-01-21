@@ -6,26 +6,45 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:12:34 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/19 18:57:05 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 05:36:35 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void close_dup(int *std)
+{
+	dup2(std[0], 0);
+	dup2(std[1], 1);
+	close(std[0]);
+	close(std[1]);
+}
 
 int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 {
 	int	ret;
 	int	fd[2];
 
-	if (!ft_strcmp(cmd->argv[0], "exit"))
-		builtin_exit(data, cmd);
-	if (!manage_redirections(cmd->redir))
-		return (1);
 		
 	fd[0] = dup(0);
 	fd[1] = dup(1);
 
-	if (!ft_strcmp(cmd->argv[0], "pwd"))
+	if (!manage_redirections(cmd->redir))
+	{
+		if (flag)
+		{
+			free_data(data, TRUE);
+			exit(1);
+		}
+		return (1);
+	}
+
+	if (!ft_strcmp(cmd->argv[0], "exit"))
+	{
+		close_dup(fd);
+		ret = builtin_exit(data, cmd, flag);
+	}
+	else if (!ft_strcmp(cmd->argv[0], "pwd"))
 		ret = builtin_pwd(data->env);
 	else if (!ft_strcmp(cmd->argv[0], "cd"))
 		ret = builtin_cd(&data->env, cmd);
@@ -48,6 +67,7 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 		free_data(data, TRUE);
 		exit(ret);
 	}
+	create_or_update_env(&data->env, "?", ft_itoa(ret), STATE_ENV);
 	return (ret);
 }
 

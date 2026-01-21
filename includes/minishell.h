@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/20 22:00:27 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 01:32:33 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ int				manage_redirections(t_redirection *red);
 int				exec_builtin(t_data *data, t_cmd *cmd, int flag);
 int				is_builtin(t_cmd *cmd);
 int				builtin_pwd(t_env *env);
-int				builtin_exit(t_data *data, t_cmd *cmd);
+int				builtin_exit(t_data *data, t_cmd *cmd, int flag);
 int				builtin_cd(t_env **env, t_cmd *cmd);
 unsigned char	builtin_echo(t_cmd *cmd);
 int				builtin_env(t_env *env);

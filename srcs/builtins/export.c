@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 12:46:22 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/17 18:30:41 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 05:44:49 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	builtin_export(t_env **env, t_cmd *cmd)
 	{
 		if (!export_valid_arg(cmd->argv[i]))
 		{
-			ret = !print_bash_export_error(cmd->argv[i]);
+			ret = print_bash_export_error(cmd->argv[i]);
 			continue ;
 		}
 		equal_index = ft_strchr(cmd->argv[i], '=');

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 01:40:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/12 07:40:47 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 03:23:21 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@ static int	ft_strisnum(char *str)
 	return (1);
 }
 
-int	builtin_exit(t_data *data, t_cmd *cmd)
+int	builtin_exit(t_data *data, t_cmd *cmd, int flag)
 {
 	int	arg_number;
 
-	ft_putstr_fd("exit\n", 2);
+	if (!flag)
+		printf("exit\n");
 	if (cmd->argv[1] && ft_strisnum(cmd->argv[1]) && cmd->argv[2])
 	{
 		print_bash_exit_error(NULL, "too many arguments");

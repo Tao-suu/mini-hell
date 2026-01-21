@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/20 22:21:54 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 05:46:57 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 static int	wait_cmd_pid(t_cmd *cmd, t_env **env)
 {
 	int	ret;
+	int	code;
 
+	code = 0;
 	while (cmd->next)
 	{
 		waitpid(cmd->pid, NULL, 0);
 		cmd = cmd->next;
 	}
 	waitpid(cmd->pid, &ret, 0);
-	int	code = 0;
 	if (WIFEXITED(ret))
 		code = WEXITSTATUS(ret);
 	else if (WIFSIGNALED(ret))

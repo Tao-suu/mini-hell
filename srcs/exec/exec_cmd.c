@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/20 22:22:46 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 05:45:47 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,9 @@ int	manage_redirections(t_redirection *redir)
 
 	while (redir)
 	{
-		if (!ft_strcmp(redir->operator->value, ">>"))
+		if (!ft_strcmp(redir->operator->value, ">"))
 			fd = open(redir->name, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-		else if (!ft_strcmp(redir->operator->value, ">"))
+		else if (!ft_strcmp(redir->operator->value, ">>"))
 			fd = open(redir->name, O_CREAT | O_APPEND | O_WRONLY, 0644);
 		else if (!ft_strcmp(redir->operator->value, "<<"))
 			// TODO: gerer le delimiter de <<
@@ -180,6 +180,7 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 		exec_ast(data, cmd->ast);
 		exit(1);
 	}
+	exit_code = 0;
 	path = get_path(data->env);
 	cmd->path = get_cmd_path(path, cmd->argv, &exit_code);
 	//is_argv0_dir(cmd->argv[0], &exit_code);

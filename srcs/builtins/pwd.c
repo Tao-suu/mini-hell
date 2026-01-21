@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:00:44 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/14 21:24:03 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 05:45:14 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	builtin_pwd(t_env *env)
 	char	buffer[5000];
 
 	if (!getcwd(buffer, 5000))
-		return (print_bash_cmd_error(NULL, "pwd: error retrieving current directory: getcwd: cannot access parent directories", NULL));
+		return (print_bash_cmd_error(NULL, "pwd: error retrieving current directory: getcwd: cannot access parent directories", NULL) + 1);
 	printf("%s\n", buffer);
 	return (FALSE);
 }

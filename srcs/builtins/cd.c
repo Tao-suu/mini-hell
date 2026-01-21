@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 10:42:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/17 21:59:22 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 05:33:07 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int	builtin_cd(t_env **env, t_cmd *cmd)
 	t_env	*pwd_var;
 	char	*pwd_var_tmp;
 
+	if (cmd->argc > 2)
+		return (print_bash_cd_error(NULL, "too many arguments"));
 	pwd_var = find_env_var(*env, "PWD");
 	if (!pwd_var || !pwd_var->value)
 	{
@@ -92,7 +94,7 @@ int	builtin_cd(t_env **env, t_cmd *cmd)
 	}
 	pwd_var_tmp = ft_strdup(pwd_var->value);
 	if (!pwd_var_tmp)
-		return (print_sys_error("ft_strdup"));
+		return (print_sys_error("ft_strdup") + 1);
 	if (builtin_cd_home(env, cmd) || builtin_cd_old(env, cmd)
 		|| builtin_cd_other(env, cmd))
 	{
