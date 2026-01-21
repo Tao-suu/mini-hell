@@ -137,9 +137,9 @@ int	manage_redirections(t_redirection *redir)
 	while (redir)
 	{
 		if (!ft_strcmp(redir->operator->value, ">>"))
-			fd = open(redir->name, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-		else if (!ft_strcmp(redir->operator->value, ">"))
 			fd = open(redir->name, O_CREAT | O_APPEND | O_WRONLY, 0644);
+		else if (!ft_strcmp(redir->operator->value, ">"))
+			fd = open(redir->name, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 		else if (!ft_strcmp(redir->operator->value, "<<"))
 			// TODO: gerer le delimiter de <<
 			fd = open(redir->name, O_RDONLY);
@@ -180,6 +180,7 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 		exec_ast(data, cmd->ast);
 		exit(1);
 	}
+	exit_code = 0;
 	path = get_path(data->env);
 	cmd->path = get_cmd_path(path, cmd->argv, &exit_code);
 	//is_argv0_dir(cmd->argv[0], &exit_code);

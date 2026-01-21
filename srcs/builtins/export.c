@@ -58,7 +58,7 @@ int	builtin_export(t_env **env, t_cmd *cmd)
 	{
 		if (!export_valid_arg(cmd->argv[i]))
 		{
-			ret = !print_bash_export_error(cmd->argv[i]);
+			ret = print_bash_export_error(cmd->argv[i]);
 			continue ;
 		}
 		equal_index = ft_strchr(cmd->argv[i], '=');

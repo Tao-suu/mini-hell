@@ -31,7 +31,7 @@ int	builtin_exit(t_data *data, t_cmd *cmd)
 {
 	int	arg_number;
 
-	ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("exit\n", 1);
 	if (cmd->argv[1] && ft_strisnum(cmd->argv[1]) && cmd->argv[2])
 	{
 		print_bash_exit_error(NULL, "too many arguments");
