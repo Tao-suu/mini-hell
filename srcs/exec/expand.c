@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 09:50:42 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 17:01:58 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,8 @@ static int	expand_cmd(t_data *data, t_cmd *cmd)
 	lst = NULL;
 	while (cmd->argv && cmd->argv[i])
 	{
-		if (!create_lst_empty(&lst) || !expand_token(data, &lst, cmd->argv[i], TRUE))
+		if (!create_lst_empty(&lst)
+			|| !expand_token(data, &lst, cmd->argv[i], TRUE))
 		{
 			ft_lstclear(&lst, free);
 			return (FALSE);

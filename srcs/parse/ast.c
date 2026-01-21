@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:45:34 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 05:21:35 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 16:49:13 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,16 +111,7 @@ int	create_ast(t_data *data)
 {
 	if (!create_ast_recurse(&(data->ast), data->head, NULL, 0))
 		return (FALSE);
-	//ft_printf("\n");
-	//print_ast(data->ast, 0);
+	// ft_printf("\n");
+	// print_ast(data->ast, 0);
 	return (TRUE);
 }
-/*
-APP		1
-HERE	2
-
-flag = APP | HERE
-
-(flag & APP) == APP
-(flag & HERE) == HERE
-*/
