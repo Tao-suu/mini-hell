@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:12:34 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 06:41:58 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 07:51:49 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 	int	ret;
 	int	fd[2];
 
-	fd[0] = dup(0);
-	fd[1] = dup(1);
-
+	if (!flag)
+	{
+		fd[0] = dup(0);
+		fd[1] = dup(1);
+	}
 	if (!manage_redirections(cmd->redir))
 	{
 		if (flag)
@@ -35,6 +37,7 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 			free_data(data, TRUE);
 			exit(1);
 		}
+		set_exit_code(&(data->env), 1);
 		return (1);
 	}
 
@@ -57,17 +60,18 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 		ret = builtin_export(&data->env, cmd);
 	else
 		ret = 1;
-
-	dup2(fd[1], 1);
-	dup2(fd[0], 0);
-	close(fd[0]);
-	close(fd[1]);
 	
 	if (flag)
 	{
 		free_data(data, TRUE);
 		exit(ret);
 	}
+
+	dup2(fd[1], 1);
+	dup2(fd[0], 0);
+	close(fd[0]);
+	close(fd[1]);
+	
 	set_exit_code(&(data->env), ret);
 	return (ret);
 }

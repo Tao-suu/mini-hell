@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 05:47:31 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 08:30:23 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,15 @@ void	main_loop(t_data *data)
 	while (42)
 	{
 		// TODO: generate prompt dynamicaly
-		//if (exit_status == 130)
-		//{
-		//	printf("\n");
-		//}
+		if (ft_atoi(find_env_var(data->env, "?")->value) == 130)
+		{
+			printf("\n");
+		}
+		
+		else if (ft_atoi(find_env_var(data->env, "?")->value) == 131)
+		{
+			printf("quit (core dumped)\n");
+		}
 		data->line = readline("$> ");
 		//data->line = NULL;
 		if (!data->line)

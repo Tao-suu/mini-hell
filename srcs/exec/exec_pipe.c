@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 06:42:52 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 08:28:20 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	wait_cmd_pid(t_cmd *cmd, t_env **env)
 	if (WIFEXITED(ret))
 		code = WEXITSTATUS(ret);
 	else if (WIFSIGNALED(ret))
-		code = WTERMSIG(ret);
+		code = WTERMSIG(ret) + 128;
 	set_exit_code(env, code);
 	return (code);
 }
@@ -90,6 +90,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 		}
 		cmd = cmd->next;
 	}
+	close(0);
 	ret = wait_cmd_pid(cmds, &data->env);
 	dup2(save_in, STDIN_FILENO);
 	close(save_in);
