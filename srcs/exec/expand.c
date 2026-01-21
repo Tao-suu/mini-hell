@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 01:40:34 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:55:51 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ static int	manage_string_token(t_data *data, t_list **lst, char *line, int *i)
 // Expand une ligne. Pour chaque caractere:
 // 		si c'est un $, expand la variable d'environement
 // 		sinon, stock la chaine
-int	expand_token(t_data *data, t_list **lst, char *line)
+static int	expand_token(t_data *data, t_list **lst, char *line, char expand)
 {
 	int		size;
 	int		i;
@@ -235,7 +235,7 @@ int	expand_token(t_data *data, t_list **lst, char *line)
 		if (line[i] == '$')
 		{
 			i++;
-			size = manage_env_var_token(data, lst, line + i, TRUE);
+			size = manage_env_var_token(data, lst, line + i, expand);
 			if (size < 0)
 				return (FALSE);
 			i += size;
@@ -259,7 +259,7 @@ static int	expand_cmd(t_data *data, t_cmd *cmd)
 	lst = NULL;
 	while (cmd->argv && cmd->argv[i])
 	{
-		if (!create_lst_empty(&lst) || !expand_token(data, &lst, cmd->argv[i]))
+		if (!create_lst_empty(&lst) || !expand_token(data, &lst, cmd->argv[i], TRUE))
 		{
 			ft_lstclear(&lst, free);
 			return (FALSE);
@@ -281,13 +281,37 @@ static int	expand_cmd(t_data *data, t_cmd *cmd)
 	return (TRUE);
 }
 
+static int	expand_file(t_data *data, char **name)
+{
+	t_list	*lst;
+
+	lst = NULL;
+	if (!create_lst_empty(&lst) || !expand_token(data, &lst, *name, FALSE))
+	{
+		ft_lstclear(&lst, free);
+		return (FALSE);
+	}
+	free(*name);
+	*name = lst->content;
+	free(lst);
+	return (TRUE);
+}
+
 int	expand_pipe(t_data *data, t_cmd *cmds)
 {
+	t_redirection	*tmp;
+
 	while (cmds)
 	{
 		if (!expand_cmd(data, cmds))
 			return (FALSE);
-		// TODO: expand files
+		tmp = cmds->redir;
+		while (tmp)
+		{
+			if (!expand_file(data, &(tmp->name)))
+				return (FALSE);
+			tmp = tmp->next;
+		}
 		cmds = cmds->next;
 	}
 	return (TRUE);

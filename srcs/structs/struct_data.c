@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/20 22:07:17 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:45:57 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,6 @@ static int	init_env_pwd_path(t_env **env)
 	if (!find_env_var(*env, "OLDPWD") && !create_or_update_env(env, "OLDPWD", NULL, STATE_ENV))
 		return (FALSE);
 	if (!find_env_var(*env, "PATH") && !create_or_update_env(env, "PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", STATE_SET))
-		return (FALSE);
-	if (!create_or_update_env(env, "?", "0", STATE_SET))
 		return (FALSE);
 	return (TRUE);
 }
