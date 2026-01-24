@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 11:20:25 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/24 14:57:43 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 		return (ret);
 	}
 	cmd = cmds;
-	if (!expand_pipe(data, cmd))
+	if (!expand_pipe(data, cmd) || !expand_wildcards_cmd(cmd))
 		return (FALSE);
 	if (!cmd->next && is_builtin(cmd))
 		return (exec_builtin(data, cmd, 0));

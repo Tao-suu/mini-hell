@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 06:40:27 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/24 15:37:41 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <sys/stat.h>
+# include <sys/types.h>
+# include <dirent.h>
+# include <errno.h>
 # include "libft.h"
 
 # define GRAMMAR_FILE		"grammar.txt"
@@ -50,6 +53,7 @@ typedef struct s_cmd			t_cmd;
 typedef enum e_env_state		t_env_state;
 typedef struct s_env			t_env;
 typedef struct s_data			t_data;
+typedef struct dirent			t_dirent;
 
 struct s_operator {
 	int					id;
@@ -235,5 +239,9 @@ int				builtin_export(t_env **env, t_cmd *cmd);
 
 // expand
 int				expand_pipe(t_data *data, t_cmd *cmds);
+
+// wildcards
+char			**get_files_name(void);
+int				expand_wildcards_cmd(t_cmd *cmd);
 
 #endif

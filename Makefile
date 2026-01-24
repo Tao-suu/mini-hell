@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/21 11:09:19 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/24 14:49:04 by tbez--du         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ EXEC_DIR			= exec/
 PARSE_DIR			= parse/
 STRUCT_DIR			= structs/
 BUILTIN_DIR			= builtins/
+WILDCARDS_DIR		= wildcards/
 
 SRCS_RAW			= main.c \
 					  $(STRUCT_DIR)struct_data.c \
@@ -51,6 +52,8 @@ SRCS_RAW			= main.c \
 					  $(BUILTIN_DIR)env.c \
 					  $(BUILTIN_DIR)unset.c \
 					  $(BUILTIN_DIR)export.c \
+					  $(WILDCARDS_DIR)getfilename.c \
+					  $(WILDCARDS_DIR)expand_wildcards.c \
 					  signal.c \
 					  loop.c \
 					  print.c \
@@ -85,6 +88,7 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p $(OBJS_DIR)$(PARSE_DIR)
 	@mkdir -p $(OBJS_DIR)$(EXEC_DIR)
 	@mkdir -p $(OBJS_DIR)$(BUILTIN_DIR)
+	@mkdir -p $(OBJS_DIR)$(WILDCARDS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_INC_DIR)
 
 clean:
