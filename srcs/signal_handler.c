@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/03 15:50:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 16:58:02 by picheval         ###   ########.fr       */
+/*   Created: 2026/01/25 16:56:28 by picheval          #+#    #+#             */
+/*   Updated: 2026/01/25 16:57:58 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_signal;
-
-void	heredoc_signal(void)
+void	handler(int signal)
 {
-	signal(SIGINT, &heredoc_handler);
-	signal(SIGQUIT, SIG_IGN);
+	if (signal == SIGINT)
+	{
+		rl_replace_line("", 0);
+		ft_putchar('\n');
+	}
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-void	dfl_signal(void)
+void	heredoc_handler(int signal)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-}
-
-void	ign_signal(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	init_signal(void)
-{
-	g_signal = 0;
-	signal(SIGINT, &handler);
-	signal(SIGQUIT, SIG_IGN);
+	if (signal == SIGINT)
+	{
+		g_signal = signal;
+		ft_putchar('\n');
+		close(STDIN_FILENO);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 06:45:57 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 16:48:53 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 extern char	**environ;
 
 // full: if TRUE, clear all / else only clear line infos
-void	free_data(t_data *data, char full)
+// even_files: if TRUE, even unlink files / else only clear data
+void	free_data(t_data *data, char full, char even_files)
 {
 	if (!data)
 		return ;
@@ -28,6 +29,9 @@ void	free_data(t_data *data, char full)
 	if (data->ast)
 		free_ast_tree(data->ast);
 	data->ast = NULL;
+	if (data->heredocs)
+		free_heredoc_list(data->heredocs, even_files);
+	data->heredocs = NULL;
 	if (full == FALSE)
 		return ;
 	if (data->env)

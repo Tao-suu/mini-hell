@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 09:47:40 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:30:07 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ static int	redir_is_last(t_redirection *redir, char is_out)
 	{
 		if ((is_out && (!ft_strcmp(redir->operator->value, ">>")
 				|| !ft_strcmp(redir->operator->value, ">")))
-			|| (!is_out && (!ft_strcmp(redir->operator->value, "<<")
-				|| !ft_strcmp(redir->operator->value, "<"))))
+			|| (!is_out && (!ft_strcmp(redir->operator->value, "<")
+				|| !ft_strcmp(redir->operator->value, "<<"))))
 			return (FALSE);
 		redir = redir->next;
 	}
@@ -140,8 +140,7 @@ int	manage_redirections(t_redirection *redir)
 		else if (!ft_strcmp(redir->operator->value, ">"))
 			fd = open(redir->name, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 		else if (!ft_strcmp(redir->operator->value, "<<"))
-			// TODO: gerer le delimiter de <<
-			fd = open(redir->name, O_RDONLY);
+			fd = open(redir->heredoc->filename, O_RDONLY);
 		else
 			fd = open(redir->name, O_RDONLY); // <
 
@@ -152,10 +151,10 @@ int	manage_redirections(t_redirection *redir)
 				|| !ft_strcmp(redir->operator->value, ">"))
 			&& redir_is_last(redir, TRUE))
 			dup2(fd, STDOUT_FILENO);
-		else if ((!ft_strcmp(redir->operator->value, "<<")
-				|| !ft_strcmp(redir->operator->value, "<"))
+		else if ((!ft_strcmp(redir->operator->value, "<")
+				|| !ft_strcmp(redir->operator->value, "<<"))
 			&& redir_is_last(redir, FALSE))
-			dup2(fd, STDIN_FILENO);
+				dup2(fd, STDIN_FILENO);
 		
 		close(fd);
 		redir = redir->next;
@@ -171,7 +170,7 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 	
 	if (!manage_redirections(cmd->redir))
 	{
-		free_data(data, TRUE);
+		free_data(data, TRUE, FALSE);
 		exit(1);
 	}
 	if (cmd->ast)
@@ -196,6 +195,6 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 			ft_tabclear(env);
 		}
 	}
-	free_data(data, TRUE);
+	free_data(data, TRUE, FALSE);
 	exit(exit_code);
 }

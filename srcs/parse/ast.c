@@ -6,16 +6,17 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:45:34 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 16:49:13 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:40:26 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	create_ast_recurse(t_ast **root, t_lexem *start, t_lexem *end,
+static int	create_ast_recurse(t_data *data, t_ast **root, t_lexem *store[2],
 				int level);
 
-static int	manage_cmd_redir(t_cmd *cmd, t_lexem **start, t_lexem *end)
+static int	manage_cmd_redir(t_data *data, t_cmd *cmd, t_lexem **start,
+	t_lexem *end)
 {
 	t_redirection	*tmp;
 
@@ -29,19 +30,25 @@ static int	manage_cmd_redir(t_cmd *cmd, t_lexem **start, t_lexem *end)
 	if (!(*start)->next || (*start)->next == end
 		|| ft_strcmp((*start)->next->type->name, "file"))
 		return (print_error("cmd_redir: no file"));
-	tmp = create_redirection_elem((*start)->type, (*start)->next->value);
+	if (!ft_strcmp((*start)->type->name, "HEREDOC"))
+		tmp = create_redirection_elem((*start)->type, NULL);
+	else
+		tmp = create_redirection_elem((*start)->type, (*start)->next->value);
 	if (!tmp)
 		return (FALSE);
 	add_redirection_in_list(&(cmd->redir), tmp);
+	if (!ft_strcmp((*start)->type->name, "HEREDOC")
+		&& !manage_heredoc_elem(&(data->heredocs), tmp, (*start)->next->value))
+		return (FALSE);
 	*start = (*start)->next;
 	return (TRUE);
 }
-// (ls < in1 < in2 &&ls >> toto)||(ls -l <in > out&&ls)
-// (ls < in1 < in2 &&ls >> toto) > toto&& test ||(ls -l <in > out&&ls)
 
-static int	manage_parenthesis(t_ast **ast, t_lexem **start, t_lexem *end)
+static int	manage_parenthesis(t_data *data, t_ast **ast, t_lexem **start,
+	t_lexem *end)
 {
 	t_lexem	*sub_start;
+	t_lexem	*tmp[2];
 
 	if (ft_strcmp((*start)->type->name, "PO"))
 		return (TRUE);
@@ -49,10 +56,13 @@ static int	manage_parenthesis(t_ast **ast, t_lexem **start, t_lexem *end)
 	if (!sub_start)
 		return (FALSE);
 	skip_parenthesis(start, end);
-	return (create_ast_recurse(ast, sub_start, *start, (*start)->lvl + 1));
+	tmp[0] = sub_start;
+	tmp[1] = *start;
+	return (create_ast_recurse(data, ast, tmp, (*start)->lvl + 1));
 }
 
-static int	create_cmd_pipeline(t_cmd **list, t_lexem *start, t_lexem *end)
+static int	create_cmd_pipeline(t_data *data, t_cmd **list, t_lexem *start,
+	t_lexem *end)
 {
 	t_cmd	*cmd;
 	size_t	nb_argv;
@@ -69,9 +79,9 @@ static int	create_cmd_pipeline(t_cmd **list, t_lexem *start, t_lexem *end)
 			if (!ft_strcmp(start->type->name, "cmd")
 				|| !ft_strcmp(start->type->name, "param"))
 				cmd->argv[cmd->argc++] = ft_strdup(start->value);
-			else if (!manage_cmd_redir(cmd, &start, end))
+			else if (!manage_cmd_redir(data, cmd, &start, end))
 				return (FALSE);
-			else if (!manage_parenthesis(&(cmd->ast), &start, end))
+			else if (!manage_parenthesis(data, &(cmd->ast), &start, end))
 				return (FALSE);
 			start = start->next;
 		}
@@ -82,9 +92,10 @@ static int	create_cmd_pipeline(t_cmd **list, t_lexem *start, t_lexem *end)
 }
 
 // start included, end excluded
-static int	create_ast_recurse(t_ast **root, t_lexem *start, t_lexem *end,
+static int	create_ast_recurse(t_data *data, t_ast **root, t_lexem *store[2],
 	int level)
 {
+	t_lexem	*tmp[2];
 	t_lexem	*sep;
 	t_ast	*new_elem;
 
@@ -92,24 +103,32 @@ static int	create_ast_recurse(t_ast **root, t_lexem *start, t_lexem *end,
 	if (!new_elem)
 		return (FALSE);
 	*root = new_elem;
-	sep = find_last_operator_in_level(start, end, level);
+	sep = find_last_operator_in_level(store[0], store[1], level);
 	if (sep)
 	{
 		if (!ft_strcmp(sep->type->name, "AND"))
 			new_elem->node_type = NODE_TYPE_AND;
 		else
 			new_elem->node_type = NODE_TYPE_OR;
-		if (!create_ast_recurse(&(new_elem->left), start, sep, level))
+		tmp[0] = store[0];
+		tmp[1] = sep;
+		if (!create_ast_recurse(data, &(new_elem->left), tmp, level))
 			return (FALSE);
-		return (create_ast_recurse(&(new_elem->right), sep->next, end, level));
+		tmp[0] = sep->next;
+		tmp[1] = store[1];
+		return (create_ast_recurse(data, &(new_elem->right), tmp, level));
 	}
 	new_elem->node_type = NODE_TYPE_CMD;
-	return (create_cmd_pipeline(&(new_elem)->cmds, start, end));
+	return (create_cmd_pipeline(data, &(new_elem)->cmds, store[0], store[1]));
 }
 
 int	create_ast(t_data *data)
 {
-	if (!create_ast_recurse(&(data->ast), data->head, NULL, 0))
+	t_lexem	*store[2];
+
+	store[0] = data->head;
+	store[1] = NULL;
+	if (!create_ast_recurse(data, &(data->ast), store, 0))
 		return (FALSE);
 	// ft_printf("\n");
 	// print_ast(data->ast, 0);

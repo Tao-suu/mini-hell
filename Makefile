@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/21 11:09:19 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/25 16:57:50 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS_RAW			= main.c \
 					  $(STRUCT_DIR)struct_redirection.c \
 					  $(STRUCT_DIR)struct_ast.c \
 					  $(STRUCT_DIR)struct_list_utils.c \
+					  $(STRUCT_DIR)struct_heredoc.c \
 					  $(PARSE_DIR)init_operators.c \
 					  $(PARSE_DIR)manage_line.c \
 					  $(PARSE_DIR)manage_lexems.c \
@@ -42,7 +43,9 @@ SRCS_RAW			= main.c \
 					  $(EXEC_DIR)exec_cmd.c \
 					  $(EXEC_DIR)exec_pipe.c \
 					  $(EXEC_DIR)exec_ast.c \
+					  $(EXEC_DIR)exec_heredocs.c \
 					  $(EXEC_DIR)expand.c \
+					  $(EXEC_DIR)exit_code.c \
 					  $(BUILTIN_DIR)exec_builtin.c \
  					  $(BUILTIN_DIR)pwd.c \
  					  $(BUILTIN_DIR)exit.c \
@@ -52,7 +55,9 @@ SRCS_RAW			= main.c \
 					  $(BUILTIN_DIR)unset.c \
 					  $(BUILTIN_DIR)export.c \
 					  signal.c \
+					  signal_handler.c \
 					  loop.c \
+					  tools.c \
 					  print.c \
 					  print_bash.c \
 					  print_debug.c

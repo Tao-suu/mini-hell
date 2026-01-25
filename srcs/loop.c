@@ -6,52 +6,51 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 17:19:12 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 17:43:08 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_balanced(char *line)
+static void	manage_loop(t_data *data)
 {
-	(void)line;
-	// TODO: all ;)
-	return (TRUE);
+	if (manage_line(data) && manage_lexems(data) && create_ast(data))
+	{
+		// TODO ? Revoir quand on [ign|init]_signal exactement ?
+		ign_signal();
+		if (exec_heredocs(data))
+			exec_ast(data, data->ast);
+		init_signal();
+		return ;
+	}
+	ign_signal();
+	exec_heredocs(data);
+	init_signal();
+	set_exit_code(&(data->env), 2);
 }
 
 void	main_loop(t_data *data)
 {
+	t_env	*exit_code_env_var;
+	int		exit_code;
+
+	exit_code_env_var = find_env_var(data->env, "?");
+	exit_code = 0;
+	if (exit_code_env_var)
+		exit_code = ft_atoi(exit_code_env_var->value);
 	while (42)
 	{
-		// TODO: generate prompt dynamicaly
-		if (ft_atoi(find_env_var(data->env, "?")->value) == 130)
-		{
+		if (exit_code == 130)
 			printf("\n");
-		}
-		
-		else if (ft_atoi(find_env_var(data->env, "?")->value) == 131)
-		{
+		else if (exit_code == 131)
 			printf("quit (core dumped)\n");
-		}
+		// TODO: generate prompt dynamicaly
 		data->line = readline("blop $> ");
-		//data->line = NULL;
 		if (!data->line)
 			break ;
-		if (!is_balanced(data->line))
-			print_error("parse error");
-		else
-		{
-			if (manage_line(data) && manage_lexems(data) && create_ast(data))
-			{
-				ign_signal();
-				exec_ast(data, data->ast);
-				init_signal();
-			}
-			else
-				set_exit_code(&(data->env), 2);
-			add_history(data->line);
-			free_data(data, FALSE);
-		}
+		manage_loop(data);
+		add_history(data->line);
+		free_data(data, FALSE, TRUE);
 	}
 	ft_putstr_fd("exit\n", 1);
 }

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 01:40:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 03:23:21 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:32:53 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	builtin_exit(t_data *data, t_cmd *cmd, int flag)
 		if (!ft_strisnum(cmd->argv[1]))
 		{
 			print_bash_exit_error(cmd->argv[1], "numeric argument required");
-			free_data(data, TRUE);
+			free_data(data, TRUE, !flag);
 			exit(2);
 		}
 		arg_number = ft_atoi(cmd->argv[1]);
-		free_data(data, TRUE);
+		free_data(data, TRUE, !flag);
 		exit(arg_number % 256);
 	}
-	free_data(data, TRUE);
+	free_data(data, TRUE, !flag);
 	exit(0); // last ret code
 }

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 13:51:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 02:41:43 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 17:47:56 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(void)
 	init_signal();
 	if (!init_data(&data))
 	{
-		free_data(&data, TRUE);
+		free_data(&data, TRUE, TRUE);
 		return (1);
 	}
 	main_loop(&data);
@@ -29,33 +29,12 @@ int	main(void)
 		// env / set
 			// recreate if not exist (SHLVL TERM LINES COLUMNS PWD SHELL/BASH HOSTNAME?/USERNAME?)
 			// .bash_history ?
-		// signaux / t_data
 
-	// every read loop
-		// built-in management before execve
-		// execve
-			// reparse PATH ?
+	// exit --> exit status --> cast unsigned char --> % 255 --> atoll --> no numeri si depasse long long max == char * != int 
+		// 1) check numeri
+		// 2) nb args
+		// 3) nb_args = 0 exit exit_status
 
-	// heredoc(s): fork ? singleton ?
-
-	// env variables : d'abord check dans env, PUIS dans set uniquement si pas trouve avant
-		// env -i
-		// !! export set vs env (ex SHLVL)
-
-	// Builtins
-		// Easy ---> Hard
-
-		// env
-		// pwd
-		// echo
-		// unset
-		// exit --> exit status --> cast unsigned char --> % 255 --> atoll --> no numeri si depasse long long max == char * != int 
-			// 1) check numeri
-			// 2) nb args
-			// 3) nb_args = 0 exit exit_status
-		// cd
-		// export
-
-	free_data(&data, TRUE);
+	free_data(&data, TRUE, TRUE);
 	return (0);
 }

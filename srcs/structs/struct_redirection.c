@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 23:17:46 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/05 15:58:51 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:13:49 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ t_redirection	*create_redirection_elem(t_operator *operator, char *name)
 		return (NULL);
 	}
 	ret->operator = operator;
+	if (!name) // heredoc
+		return (ret);
 	ret->name = ft_strdup(name);
 	if (!ret->name)
 	{

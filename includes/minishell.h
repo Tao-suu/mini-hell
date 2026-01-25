@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 06:40:27 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 16:59:16 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <sys/stat.h>
+# include <signal.h>
 # include "libft.h"
 
 # define GRAMMAR_FILE		"grammar.txt"
@@ -29,6 +30,8 @@
 
 # define OP_START			"START"
 # define OP_END				"END"
+
+# define TMP_FILE_NAME		"/tmp/heredoc"
 
 # define TAB_EXTRA_SPACE	2
 
@@ -42,9 +45,12 @@
 # define CLR_CYAN			"\x1B[36m"
 # define CLR_RESET			"\x1b[0m"
 
+extern int	g_signal;
+
 typedef struct s_operator		t_operator;
 typedef struct s_lexem			t_lexem;
 typedef struct s_ast			t_ast;
+typedef struct s_heredoc		t_heredoc;
 typedef struct s_redirection	t_redirection;
 typedef struct s_cmd			t_cmd;
 typedef enum e_env_state		t_env_state;
@@ -78,9 +84,16 @@ struct s_ast {
 	t_ast	*left;
 };
 
+struct s_heredoc {
+	char		*delimiter;
+	char		*filename;
+	t_heredoc	*next;
+};
+
 struct s_redirection {
 	char			*name;
 	t_operator		*operator;
+	t_heredoc		*heredoc;
 	t_redirection	*next;
 };
 
@@ -114,10 +127,11 @@ struct s_data {
 	char		*line;
 	t_lexem		*head;
 	t_ast		*ast;
+	t_heredoc	*heredocs;
 };
 
 // struct_data.c
-void			free_data(t_data *data, char full);
+void			free_data(t_data *data, char full, char even_files);
 int				init_data(t_data *data);
 
 // struct_env.c
@@ -169,6 +183,11 @@ char			**create_tab_from_lst(t_list *lst);
 int				create_lst_empty(t_list **lst);
 int				lst_add_or_join_back(t_list **lst, char *value);
 
+// struct_heredoc.c
+void			free_heredoc_list(t_heredoc *list, char even_files);
+int				manage_heredoc_elem(t_heredoc **lst, t_redirection *redir,
+					char *delimiter);
+
 // init_operators.c
 int				create_operators_array(t_operator ***tab);
 
@@ -179,9 +198,14 @@ int				manage_line(t_data *data);
 int				manage_lexems(t_data *data);
 
 // signal.c
-void			init_signal(void);
-void			ign_signal(void);
+void			heredoc_signal(void);
 void			dfl_signal(void);
+void			ign_signal(void);
+void			init_signal(void);
+
+// signal_handler.c
+void			handler(int signal);
+void			heredoc_handler(int signal);
 
 // loop.c
 void			main_loop(t_data *data);
@@ -194,6 +218,9 @@ t_lexem			*find_last_operator_in_level(t_lexem *start, t_lexem *end,
 					int level);
 void			skip_parenthesis(t_lexem **start, t_lexem *end);
 size_t			compute_nb_params(t_lexem *start, t_lexem *end);
+
+// tools.c
+char			*create_file_name(char *base_file_name, size_t number);
 
 // print.c
 int				print_error(char *msg);
@@ -215,14 +242,22 @@ void			print_ast(t_ast *ast, int lvl);
 void			print_operators(t_operator **tab);
 void			print_debug_env(t_env *env);
 
-// exec/*.c
-int				set_exit_code(t_env **env, int code);
+// exec/exec_*.c
 int				exec_pipe(t_data *data, t_cmd *cmds);
 int				exec_ast(t_data *data, t_ast *ast);
 void			exec_cmd(t_data *data, t_cmd *cmd);
 int				manage_redirections(t_redirection *red);
+int				exec_heredocs(t_data *data);
 
-// builtin
+// exec/exit_code.c
+int				set_exit_code(t_env **env, int code);
+int				compute_exit_code(int status);
+int				wait_cmd_pid(t_cmd *cmd, t_env **env);
+
+// exec/expand.c
+int				expand_pipe(t_data *data, t_cmd *cmds);
+
+// builtins/*.c
 int				exec_builtin(t_data *data, t_cmd *cmd, int flag);
 int				is_builtin(t_cmd *cmd);
 int				builtin_pwd(t_env *env);
@@ -232,8 +267,5 @@ unsigned char	builtin_echo(t_cmd *cmd);
 int				builtin_env(t_env *env);
 int				builtin_unset(t_env *env, t_cmd *cmd);
 int				builtin_export(t_env **env, t_cmd *cmd);
-
-// expand
-int				expand_pipe(t_data *data, t_cmd *cmds);
 
 #endif

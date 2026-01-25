@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:12:34 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 07:51:49 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:31:58 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 	{
 		if (flag)
 		{
-			free_data(data, TRUE);
+			free_data(data, TRUE, FALSE);
 			exit(1);
 		}
 		set_exit_code(&(data->env), 1);
@@ -63,7 +63,7 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 	
 	if (flag)
 	{
-		free_data(data, TRUE);
+		free_data(data, TRUE, FALSE);
 		exit(ret);
 	}
 
