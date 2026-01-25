@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_conversions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: picheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 14:08:18 by picheval          #+#    #+#             */
-/*   Updated: 2025/11/22 12:08:08 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 17:57:18 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_character(t_printf_env *e)
 void	print_string(t_printf_env *e)
 {
 	char	*s;
-	size_t	s_size;
+	ssize_t	s_size;
 
 	s = va_arg(e->ap, char *);
 	s_size = 6;
@@ -36,7 +36,7 @@ void	print_string(t_printf_env *e)
 	{
 		if (!s && e->param.dot < 6)
 			s_size = 0;
-		else if (s && (size_t)e->param.dot < s_size)
+		else if (s && (ssize_t)e->param.dot < s_size)
 			s_size = e->param.dot;
 	}
 	e->ret += add_padding(e->param, s_size, TRUE);
@@ -51,7 +51,7 @@ void	print_decimal(t_printf_env *e)
 {
 	int					d;
 	unsigned long long	u;
-	size_t				u_size;
+	ssize_t				u_size;
 	char				sign;
 	int					prefix_size;
 
@@ -77,7 +77,7 @@ void	print_decimal(t_printf_env *e)
 void	print_unsigned_decimal(t_printf_env *e)
 {
 	unsigned int	u;
-	size_t			u_size;
+	ssize_t			u_size;
 	int				sign;
 	int				prefix_size;
 

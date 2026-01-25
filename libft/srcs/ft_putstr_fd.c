@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: picheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 12:17:04 by picheval          #+#    #+#             */
-/*   Updated: 2025/11/16 18:14:34 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:16:34 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_putstr_fd(char *s, int fd)
+ssize_t	ft_putstr_fd(char *s, int fd)
 {
 	size_t	s_size;
 
 	s_size = ft_strlen(s);
-	write(fd, s, s_size);
-	return (s_size);
+	return (write(fd, s, s_size));
 }

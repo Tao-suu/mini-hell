@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: picheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 12:25:54 by picheval          #+#    #+#             */
-/*   Updated: 2025/11/16 18:15:01 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:12:45 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_putnbr(int n)
+ssize_t	ft_putnbr(int n)
 {
 	return (ft_putnbr_fd(n, 1));
 }

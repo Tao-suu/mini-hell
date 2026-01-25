@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 00:14:28 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 05:49:36 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:24:49 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ static int		is_valid_arg(char *arg)
 
 	j = 1;
 	if (arg[0] != '-' || arg[1] != 'n')
-		return (0);
+		return (FALSE);
 	while (arg[j])
 	{
 		if (arg[j] != 'n')
-			return (0);
+			return (FALSE);
 		j++;
 	}
-	return (1);
+	return (TRUE);
 }
 
 unsigned char	builtin_echo(t_cmd *cmd)
@@ -42,23 +42,13 @@ unsigned char	builtin_echo(t_cmd *cmd)
 	}
 	while (cmd->argv[i])
 	{
-		if (write(1, cmd->argv[i], ft_strlen(cmd->argv[i])) < 0)
-		{
-			perror("");
-			return (1);
-		}
-		if (cmd->argv[i + 1])
-			if (write(1, " ", 1) < 0)
-			{
-				perror("");
-				return (1);
-			}
+		if (ft_putstr(cmd->argv[i]) < 0)
+			return (!print_sys_error(NULL));
+		if (cmd->argv[i + 1] && ft_putchar(' ') < 0)
+			return (!print_sys_error(NULL));
 		i++;
 	}
-	if (!flag && write(1, "\n", 1) < 0)
-	{
-		perror("");
-		return (1);
-	}
+	if (!flag && ft_putchar('\n') < 0)
+		return (!print_sys_error(NULL));
 	return (0);
 }

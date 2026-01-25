@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: picheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 12:17:04 by picheval          #+#    #+#             */
-/*   Updated: 2025/11/16 18:14:42 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:16:40 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_putstr(char *s)
+ssize_t	ft_putstr(char *s)
 {
 	return (ft_putstr_fd(s, 1));
 }

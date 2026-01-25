@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: picheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:51:01 by picheval          #+#    #+#             */
-/*   Updated: 2025/11/22 12:09:22 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 17:58:54 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	add_padding_character(char c, size_t size)
+static int	add_padding_character(char c, ssize_t size)
 {
-	size_t	i;
+	ssize_t	i;
 
 	i = -1;
 	while (++i < size)
@@ -22,14 +22,14 @@ static int	add_padding_character(char c, size_t size)
 	return (i);
 }
 
-int	add_number_suffix(t_printf_param p, size_t size)
+int	add_number_suffix(t_printf_param p, ssize_t size)
 {
-	if (p.minus == FALSE || p.min_width < 0 || (size_t)p.min_width <= size)
+	if (p.minus == FALSE || p.min_width < 0 || (ssize_t)p.min_width <= size)
 		return (0);
 	return (add_padding_character(' ', (p.min_width - size)));
 }
 
-static size_t	add_number_sign(t_printf_param p, char sign, char dry)
+static ssize_t	add_number_sign(t_printf_param p, char sign, char dry)
 {
 	if (sign >= 0 && p.plus == FALSE && p.space == FALSE && p.hashtag == FALSE)
 		return (0);
@@ -52,21 +52,21 @@ static size_t	add_number_sign(t_printf_param p, char sign, char dry)
 	return (1);
 }
 
-int	add_number_prefix(t_printf_param p, size_t size, char sign)
+int	add_number_prefix(t_printf_param p, ssize_t size, char sign)
 {
-	size_t	precision;
-	size_t	min_width;
-	size_t	sign_size;
+	ssize_t	precision;
+	ssize_t	min_width;
+	ssize_t	sign_size;
 	int		ret;
 
 	ret = 0;
 	sign_size = add_number_sign(p, sign, TRUE);
 	precision = 0;
-	if (p.dot > -1 && (size_t)p.dot > size)
-		precision = (size_t)p.dot - size;
+	if (p.dot > -1 && (ssize_t)p.dot > size)
+		precision = (ssize_t)p.dot - size;
 	min_width = 0;
-	if (p.min_width > -1 && (size_t)p.min_width > size + sign_size + precision)
-		min_width = (size_t)p.min_width - size - sign_size - precision;
+	if (p.min_width > -1 && (ssize_t)p.min_width > size + sign_size + precision)
+		min_width = (ssize_t)p.min_width - size - sign_size - precision;
 	if ((p.zero == FALSE && p.minus == FALSE)
 		|| (p.zero == TRUE && p.dot > -1 && p.min_width > p.dot))
 		ret += add_padding_character(' ', min_width);
@@ -77,7 +77,7 @@ int	add_number_prefix(t_printf_param p, size_t size, char sign)
 	return (ret);
 }
 
-int	add_padding(t_printf_param p, size_t size, char before)
+int	add_padding(t_printf_param p, ssize_t size, char before)
 {
 	char	c;
 
@@ -86,7 +86,7 @@ int	add_padding(t_printf_param p, size_t size, char before)
 		|| p.min_width < 0)
 		return (0);
 	c = ' ';
-	if ((size_t)p.min_width <= size)
+	if ((ssize_t)p.min_width <= size)
 		return (0);
-	return (add_padding_character(c, (size_t)p.min_width - size));
+	return (add_padding_character(c, (ssize_t)p.min_width - size));
 }

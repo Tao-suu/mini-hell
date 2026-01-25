@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:48:44 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 13:10:03 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:20:34 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,16 @@ char			**ft_split(char const *s, char c);
 char			*ft_itoa(int n);
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void			ft_striteri(char *s, void (*f)(unsigned int, char *));
-void			ft_putchar_fd(char c, int fd);
-size_t			ft_putstr_fd(char *s, int fd);
-size_t			ft_putendl_fd(char *s, int fd);
-size_t			ft_putnbr_fd(int n, int fd);
-void			ft_putchar(char c);
-size_t			ft_putstr(char *s);
-size_t			ft_putendl(char *s);
-size_t			ft_putnbr(int n);
-size_t			ft_putnbr_base(int value, char *base, char dry);
-size_t			ft_putnbr_ull_base(unsigned long long value, char *base,
+ssize_t			ft_putchar_fd(char c, int fd);
+ssize_t			ft_putstr_fd(char *s, int fd);
+ssize_t			ft_putendl_fd(char *s, int fd);
+ssize_t			ft_putnbr_fd(int n, int fd);
+ssize_t			ft_putchar(char c);
+ssize_t			ft_putstr(char *s);
+ssize_t			ft_putendl(char *s);
+ssize_t			ft_putnbr(int n);
+ssize_t			ft_putnbr_base(int value, char *base, char dry);
+ssize_t			ft_putnbr_ull_base(unsigned long long value, char *base,
 					char dry);
 void			ft_tabclear(char **tab);
 char			*ft_tabjoin(char **tab, char *sep);
@@ -143,9 +143,9 @@ void			print_percent(t_printf_env *e);
 void			print_pointer(t_printf_env *e);
 void			print_hex_lowercase(t_printf_env *e);
 void			print_hex_uppercase(t_printf_env *e);
-int				add_number_prefix(t_printf_param p, size_t size, char sign);
-int				add_number_suffix(t_printf_param p, size_t size);
-int				add_padding(t_printf_param p, size_t size, char before);
+int				add_number_prefix(t_printf_param p, ssize_t size, char sign);
+int				add_number_suffix(t_printf_param p, ssize_t size);
+int				add_padding(t_printf_param p, ssize_t size, char before);
 void			free_printf_env(t_printf_env *e);
 void			init_printf_env(t_printf_env *e, const char *str);
 

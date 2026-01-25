@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_conversions_hex.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: picheval <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 15:34:20 by picheval          #+#    #+#             */
-/*   Updated: 2025/11/22 12:08:33 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 17:57:28 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_pointer(t_printf_env *e)
 {
 	void				*p;
 	unsigned long long	v;
-	size_t				p_size;
+	ssize_t				p_size;
 
 	p = va_arg(e->ap, void *);
 	v = (unsigned long long)p;
@@ -45,7 +45,7 @@ static void	print_hex(t_printf_env *e, char *base)
 {
 	unsigned int		x;
 	unsigned long long	u;
-	size_t				u_size;
+	ssize_t				u_size;
 	int					prefix_size;
 
 	x = va_arg(e->ap, unsigned int);
