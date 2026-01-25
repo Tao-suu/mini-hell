@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 16:48:53 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:37:46 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,54 +40,6 @@ void	free_data(t_data *data, char full, char even_files)
 		free_operator_tab(data->operators);
 }
 
-// static int	init_data_env(t_data *data)
-// {
-// 	char	*value;
-// 	char	*tmp;
-// 	char	buff[1000];
-// 	int		ret;
-
-// 	data->env = ft_tabdup(environ, TAB_EXTRA_SPACE);
-// 	if (!data->env)
-// 		return (print_sys_error("init_data_env ft_tabdup"));
-// 	data->env_size = ft_tablen(data->env) + TAB_EXTRA_SPACE;
-// 	if (!get_env_var(data, "PATH")
-// 		&& !set_env_key_value(data, "PATH", "/usr/local/sbin:/usr/local/bin:"
-// 			"/usr/sbin:/usr/bin:/sbin:/bin"))
-// 		return (FALSE);
-// 	if (!get_env_var(data, "PWD") && !set_env_key_value(data, "PWD", getcwd(buff, 1000)))
-// 		return (FALSE);
-// 	value = get_env_var(data, "SHLVL");
-// 	if (!value)
-// 		return (set_env_key_value(data, "SHLVL", "0"));
-// 	tmp = ft_itoa(ft_atoi(value) + 1);
-// 	if (!tmp)
-// 		return (print_sys_error("init_data_env ft_atoi"));
-// 	ret = set_env_key_value(data, "SHLVL", tmp);
-// 	free(tmp);
-// 	return (ret);
-// }
-
-// static int	init_data_set(t_data *data)
-// {
-// 	char	*value;
-
-// 	data->set = ft_tabdup(NULL, TAB_EXTRA_SPACE);
-// 	if (!data->set)
-// 		return (print_sys_error("init_data_set ft_tabdup"));
-// 	data->set_size = 0 + TAB_EXTRA_SPACE;
-// 	value = get_env_var(data, "PATH");
-// 	if (!value)
-// 		return (print_error("WTF no PATH in env"));
-// 	if (!set_set_key_value(data, "PATH", value))
-// 		return (FALSE);
-// 	value = get_env_var(data, "SHLVL");
-// 	if (!value)
-// 		return (print_error("WTF no SHLVL in env"));
-// 	return (set_set_key_value(data, "SHLVL", value));
-// }
-
-
 static int	init_env_shlvl(t_env **env)
 {
 	t_env	*elem;
@@ -108,11 +60,15 @@ static int	init_env_pwd_path(t_env **env)
 {
 	char	buff[5000];
 
-	if (!find_env_var(*env, "PWD") && !create_or_update_env(env, "PWD", getcwd(buff, 1000), STATE_ENV))
+	if (!find_env_var(*env, "PWD")
+		&& !create_or_update_env(env, "PWD", getcwd(buff, 1000), STATE_ENV))
 		return (FALSE);
-	if (!find_env_var(*env, "OLDPWD") && !create_or_update_env(env, "OLDPWD", NULL, STATE_ENV))
+	if (!find_env_var(*env, "OLDPWD")
+		&& !create_or_update_env(env, "OLDPWD", NULL, STATE_ENV))
 		return (FALSE);
-	if (!find_env_var(*env, "PATH") && !create_or_update_env(env, "PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", STATE_SET))
+	if (!find_env_var(*env, "PATH")
+		&& !create_or_update_env(env, "PATH", "/usr/local/sbin:/usr/local/bin:"
+			"/usr/sbin:/usr/bin:/sbin:/bin", STATE_SET))
 		return (FALSE);
 	return (TRUE);
 }
@@ -142,9 +98,6 @@ int	init_data(t_data *data)
 	ft_memset((void *)data, 0, sizeof(t_data));
 	if (!init_env(&(data->env)))
 		return (FALSE);
-	//print_debug_env(data->env);
-	// if (!init_data_env(data) || !init_data_set(data))
-	// 	return (FALSE);
 	if (!create_operators_array(&(data->operators)))
 		return (FALSE);
 	return (TRUE);

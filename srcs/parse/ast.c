@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:45:34 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 13:40:26 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:34:18 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ static int	create_cmd_pipeline(t_data *data, t_cmd **list, t_lexem *start,
 	return (TRUE);
 }
 
-// start included, end excluded
 static int	create_ast_recurse(t_data *data, t_ast **root, t_lexem *store[2],
 	int level)
 {

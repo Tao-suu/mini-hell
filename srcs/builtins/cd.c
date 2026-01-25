@@ -6,13 +6,13 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 10:42:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/21 06:40:58 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:30:54 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int builtin_cd_join_home_path(t_cmd *cmd, char *home)
+static int	builtin_cd_join_home_path(t_cmd *cmd, char *home)
 {
 	char	*new;
 
@@ -30,7 +30,7 @@ static int builtin_cd_join_home_path(t_cmd *cmd, char *home)
 		return (0);
 }
 
-static int builtin_cd_home(t_env **env, t_cmd *cmd)
+static int	builtin_cd_home(t_env **env, t_cmd *cmd)
 {
 	t_env	*home_var;
 
@@ -38,16 +38,16 @@ static int builtin_cd_home(t_env **env, t_cmd *cmd)
 		return (0);
 	home_var = find_env_var(*env, "HOME");
 	if (!home_var || !home_var->value)
-		return (print_bash_cd_error(NULL, "HOME not set"));
+		return (print_builtin_cd_error(NULL, "HOME not set"));
 	if (builtin_cd_join_home_path(cmd, home_var->value))
 		return (1);
 	if (chdir(home_var->value) < 0)
-		return (print_bash_cd_error(home_var->value, NULL));
+		return (print_builtin_cd_error(home_var->value, NULL));
 	create_or_update_env(env, "PWD", home_var->value, STATE_ENV);
 	return (0);
 }
 
-static int builtin_cd_old(t_env **env, t_cmd *cmd)
+static int	builtin_cd_old(t_env **env, t_cmd *cmd)
 {
 	t_env	*oldpwd_var;
 
@@ -55,15 +55,15 @@ static int builtin_cd_old(t_env **env, t_cmd *cmd)
 		return (0);
 	oldpwd_var = find_env_var(*env, "OLDPWD");
 	if (!oldpwd_var || !oldpwd_var->value)
-		return (print_bash_cd_error(NULL, "OLDPWD not set"));
+		return (print_builtin_cd_error(NULL, "OLDPWD not set"));
 	if (chdir(oldpwd_var->value) < 0)
-		return (print_bash_cd_error(oldpwd_var->value, NULL));
+		return (print_builtin_cd_error(oldpwd_var->value, NULL));
 	ft_putendl(oldpwd_var->value);
 	create_or_update_env(env, "PWD", oldpwd_var->value, STATE_ENV);
 	return (0);
 }
 
-static int builtin_cd_other(t_env **env, t_cmd *cmd)
+static int	builtin_cd_other(t_env **env, t_cmd *cmd)
 {
 	char	buffer[5000];
 
@@ -71,13 +71,12 @@ static int builtin_cd_other(t_env **env, t_cmd *cmd)
 		|| !ft_strcmp(cmd->argv[1], "~"))
 		return (0);
 	if (chdir(cmd->argv[1]) < 0)
-		return (print_bash_cd_error(cmd->argv[1], NULL));
+		return (print_builtin_cd_error(cmd->argv[1], NULL));
 	if (!getcwd(buffer, 5000))
-		return (print_bash_cd_error(cmd->argv[1], NULL));
+		return (print_builtin_cd_error(cmd->argv[1], NULL));
 	create_or_update_env(env, "PWD", buffer, STATE_ENV);
 	return (0);
 }
-
 
 int	builtin_cd(t_env **env, t_cmd *cmd)
 {
@@ -85,7 +84,7 @@ int	builtin_cd(t_env **env, t_cmd *cmd)
 	char	*pwd_var_tmp;
 
 	if (cmd->argc > 2)
-		return (print_bash_cd_error(NULL, "too many arguments"));
+		return (print_builtin_cd_error(NULL, "too many arguments"));
 	pwd_var = find_env_var(*env, "PWD");
 	if (!pwd_var || !pwd_var->value)
 		pwd_var_tmp = ft_strdup("");

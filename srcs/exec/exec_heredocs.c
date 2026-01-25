@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 13:16:25 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 17:07:33 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 20:30:28 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,44 +26,55 @@ static int	manage_heredoc(t_heredoc *elem)
 	{
 		line = readline("> ");
 		if (!line || !ft_strncmp(line, elem->delimiter, delim_size))
-		{
-			if (line)
-				free(line);
 			break ;
-		}
-		ft_putstr_fd(line, fd);
-		ft_putchar_fd('\n', fd);
+		ft_putendl_fd(line, fd);
 	}
+	if (line)
+		free(line);
 	close(fd);
 	if (g_signal)
+	{
+		g_signal = 0;
 		return (FALSE);
+	}
 	return (TRUE);
+}
+
+static int	exec_heredocs_list(t_data *data)
+{
+	t_heredoc	*lst;
+	int			ret;
+
+	lst = data->heredocs;
+	ret = TRUE;
+	while (lst)
+	{
+		ret = manage_heredoc(lst);
+		if (!ret)
+			break ;
+		lst = lst->next;
+	}
+	free_data(data, TRUE, FALSE);
+	return (ret);
 }
 
 int	exec_heredocs(t_data *data)
 {
-	t_heredoc	*lst;
 	pid_t		pid;
 	int			ret;
+	int			status;
 
-	lst = data->heredocs;
+	if (!data->heredocs)
+		return (TRUE);
 	pid = fork();
 	if (pid < 0)
 		return (print_sys_error("fork"));
 	if (pid == 0)
 	{
 		heredoc_signal();
-		ret = TRUE;
-		while (lst)
-		{
-			ret = manage_heredoc(lst);
-			if (!ret)
-				break ;
-			lst = lst->next;
-		}
-		free_data(data, TRUE, FALSE);
+		ret = exec_heredocs_list(data);
 		exit(ret);
 	}
-	waitpid(pid, &ret, 0);
-	return (compute_exit_code(ret));
+	waitpid(pid, &status, 0);
+	return (compute_exit_code(status));
 }

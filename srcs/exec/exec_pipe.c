@@ -6,82 +6,72 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/26 19:05:43 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/28 21:09:11 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	dup_and_close_fds(t_cmd *cmd, int pipefd[2], int mode)
+{
+	if (!cmd->next)
+		return ;
+	if (mode == STDOUT_FILENO)
+		dup2(pipefd[1], STDOUT_FILENO);
+	if (mode == STDIN_FILENO)
+		dup2(pipefd[0], STDIN_FILENO);
+	close(pipefd[0]);
+	close(pipefd[1]);
+}
+
+static int	create_pipe_fork(t_cmd *cmd, int pipefd[2])
+{
+	if (cmd->next && pipe(pipefd) < 0)
+		return (print_sys_error("pipe"));
+	cmd->pid = fork();
+	if (cmd->pid < 0)
+	{
+		dup_and_close_fds(cmd, pipefd, -1);
+		return (print_sys_error("fork"));
+	}
+	return (TRUE);
+}
+
+static void	exec_pipe_child(t_data *data, t_cmd *cmd, int pipefd[2],
+	int save_in)
+{
+	if (cmd->pid != 0)
+		return ;
+	close(save_in);
+	dfl_signal();
+	dup_and_close_fds(cmd, pipefd, STDOUT_FILENO);
+	if (is_builtin(cmd))
+		exec_builtin(data, cmd, 1);
+	exec_cmd(data, cmd);
+}
+
 int	exec_pipe(t_data *data, t_cmd *cmds)
 {
 	int		pipefd[2];
-	t_cmd	*cmd;
+	t_cmd	*cursor;
 	int		save_in;
 	int		ret;
 
-	if (cmds->ast)
-	{
-		int toto = fork();
-		if (toto == 0)
-		{
-			manage_redirections(cmds->redir);
-			ret = exec_ast(data, cmds->ast);
-			free_data(data, TRUE, FALSE);
-			exit(ret);
-		}
-		waitpid(toto, &ret, 0);
-		return (ret);
-	}
-	cmd = cmds;
-	if (!expand_pipe(data, cmd) || !expand_wildcards_cmd(cmd))
+	if (!expand_pipe(data, cmds) || !expand_wildcards_cmd(cmds))
 		return (FALSE);
-	if (!cmd->next && is_builtin(cmd))
-		return (exec_builtin(data, cmd, 0));
+	if (!cmds->next && is_builtin(cmds))
+		return (exec_builtin(data, cmds, 0));
 	save_in = dup(STDIN_FILENO);
-	while (cmd)
+	cursor = cmds;
+	while (cursor)
 	{
-		if (cmd->next && pipe(pipefd) < 0)
-		{
-			print_sys_error("pipe");
+		if (!create_pipe_fork(cursor, pipefd))
 			break ;
-		}
-		cmd->pid = fork();
-		if (cmd->pid < 0)
-		{
-			print_sys_error("fork");
-			if (cmd->next)
-			{
-				close(pipefd[0]);
-				close(pipefd[1]);
-			}
-			break ;
-		}
-		if (cmd->pid == 0)
-		{
-			close(save_in);
-			dfl_signal();
-			if (cmd->next)
-			{
-				close(pipefd[0]);
-				dup2(pipefd[1], STDOUT_FILENO);
-				close(pipefd[1]);
-			}
-			if (is_builtin(cmd))
-				exec_builtin(data, cmd, 1);
-			exec_cmd(data, cmd);
-		}
-		else
-		{
-			if (cmd->next)
-			{
-				close(pipefd[1]);
-				dup2(pipefd[0], STDIN_FILENO);
-				close(pipefd[0]);
-			}
-		}
-		cmd = cmd->next;
+		exec_pipe_child(data, cursor, pipefd, save_in);
+		dup_and_close_fds(cursor, pipefd, STDIN_FILENO);
+		cursor = cursor->next;
 	}
-	close(0);
+	close(STDIN_FILENO);
 	ret = wait_cmd_pid(cmds, &data->env);
 	dup2(save_in, STDIN_FILENO);
 	close(save_in);

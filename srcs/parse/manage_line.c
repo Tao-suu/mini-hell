@@ -6,13 +6,13 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:35:28 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 10:15:06 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:36:10 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	skip_quoted_area(char *line, int *i, char c)
+static int	skip_quoted(char *line, int *i, char c)
 {
 	int	j;
 
@@ -36,10 +36,10 @@ static int	detect_operator(t_data *data, char *line, int *i,
 	operator = find_operator_by_value(data->operators, &(line[*i]));
 	if (!operator)
 		return (FALSE);
-	if (*i > 0)	// To create previous word before to manage operator
+	if (*i > 0)
 		return (TRUE);
 	*tmp_op = operator;
-	*i += ft_strlen(operator->value); // To create the operator word
+	*i += ft_strlen(operator->value);
 	return (TRUE);
 }
 
@@ -76,8 +76,7 @@ static int	find_next_word(t_data *data, char *line, t_lexem *new_elem)
 		tmp_op = NULL;
 		if (detect_operator(data, line, &i, &tmp_op))
 			break ;
-		if (!skip_quoted_area(line, &i, '\'')
-			|| !skip_quoted_area(line, &i, '"'))
+		if (!skip_quoted(line, &i, '\'') || !skip_quoted(line, &i, '"'))
 			return (-1);
 		i++;
 	}
@@ -86,7 +85,7 @@ static int	find_next_word(t_data *data, char *line, t_lexem *new_elem)
 	new_elem->value = ft_substr(line, 0, i);
 	if (!new_elem->value)
 	{
-		ft_printf("ft_substr() error\n");
+		print_sys_error("ft_substr()\n");
 		return (-1);
 	}
 	if (!tmp_op)

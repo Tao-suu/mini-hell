@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/28 12:21:42 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/28 20:51:11 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,41 +26,48 @@
 # include <errno.h>
 # include "libft.h"
 
-# define GRAMMAR_FILE		"grammar.txt"
-# define GRAMMAR_NB_FIELDS	6
-# define GRAMMAR_FIELD_SEP	','
-# define GRAMMAR_DEP_SEP	'|'
-# define GRAMMAR_NULL		"NULL"
+# define GRAMMAR_FILE			"grammar.txt"
+# define GRAMMAR_NB_FIELDS		6
+# define GRAMMAR_FIELD_SEP		','
+# define GRAMMAR_DEP_SEP		'|'
+# define GRAMMAR_NULL			"NULL"
 
-# define OP_START			"START"
-# define OP_END				"END"
+# define OP_START				"START"
+# define OP_END					"END"
 
-# define TMP_FILE_NAME		"/tmp/heredoc"
+# define TMP_FILE_NAME			"/tmp/heredoc"
 
-# define TAB_EXTRA_SPACE	2
+# define TAB_EXTRA_SPACE		2
 
-# define NODE_TYPE_CMD		0
-# define NODE_TYPE_AND		1
-# define NODE_TYPE_OR		2
+# define NODE_TYPE_CMD			0
+# define NODE_TYPE_AND			1
+# define NODE_TYPE_OR			2
 
-# define CLR_RED			"\x1b[31m"
-# define CLR_GREEN			"\x1b[32m"
-# define CLR_MAG			"\x1B[35m"
-# define CLR_CYAN			"\x1B[36m"
-# define CLR_RESET			"\x1b[0m"
+# define CLR_RED				"\x1b[31m"
+# define CLR_GREEN				"\x1b[32m"
+# define CLR_MAG				"\x1B[35m"
+# define CLR_CYAN				"\x1B[36m"
+# define CLR_RESET				"\x1b[0m"
 
-extern int	g_signal;
+extern int						g_signal;
 
+typedef enum e_env_state		t_env_state;
 typedef struct s_operator		t_operator;
 typedef struct s_lexem			t_lexem;
 typedef struct s_ast			t_ast;
 typedef struct s_heredoc		t_heredoc;
 typedef struct s_redirection	t_redirection;
 typedef struct s_cmd			t_cmd;
-typedef enum e_env_state		t_env_state;
 typedef struct s_env			t_env;
 typedef struct s_data			t_data;
 typedef struct dirent			t_dirent;
+
+enum e_env_state {
+	STATE_ENV = 0,
+	STATE_SET = 1,
+	STATE_HIDDEN = 2,
+	STATE_DEAD = 3
+};
 
 struct s_operator {
 	int					id;
@@ -114,13 +121,6 @@ struct s_cmd {
 	t_redirection	*redir;
 };
 
-enum e_env_state {
-	STATE_ENV = 0,
-	STATE_SET = 1,
-	STATE_HIDDEN = 2,
-	STATE_DEAD = 3
-};
-
 struct s_env {
 	char		*key;
 	char		*value;
@@ -137,19 +137,27 @@ struct s_data {
 	t_heredoc	*heredocs;
 };
 
+/*****************/
+/*    STRUCTS    */
+/*****************/
+
 // struct_data.c
 void			free_data(t_data *data, char full, char even_files);
 int				init_data(t_data *data);
 
 // struct_env.c
+char			**get_env_tab_from_list(t_env *env);
+int				create_or_update_env(t_env **env, char *key, char *value,
+					t_env_state state);
+int				create_env_from_string(t_env **env, char *string,
+					t_env_state state);
+
+					// struct_env_utils.c
 void			free_env(t_env *elem);
 void			free_env_list(t_env *list);
-void			add_env_elem_in_list(t_env **list, t_env *elem);
-t_env			*create_env_elem(char *key, char *value, t_env_state state);
+int				create_and_add_env_elem(t_env **env, char *key, char *value,
+					t_env_state state);
 t_env			*find_env_var(t_env *env, char *key);
-int				create_or_update_env(t_env **env, char *key, char *value, t_env_state state);
-int				create_env_from_string(t_env **env, char *string, t_env_state state);
-char			 **get_env_tab_from_list(t_env *env);
 
 // struct_operator.c
 void			free_operator_list(t_operator *list);
@@ -195,6 +203,10 @@ void			free_heredoc_list(t_heredoc *list, char even_files);
 int				manage_heredoc_elem(t_heredoc **lst, t_redirection *redir,
 					char *delimiter);
 
+/*****************/
+/*    PARSING    */
+/*****************/
+
 // init_operators.c
 int				create_operators_array(t_operator ***tab);
 
@@ -203,6 +215,62 @@ int				manage_line(t_data *data);
 
 // manage_lexems.c
 int				manage_lexems(t_data *data);
+
+// ast.c
+int				create_ast(t_data *data);
+
+// ast_utlis.c
+t_lexem			*find_last_operator_in_level(t_lexem *start, t_lexem *end,
+					int level);
+void			skip_parenthesis(t_lexem **start, t_lexem *end);
+size_t			compute_nb_params(t_lexem *start, t_lexem *end);
+
+/*******************/
+/*    EXECUTION    */
+/*******************/
+
+// exec_*.c
+int				exec_pipe(t_data *data, t_cmd *cmds);
+int				exec_ast(t_data *data, t_ast *ast);
+void			exec_cmd(t_data *data, t_cmd *cmd);
+int				manage_redirections(t_redirection *red);
+int				exec_heredocs(t_data *data);
+//exit_code.c
+int				set_exit_code(t_env **env, int code);
+int				compute_exit_code(int status);
+int				wait_cmd_pid(t_cmd *cmd, t_env **env);
+//expand.c
+int				expand_pipe(t_data *data, t_cmd *cmds);
+//expand_utils.c
+int				manage_env_var_token(t_data *data, t_list **lst, char *line,
+					char expand);
+int				manage_string_token(t_data *data, t_list **lst, char *line,
+					int *i);
+//expand_tools.c
+int				count_var_key_size(char *arg);
+int				expand_find_next_word(char *line);
+int				expand_env_var(t_list **lst, char *line);
+//cmd_path_utils.c
+char			*get_cmd_path(t_env *env, char **argv, int *exit_code);
+
+/******************/
+/*    BUILTINS    */
+/******************/
+
+// *.c
+int				exec_builtin(t_data *data, t_cmd *cmd, int flag);
+int				is_builtin(t_cmd *cmd);
+int				builtin_pwd(void);
+int				builtin_exit(t_data *data, t_cmd *cmd, int flag);
+int				builtin_cd(t_env **env, t_cmd *cmd);
+unsigned char	builtin_echo(t_cmd *cmd);
+int				builtin_env(t_env *env);
+int				builtin_unset(t_env *env, t_cmd *cmd);
+int				builtin_export(t_env **env, t_cmd *cmd);
+
+/****************/
+/*    GLOBAL    */
+/****************/
 
 // signal.c
 void			heredoc_signal(void);
@@ -217,16 +285,8 @@ void			heredoc_handler(int signal);
 // loop.c
 void			main_loop(t_data *data);
 
-// ast.c
-int				create_ast(t_data *data);
-
-// ast_utlis.c
-t_lexem			*find_last_operator_in_level(t_lexem *start, t_lexem *end,
-					int level);
-void			skip_parenthesis(t_lexem **start, t_lexem *end);
-size_t			compute_nb_params(t_lexem *start, t_lexem *end);
-
 // tools.c
+int				merge_with_sep(char **ret, char *str1, char *str2, char *sep);
 char			*create_file_name(char *base_file_name, size_t number);
 
 // print.c
@@ -234,13 +294,21 @@ int				print_error(char *msg);
 int				print_sys_error(char *msg);
 
 // print_bash.c
-int				print_syntax_error(char *token);
-int				print_matching_error(char c);
+void			print_bash_name(void);
 int				print_bash_cmd_error(char *cmd, char *filename, char *msg);
 int				print_bash_error(char *msg);
-int				print_bash_exit_error(char *arg, char *msg);
-int				print_bash_cd_error(char *filename, char *msg);
-int				print_bash_export_error(char *arg);
+
+// print_syntax.c
+int				print_syntax_error(char *token);
+int				print_matching_error(char c);
+
+// print_builtin.c
+int				print_builtin_pwd_error(char *msg, char *syscall,
+					char *syscall_msg);
+int				print_builtin_echo_error(char *syscall_msg, char *msg);
+int				print_builtin_exit_error(char *arg, char *msg);
+int				print_builtin_cd_error(char *filename, char *msg);
+int				print_builtin_export_error(char *arg);
 
 // print_debug.c
 void			print_tabs(int nb_tabs);
@@ -248,33 +316,6 @@ void			print_cmd(t_cmd *cmd, int lvl);
 void			print_ast(t_ast *ast, int lvl);
 void			print_operators(t_operator **tab);
 void			print_debug_env(t_env *env);
-
-// exec/exec_*.c
-int				exec_pipe(t_data *data, t_cmd *cmds);
-int				exec_ast(t_data *data, t_ast *ast);
-void			exec_cmd(t_data *data, t_cmd *cmd);
-int				manage_redirections(t_redirection *red);
-int				exec_heredocs(t_data *data);
-
-// exec/exit_code.c
-int				set_exit_code(t_env **env, int code);
-int				compute_exit_code(int status);
-int				wait_cmd_pid(t_cmd *cmd, t_env **env);
-
-
-// builtins/*.c
-int				exec_builtin(t_data *data, t_cmd *cmd, int flag);
-int				is_builtin(t_cmd *cmd);
-int				builtin_pwd(t_env *env);
-int				builtin_exit(t_data *data, t_cmd *cmd, int flag);
-int				builtin_cd(t_env **env, t_cmd *cmd);
-unsigned char	builtin_echo(t_cmd *cmd);
-int				builtin_env(t_env *env);
-int				builtin_unset(t_env *env, t_cmd *cmd);
-int				builtin_export(t_env **env, t_cmd *cmd);
-
-// expand
-int				expand_pipe(t_data *data, t_cmd *cmds);
 
 // wildcards
 char			**get_files_name(void);

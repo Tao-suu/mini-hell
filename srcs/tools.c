@@ -6,11 +6,25 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 14:03:44 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 17:10:17 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:42:56 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	merge_with_sep(char **ret, char *str1, char *str2, char *sep)
+{
+	size_t	size;
+
+	size = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(sep) + 1;
+	*ret = (char *)ft_calloc(size, sizeof(char));
+	if (!*ret)
+		return (print_sys_error("merge_with_sep ft_calloc"));
+	ft_strlcpy(*ret, str1, size);
+	ft_strlcat(*ret, sep, size);
+	ft_strlcat(*ret, str2, size);
+	return (TRUE);
+}
 
 static size_t	compute_number_size(size_t tmp)
 {

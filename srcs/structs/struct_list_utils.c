@@ -6,13 +6,13 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:37:13 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/20 20:51:46 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:36:47 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		count_non_null_lst_elem(t_list *lst)
+static int	count_non_null_lst_elem(t_list *lst)
 {
 	int	ret;
 

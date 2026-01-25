@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 17:17:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/14 18:50:58 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:31:36 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ int	exec_ast(t_data *data, t_ast *ast)
 {
 	int	ast_ret;
 
-	//printf("ast type: %s\n", ast->node_type);
 	if (ast->node_type == NODE_TYPE_CMD)
 	{
 		if (!ast->cmds)
 			return (0);
-		//dprintf(2, "ast cmd: %s\n", ast->cmds->argv[0]);
 		return (exec_pipe(data, ast->cmds));
 	}
 	ast_ret = exec_ast(data, ast->left);

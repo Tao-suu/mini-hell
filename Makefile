@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/26 19:03:07 by tbez--du         ###   ########.fr        #
+#    Updated: 2026/01/28 20:48:27 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ WILDCARDS_DIR		= wildcards/
 SRCS_RAW			= main.c \
 					  $(STRUCT_DIR)struct_data.c \
 					  $(STRUCT_DIR)struct_env.c \
+					  $(STRUCT_DIR)struct_env_utils.c \
 					  $(STRUCT_DIR)struct_operator.c \
 					  $(STRUCT_DIR)struct_operator_utils.c \
 					  $(STRUCT_DIR)struct_lexem.c \
@@ -46,7 +47,10 @@ SRCS_RAW			= main.c \
 					  $(EXEC_DIR)exec_ast.c \
 					  $(EXEC_DIR)exec_heredocs.c \
 					  $(EXEC_DIR)expand.c \
+					  $(EXEC_DIR)expand_utils.c \
+					  $(EXEC_DIR)expand_tools.c \
 					  $(EXEC_DIR)exit_code.c \
+					  $(EXEC_DIR)cmd_path_utils.c \
 					  $(BUILTIN_DIR)exec_builtin.c \
  					  $(BUILTIN_DIR)pwd.c \
  					  $(BUILTIN_DIR)exit.c \
@@ -63,6 +67,8 @@ SRCS_RAW			= main.c \
 					  tools.c \
 					  print.c \
 					  print_bash.c \
+					  print_syntax.c \
+					  print_builtin.c \
 					  print_debug.c
 
 OBJS_RAW			= $(SRCS_RAW:.c=.o)

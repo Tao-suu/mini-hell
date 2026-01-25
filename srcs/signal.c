@@ -6,13 +6,13 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:50:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 16:58:02 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 22:09:21 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_signal;
+int	g_signal;
 
 void	heredoc_signal(void)
 {

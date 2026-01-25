@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:31:41 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/21 10:15:33 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:34:58 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,9 @@ static int	apply_level_and_print(t_lexem *elem, int *lvl)
 	elem->lvl = *lvl;
 	if (elem->type->lvl_up <= 0)
 		elem->lvl += elem->type->lvl_up;
-	// print_tabs(elem->lvl);
-	// ft_printf("%s%s%s\t%d (%s)\n", CLR_GREEN, elem->value, CLR_RESET,
-	//	elem->lvl, elem->type->name);
 	*lvl = elem->lvl;
 	if (elem->type->lvl_up > 0)
 		*lvl += elem->type->lvl_up;
-	// If a closed parenthesis has not been previously opened
 	if (*lvl < 0)
 		return (print_syntax_error(elem->value));
 	return (TRUE);

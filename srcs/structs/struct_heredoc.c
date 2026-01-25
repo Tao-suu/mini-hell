@@ -6,13 +6,13 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 12:50:09 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 16:59:42 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 22:04:31 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void free_heredoc(t_heredoc *elem, char even_files)
+static void	free_heredoc(t_heredoc *elem, char even_files)
 {
 	if (elem->delimiter)
 		free(elem->delimiter);

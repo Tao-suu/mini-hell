@@ -6,18 +6,54 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:12:34 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/25 14:31:58 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:31:17 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void close_dup(int *std)
+static void	close_dup(int flag, int *std)
 {
+	if (flag)
+		return ;
 	dup2(std[0], 0);
 	dup2(std[1], 1);
 	close(std[0]);
 	close(std[1]);
+}
+
+static int	exec_builtin_cmd(t_data *data, t_cmd *cmd, int flag, int fd[2])
+{
+	if (!ft_strcmp(cmd->argv[0], "exit"))
+	{
+		close_dup(flag, fd);
+		return (builtin_exit(data, cmd, flag));
+	}
+	if (!ft_strcmp(cmd->argv[0], "pwd"))
+		return (builtin_pwd());
+	if (!ft_strcmp(cmd->argv[0], "cd"))
+		return (builtin_cd(&data->env, cmd));
+	if (!ft_strcmp(cmd->argv[0], "echo"))
+		return (builtin_echo(cmd));
+	if (!ft_strcmp(cmd->argv[0], "env"))
+		return (builtin_env(data->env));
+	if (!ft_strcmp(cmd->argv[0], "unset"))
+		return (builtin_unset(data->env, cmd));
+	if (!ft_strcmp(cmd->argv[0], "export"))
+		return (builtin_export(&data->env, cmd));
+	return (1);
+}
+
+static int	quit_properly(t_data *data, int flag, int fd[2], int ret)
+{
+	if (flag)
+	{
+		free_data(data, TRUE, FALSE);
+		exit(ret);
+	}
+	close_dup(flag, fd);
+	set_exit_code(&(data->env), ret);
+	return (ret);
 }
 
 int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
@@ -31,68 +67,28 @@ int	exec_builtin(t_data *data, t_cmd *cmd, int flag)
 		fd[1] = dup(1);
 	}
 	if (!manage_redirections(cmd->redir))
-	{
-		if (flag)
-		{
-			free_data(data, TRUE, FALSE);
-			exit(1);
-		}
-		set_exit_code(&(data->env), 1);
-		return (1);
-	}
-
-	if (!ft_strcmp(cmd->argv[0], "exit"))
-	{
-		close_dup(fd);
-		ret = builtin_exit(data, cmd, flag);
-	}
-	else if (!ft_strcmp(cmd->argv[0], "pwd"))
-		ret = builtin_pwd(data->env);
-	else if (!ft_strcmp(cmd->argv[0], "cd"))
-		ret = builtin_cd(&data->env, cmd);
-	else if (!ft_strcmp(cmd->argv[0], "echo"))
-	 	ret = builtin_echo(cmd);
-	else if (!ft_strcmp(cmd->argv[0], "env"))
-		ret = builtin_env(data->env);
-	else if (!ft_strcmp(cmd->argv[0], "unset"))
-		ret = builtin_unset(data->env, cmd);
-	else if (!ft_strcmp(cmd->argv[0], "export"))
-		ret = builtin_export(&data->env, cmd);
-	else
-		ret = 1;
-	
-	if (flag)
-	{
-		free_data(data, TRUE, FALSE);
-		exit(ret);
-	}
-
-	dup2(fd[1], 1);
-	dup2(fd[0], 0);
-	close(fd[0]);
-	close(fd[1]);
-	
-	set_exit_code(&(data->env), ret);
-	return (ret);
+		return (quit_properly(data, flag, fd, 1));
+	ret = exec_builtin_cmd(data, cmd, flag, fd);
+	return (quit_properly(data, flag, fd, ret));
 }
 
 int	is_builtin(t_cmd *cmd)
 {
 	if (!cmd->argv || !cmd->argv[0])
-		return (0);
+		return (FALSE);
 	if (!ft_strcmp(cmd->argv[0], "pwd"))
-		return (1);
+		return (TRUE);
 	if (!ft_strcmp(cmd->argv[0], "env"))
-		return (1);
+		return (TRUE);
 	if (!ft_strcmp(cmd->argv[0], "exit"))
-		return (1);
+		return (TRUE);
 	if (!ft_strcmp(cmd->argv[0], "cd"))
-		return (1);
+		return (TRUE);
 	if (!ft_strcmp(cmd->argv[0], "unset"))
-		return (1);
+		return (TRUE);
 	if (!ft_strcmp(cmd->argv[0], "export"))
-		return (1);
+		return (TRUE);
 	if (!ft_strcmp(cmd->argv[0], "echo"))
-		return (1);
-	return (0);
+		return (TRUE);
+	return (FALSE);
 }

@@ -6,13 +6,13 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 00:14:28 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/25 18:24:49 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 21:30:06 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		is_valid_arg(char *arg)
+static int	is_valid_arg(char *arg)
 {
 	int	j;
 
@@ -43,12 +43,12 @@ unsigned char	builtin_echo(t_cmd *cmd)
 	while (cmd->argv[i])
 	{
 		if (ft_putstr(cmd->argv[i]) < 0)
-			return (!print_sys_error(NULL));
+			return (print_builtin_echo_error("write error", NULL));
 		if (cmd->argv[i + 1] && ft_putchar(' ') < 0)
-			return (!print_sys_error(NULL));
+			return (print_builtin_echo_error("write error", NULL));
 		i++;
 	}
 	if (!flag && ft_putchar('\n') < 0)
-		return (!print_sys_error(NULL));
+		return (print_builtin_echo_error("write error", NULL));
 	return (0);
 }

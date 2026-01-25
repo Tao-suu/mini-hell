@@ -6,96 +6,33 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 03:38:16 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/20 23:08:02 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/25 22:17:17 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_env(t_env *elem)
+static int	get_env_size(t_env *env, t_env_state state)
 {
-	if (!elem)
-		return ;
-	if (elem->key)
-		free(elem->key);
-	if (elem->value)
-		free(elem->value);
-	free(elem);
-}
-
-void	free_env_list(t_env *list)
-{
-	t_env	*cursor;
-
-	while (list)
-	{
-		cursor = list;
-		list = list->next;
-		free_env(cursor);
-	}
-}
-
-void	add_env_elem_in_list(t_env **list, t_env *elem)
-{
-	t_env	*cursor;
-
-	if (!*list)
-	{
-		*list = elem;
-		return ;
-	}
-	cursor = *list;
-	while (cursor->next)
-		cursor = cursor->next;
-	cursor->next = elem;
-}
-
-t_env	*create_env_elem(char *key, char *value, t_env_state state)
-{
-	t_env	*ret;
-
-	ret = (t_env *)ft_calloc(1, sizeof(t_env));
-	if (!ret)
-		return (NULL);
-	ret->key = key;
-	ret->value = value;
-	ret->state = state;
-	return (ret);
-}
-
-t_env	*find_env_var(t_env *env, char *key)
-{
-	while (env)
-	{
-		if (!ft_strcmp(env->key, key))
-			return (env);
-		env = env->next;
-	}
-	return (NULL);
-}
-
-int	get_env_size(t_env *env, t_env_state state)
-{
-	int i;
+	int	i;
 
 	i = 0;
 	while (env)
 	{
 		if (env->value && env->state <= state)
 			i++;
-		env = env->next;		
+		env = env->next;
 	}
 	return (i);
 }
 
-char **get_env_tab_from_list(t_env *env)
+char	**get_env_tab_from_list(t_env *env)
 {
-	int 	len;
+	int		len;
 	int		i;
-	int		line_len;
 	char	**arr;
 
-	len	= get_env_size(env, STATE_ENV);
+	len = get_env_size(env, STATE_ENV);
 	arr = ft_calloc(len + 1, sizeof(char *));
 	if (!arr)
 		return (NULL);
@@ -107,26 +44,35 @@ char **get_env_tab_from_list(t_env *env)
 			env = env->next;
 			continue ;
 		}
-		line_len = ft_strlen(env->key) + 2 + ft_strlen(env->value);
-		arr[i] = ft_calloc(line_len, 1);
-		if (!arr[i])
+		if (!merge_with_sep(&(arr[i]), env->key, env->value, "="))
 		{
 			ft_tabclear(arr);
 			return (NULL);
 		}
-		ft_strlcat(arr[i], env->key, line_len);
-		ft_strlcat(arr[i], "=", line_len);
-		ft_strlcat(arr[i], env->value, line_len);
 		env = env->next;
 		i++;
 	}
 	return (arr);
 }
 
+static int	create_new_env(t_env **env, char *key, char *tmp_value,
+	t_env_state state)
+{
+	char	*tmp_key;
+
+	tmp_key = ft_strdup(key);
+	if (!tmp_key)
+	{
+		if (tmp_value)
+			free(tmp_value);
+		return (print_sys_error("ft_strdup"));
+	}
+	return (create_and_add_env_elem(env, tmp_key, tmp_value, state));
+}
+
 int	create_or_update_env(t_env **env, char *key, char *value, t_env_state state)
 {
 	t_env	*elem;
-	char	*tmp_key;
 	char	*tmp_value;
 
 	tmp_value = NULL;
@@ -145,28 +91,11 @@ int	create_or_update_env(t_env **env, char *key, char *value, t_env_state state)
 		elem->value = tmp_value;
 		return (TRUE);
 	}
-	tmp_key = ft_strdup(key);
-	if (!tmp_key)
-	{
-		if (tmp_value)
-			free(tmp_value);
-		return (print_sys_error("ft_strdup"));
-	}
-	elem = create_env_elem(tmp_key, tmp_value, state);
-	if (!elem)
-	{
-		free(tmp_key);
-		if (tmp_value)
-			free(tmp_value);
-		return (print_sys_error("create_env_elem"));
-	}
-	add_env_elem_in_list(env, elem);
-	return (TRUE);
+	return (create_new_env(env, key, tmp_value, state));
 }
 
 int	create_env_from_string(t_env **env, char *string, t_env_state state)
 {
-	t_env	*elem;
 	char	*equal_index;
 	char	*key;
 	char	*value;
@@ -185,13 +114,5 @@ int	create_env_from_string(t_env **env, char *string, t_env_state state)
 		free(key);
 		return (print_sys_error("ft_substr value"));
 	}
-	elem = create_env_elem(key, value, state);
-	if (!elem)
-	{
-		free(key);
-		free(value);
-		return (print_sys_error("create_env_elem"));
-	}
-	add_env_elem_in_list(env, elem);
-	return (TRUE);
+	return (create_and_add_env_elem(env, key, value, state));
 }
