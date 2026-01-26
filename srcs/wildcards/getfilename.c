@@ -6,7 +6,7 @@
 /*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:23:02 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/24 15:46:31 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/26 17:22:17 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static char	**get_filename_arr(DIR *dir)
 			return (ft_tabclear(ret), NULL);
 		ret[i++] = ft_strdup(file->d_name);
 	}
+	if (!ret)
+		ret = ft_calloc(1, sizeof(char *));
 	return (ret);
 }
 
