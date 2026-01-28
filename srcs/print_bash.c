@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 02:57:08 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/14 19:00:31 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/28 10:41:10 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ static int	print_syntax_token_error(char *msg, char *token, char c)
 	print_bash_name();
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(" `", 2);
-	ft_putstr_fd(CLR_RED, 2);
+//	ft_putstr_fd(CLR_RED, 2);
 	if (token)
 		ft_putstr_fd(token, 2);
 	else
 		ft_putchar_fd(c, 2);
-	ft_putstr_fd(CLR_RESET, 2);
+//	ft_putstr_fd(CLR_RESET, 2);
 	ft_putendl_fd("'", 2);
 	return (FALSE);
 }

@@ -6,7 +6,7 @@
 /*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:24:12 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/26 18:48:24 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/28 20:32:59 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	check_pattern(char *file, char *pattern)
 {
 	int	i;
 
+	if (*pattern != '.' && *file == '.')
+		return (0);
 	i = 0;
 	while (*pattern && file[i])
 	{
@@ -180,8 +182,8 @@ int		expand_wildcards_argv(t_cmd *cmd, char **files_name)
 	i = 0;
 	while (cmd->argv[i])
 	{
-		if (ft_strchr(cmd->argv[i], '*'))
-		{
+		if (cmd->to_expand[i] == 'y')
+		{		
 			if (expand_wildcards(cmd->argv + i, files_name))
 			{
 				if (!retokenise(cmd, i))
@@ -195,17 +197,110 @@ int		expand_wildcards_argv(t_cmd *cmd, char **files_name)
 	return (1);
 }
 
+void	swap_str(char **a, char **b)
+{
+	char	*tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+char	minimize(char c)
+{
+	if (c >= 'A' && c <= 'Z')
+		return (c + 32);
+	return (c);
+}
+
+int		weird_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i])
+	{
+		if (minimize(s1[i]) != minimize(s2[i]))
+			break ;
+		i++;
+	}
+	return (minimize(s1[i]) - minimize(s2[i]));
+}
+
+void	sort_files(char **files)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (files[i])
+	{
+		j = i + 1;
+		while (files[j])
+		{
+			if (weird_strcmp(files[i], files[j]) > 0)
+				swap_str(&files[i], &files[j]);
+			j++;
+		}
+		i++;
+	}
+}
+
+int	how_many_match_pattern(char *name, char **files)
+{
+	int	i;
+
+	i = 0;
+	while (*files)
+	{
+		if (check_pattern(*files, name))
+			i++;
+		files++;
+	}
+	return (i);
+}
+
+int		expand_wildcards_redir(t_cmd *cmd, char **files)
+{
+	t_redirection	*redir;
+
+	redir = cmd->redir;
+	while (redir)
+	{
+		if (!redir->name /*|| !ft_strcmp(redir->operator->value, "<<")*/)
+		{
+			redir->valid_wild = 1;
+			redir = redir->next;
+			continue ;
+		}
+		if (ft_strchr(redir->name, '*') && how_many_match_pattern(redir->name, files) < 1)
+			redir->valid_wild = 1;
+		else if (ft_strchr(redir->name, '*') && how_many_match_pattern(redir->name, files) > 1)
+			redir->valid_wild = 0;
+		else if (ft_strchr(redir->name, '*'))
+		{
+			expand_wildcards(&redir->name, files);
+			redir->valid_wild = 1;
+		}
+		else
+			redir->valid_wild = 1;
+		redir = redir->next;
+	}
+	return (1);
+}
+
 int		expand_wildcards_cmd(t_cmd *cmd)
 {
 	char	**files_name;
 
 	(void)cmd;
 	files_name = get_files_name();
+	sort_files(files_name);
 	if (!files_name)
 		return (0);
 	while (cmd)
 	{
-		if (!expand_wildcards_argv(cmd, files_name))
+		if (!(expand_wildcards_argv(cmd, files_name) && expand_wildcards_redir(cmd, files_name)))
 			return (0);
 		cmd = cmd->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 13:51:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 17:47:56 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/28 09:52:27 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	main(void)
 {
 	t_data	data;
+	int		ret;
 
 	init_signal();
 	if (!init_data(&data))
@@ -35,6 +36,7 @@ int	main(void)
 		// 2) nb args
 		// 3) nb_args = 0 exit exit_status
 
+	ret = ft_atoi(find_env_var(data.env, "?")->value);
 	free_data(&data, TRUE, TRUE);
-	return (0);
+	return (ret);
 }

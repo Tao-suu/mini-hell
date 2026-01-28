@@ -6,7 +6,7 @@
 /*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:23:02 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/26 17:22:17 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/28 09:38:07 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ static char	**get_filename_arr(DIR *dir)
 		file = readdir(dir);
 		if (!file)
 			break ;
-		if (!ft_strcmp(file->d_name, ".") || !ft_strcmp(file->d_name, ".."))
-			continue ;
 		ret = realloc_arr(ret);
 		if (!ret)
 			return (ft_tabclear(ret), NULL);

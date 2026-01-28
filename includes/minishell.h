@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/26 19:06:16 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/28 12:21:42 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ struct s_heredoc {
 
 struct s_redirection {
 	char			*name;
+	int				valid_wild;
 	t_operator		*operator;
 	t_heredoc		*heredoc;
 	t_redirection	*next;
@@ -106,6 +107,7 @@ struct s_cmd {
 	char			*path;
 	int				argc;
 	char			**argv;
+	char			*to_expand;
 	int				pid;
 	t_ast			*ast;
 	t_cmd			*next;

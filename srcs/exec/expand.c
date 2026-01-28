@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/22 18:12:42 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/28 12:19:23 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,53 @@ static int	expand_token(t_data *data, t_list **lst, char *line, char expand)
 	return (TRUE);
 }
 
+static int	is_to_expand_argv(char *s)
+{
+	char	quote;
+	int		i;
+
+	i = 0;
+	quote = 0;
+	while (s[i])
+	{
+		if (s[i] == '*')
+			return (1);
+		if (s[i] == '"' || s[i] == '\'')
+		{
+			quote = s[i++];
+			while (s[i] && s[i] != quote)
+				i++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int		set_is_to_expand(t_cmd *cmd)
+{
+	int	i;
+
+	if (!cmd->argv)
+		return (1);
+	i = 0;
+	while (cmd->argv[i])
+		i++;
+	cmd->to_expand = ft_calloc(i + 1, 1);
+	if (!cmd->to_expand)
+		return (0);
+	i = 0;
+	while (cmd->argv[i])
+	{
+		if (is_to_expand_argv(cmd->argv[i]))
+			cmd->to_expand[i] = 'y';
+		else
+			cmd->to_expand[i] = 'n';
+		i++;
+	}
+	cmd->to_expand[i] = 0;
+	return (1);
+}
+
 // Cree une liste chainee contenant chaque argv expanded
 // Transforme cette liste en tableau pour remplacer l'ancien cmd->argv
 static int	expand_cmd(t_data *data, t_cmd *cmd)
@@ -304,7 +351,7 @@ int	expand_pipe(t_data *data, t_cmd *cmds)
 
 	while (cmds)
 	{
-		if (!expand_cmd(data, cmds))
+		if (!set_is_to_expand(cmds) || !expand_cmd(data, cmds))
 			return (FALSE);
 		tmp = cmds->redir;
 		while (tmp)
