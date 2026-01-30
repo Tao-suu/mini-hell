@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 18:22:50 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:45:48 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	main_loop(t_data *data)
 			printf("\n");
 		else if (exit_code == 131)
 			printf("quit (core dumped)\n");
-		data->line = readline("blop $> ");
+		// TODO: generate prompt dynamicaly
+		data->line = readline("~o~ $> ");
 		if (!data->line)
 			break ;
 		manage_loop(data);

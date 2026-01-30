@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 17:59:12 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:45:14 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ struct s_cmd {
 	char			*path;
 	int				argc;
 	char			**argv;
+	char			**argv_expanded;
 	char			*to_expand;
 	int				pid;
 	t_ast			*ast;
@@ -324,5 +325,7 @@ void			print_debug_env(t_env *env);
 // wildcards
 char			**get_files_name(void);
 int				expand_wildcards_cmd(t_cmd *cmd);
+int				check_pattern(char *file, char *pattern);
+int				expand_wildcards_redir(t_cmd *cmd, char **files);
 
 #endif
