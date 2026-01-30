@@ -6,7 +6,7 @@
 /*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 15:04:35 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/30 16:41:15 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/30 19:54:53 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ static int	set_valid_wildcard(t_redirection *redir, char **files)
 	else if (ft_strchr(redir->name, '*') && match_number(redir->name, files) < 1)
 		redir->valid_wild = 1;
 	else if (ft_strchr(redir->name, '*') && match_number(redir->name, files) > 1)
+	{
 		redir->valid_wild = 0;
+	}
 	else if (ft_strchr(redir->name, '*'))
 	{
 		redir->valid_wild = 1;

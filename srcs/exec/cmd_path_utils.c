@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 19:29:44 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/28 21:00:21 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/30 18:26:03 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	test_cmd_paths(t_env *env, char *cmd_name, char **cmd_path)
 		*cmd_path = NULL;
 	}
 	if (paths)
-		free(paths);
+		ft_tabclear(paths);
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:24:12 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/30 16:25:29 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/30 19:06:34 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,40 +28,27 @@ int	check_pattern(char *file, char *pattern)
 		return (1);
 	return (0);
 }
-/*
-int	sub_expand_wildcards_redir(char **str, char **files)
-{
-	int	i;
 
-	i = 0;
-	while (files[i])
-	{
-		if (check_pattern(files[i], *str))
-		{
-			free(*str);
-			*str = ft_strdup(files[i]);
-			if (!*str)
-				return (0);
-			return (1);
-		}
-		i++;
-	}
-	return (1);
-}
-*/
 int	expand_wildcards(char *str, char **files, t_list **new_argv)
 {
 	int	i;
+	int	flag;
 
 	i = 0;
+	flag = 0;
 	while (files[i])
 	{
 		if (str[0] != '.' && *(files[i]) == '.')
 			;
 		else if (check_pattern(files[i], str))
+		{
+			flag = 1;
 			ft_lstadd_back(new_argv, ft_lstnew(ft_strdup(files[i])));
+		}
 		i++;
 	}
+	if (!flag)
+		ft_lstadd_back(new_argv, ft_lstnew(ft_strdup(str)));
 	return (1);
 }
 
@@ -166,52 +153,7 @@ void	sort_files(char **files)
 		i++;
 	}
 }
-/*
-int	how_many_match_pattern(char *name, char **files)
-{
-	int	i;
-	int	j;
 
-	j = 0;
-	i = 0;
-	while (files[j])
-	{
-		if (check_pattern(files[j], name))
-			i++;
-		j++;
-	}
-	return (i);
-}
-*//*
-int		expand_wildcards_redir(t_cmd *cmd, char **files)
-{
-	t_redirection	*redir;
-
-	redir = cmd->redir;
-	while (redir)
-	{
-		if (!redir->name)
-		{
-			redir->valid_wild = 1;
-			redir = redir->next;
-			continue ;
-		}
-		if (ft_strchr(redir->name, '*') && how_many_match_pattern(redir->name, files) < 1)
-			redir->valid_wild = 1;
-		else if (ft_strchr(redir->name, '*') && how_many_match_pattern(redir->name, files) > 1)
-			redir->valid_wild = 0;
-		else if (ft_strchr(redir->name, '*'))
-		{
-			sub_expand_wildcards_redir(&redir->name, files);
-			redir->valid_wild = 1;
-		}
-		else
-			redir->valid_wild = 1;
-		redir = redir->next;
-	}
-	return (1);
-}
-*/
 int		expand_wildcards_cmd(t_cmd *cmd)
 {
 	char	**files_name;
