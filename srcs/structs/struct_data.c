@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 21:37:46 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/30 17:13:24 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,7 @@ static int	init_env(t_env **env)
 	while (environ[++i])
 	{
 		if (!create_env_from_string(env, environ[i], STATE_ENV))
-		{
-			free_env_list(*env);
 			return (FALSE);
-		}
 	}
 	if (!init_env_shlvl(env))
 		return (FALSE);

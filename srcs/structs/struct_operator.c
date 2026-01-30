@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:21:25 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/09 02:32:42 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/30 16:37:24 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_operator	*create_operator_elem(char **fields)
 
 	if (!fields || ft_tablen(fields) != GRAMMAR_NB_FIELDS)
 	{
-		print_error("Lexer grammar file: Invalid fields count");
+		print_error("Lexer grammar: Invalid fields count");
 		return (NULL);
 	}
 	ret = (t_operator *)ft_calloc(sizeof(t_operator), 1);
@@ -76,9 +76,7 @@ t_operator	*create_operator_elem(char **fields)
 		print_sys_error("create_operator_elem / ft_calloc");
 		return (NULL);
 	}
-	ret->id = atoi(fields[0]);
-	ret->name = ft_strdup(fields[1]);
-	if (!ret->name
+	if (!create_operator_field(&(ret->name), fields[1])
 		|| !create_operator_field(&(ret->value), fields[2])
 		|| !create_operator_field(&(ret->tmp_before), fields[4])
 		|| !create_operator_field(&(ret->tmp_after), fields[5]))
@@ -86,6 +84,7 @@ t_operator	*create_operator_elem(char **fields)
 		free_operator_elem(ret);
 		return (NULL);
 	}
+	ret->id = atoi(fields[0]);
 	ret->lvl_up = atoi(fields[3]);
 	return (ret);
 }

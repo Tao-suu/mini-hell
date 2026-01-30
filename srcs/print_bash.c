@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 02:57:08 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/28 20:53:53 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/30 17:59:01 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@ void	print_bash_name(void)
 {
 	// TODO: replace 'bash' by $TERM
 	ft_putstr_fd("bash: ", 2);
+}
+
+void	print_bash_heredoc_warning(int nb_execution, char *delimiter)
+{
+	print_bash_name();
+	ft_putstr_fd("warning: here-document at line ", 2);
+	ft_putnbr_fd(nb_execution, 2);
+	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd(delimiter, 2);
+	ft_putendl_fd("')", 2);
 }
 
 int	print_bash_cmd_error(char *cmd, char *filename, char *msg)

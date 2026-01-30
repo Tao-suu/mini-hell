@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/28 20:48:27 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/30 16:10:56 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRCS_RAW			= main.c \
 					  $(STRUCT_DIR)struct_list_utils.c \
 					  $(STRUCT_DIR)struct_heredoc.c \
 					  $(PARSE_DIR)init_operators.c \
+					  $(PARSE_DIR)operators_list.c \
 					  $(PARSE_DIR)manage_line.c \
 					  $(PARSE_DIR)manage_lexems.c \
 					  $(PARSE_DIR)ast.c \

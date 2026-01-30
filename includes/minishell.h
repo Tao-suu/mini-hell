@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/28 20:51:11 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/30 17:59:12 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # include <errno.h>
 # include "libft.h"
 
-# define GRAMMAR_FILE			"grammar.txt"
 # define GRAMMAR_NB_FIELDS		6
 # define GRAMMAR_FIELD_SEP		','
 # define GRAMMAR_DEP_SEP		'|'
@@ -131,6 +130,7 @@ struct s_env {
 struct s_data {
 	t_env		*env;
 	t_operator	**operators;
+	int			nb_execution;
 	char		*line;
 	t_lexem		*head;
 	t_ast		*ast;
@@ -209,6 +209,9 @@ int				manage_heredoc_elem(t_heredoc **lst, t_redirection *redir,
 
 // init_operators.c
 int				create_operators_array(t_operator ***tab);
+
+// operators_list.c
+int				create_operators_list(t_operator **lst);
 
 // manage_line.c
 int				manage_line(t_data *data);
@@ -295,6 +298,7 @@ int				print_sys_error(char *msg);
 
 // print_bash.c
 void			print_bash_name(void);
+void			print_bash_heredoc_warning(int nb_execution, char *delimiter);
 int				print_bash_cmd_error(char *cmd, char *filename, char *msg);
 int				print_bash_error(char *msg);
 

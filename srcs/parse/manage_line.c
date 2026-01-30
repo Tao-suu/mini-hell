@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:35:28 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 21:36:10 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/30 18:20:27 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static t_operator	*find_appropriate_string_op(t_data *data)
 			if (data->operators[i]->before[j]->id == prev_lexem->type->id)
 				return (data->operators[i]);
 	}
-	return (data->operators[i]);
+	return (data->operators[0]);
 }
 
 static int	find_next_word(t_data *data, char *line, t_lexem *new_elem)
@@ -85,7 +85,7 @@ static int	find_next_word(t_data *data, char *line, t_lexem *new_elem)
 	new_elem->value = ft_substr(line, 0, i);
 	if (!new_elem->value)
 	{
-		print_sys_error("ft_substr()\n");
+		print_sys_error("ft_substr()");
 		return (-1);
 	}
 	if (!tmp_op)
@@ -105,6 +105,8 @@ int	manage_line(t_data *data)
 	{
 		while (ft_isspace(data->line[i]))
 			i++;
+		if (data->line[i] == '#')
+			break ;
 		tmp_elem = create_lexem_elem();
 		if (!tmp_elem)
 			return (FALSE);
