@@ -84,7 +84,7 @@ t_operator	*create_operator_elem(char **fields)
 		free_operator_elem(ret);
 		return (NULL);
 	}
-	ret->id = atoi(fields[0]);
-	ret->lvl_up = atoi(fields[3]);
+	ret->id = ft_atoi(fields[0]);
+	ret->lvl_up = ft_atoi(fields[3]);
 	return (ret);
 }
