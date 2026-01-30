@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 21:40:47 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/17 12:11:42 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/30 14:23:19 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	free_cmd(t_cmd *elem)
 		free_ast_tree(elem->ast);
 	if (elem->redir)
 		free_redirection_list(elem->redir);
+	if (elem->to_expand)
+		free(elem->to_expand);
 	free(elem);
 }
 

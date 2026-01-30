@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/28 20:48:27 by picheval         ###   ########.fr        #
+#    Updated: 2026/01/30 16:26:08 by tbez--du         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +61,7 @@ SRCS_RAW			= main.c \
 					  $(BUILTIN_DIR)export.c \
 					  $(WILDCARDS_DIR)getfilename.c \
 					  $(WILDCARDS_DIR)expand_wildcards.c \
+					  $(WILDCARDS_DIR)expand_wildcards_redir.c \
 					  signal.c \
 					  signal_handler.c \
 					  loop.c \
