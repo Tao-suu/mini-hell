@@ -67,6 +67,7 @@ int	builtin_export(t_env **env, t_cmd *cmd)
 			*equal_index = 0;
 			equal_index++;
 		}
+		// TODO: si value est NULL, ne pas modifier la key si elle existe MAIS la creer si elle n'existe pas
 		if (!create_or_update_env(env, cmd->argv[i], equal_index, STATE_ENV))
 			ret = 1;
 	}

@@ -114,6 +114,7 @@ static int	expand_cmd(t_data *data, t_cmd *cmd)
 	if (cmd->argv)
 		ft_tabclear(cmd->argv);
 	cmd->argv = argv;
+	cmd->argc = ft_tablen(cmd->argv);
 	return (TRUE);
 }
 

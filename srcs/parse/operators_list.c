@@ -43,7 +43,8 @@ static int	create_operators_2(t_operator **list)
 		|| !manage_operator_line(list, "13,END,NULL,0,cmd|file|param|PC"
 			"|START,NULL")
 		|| !manage_operator_line(list, "14,SEMI,;,0,NULL,NULL")
-		|| !manage_operator_line(list, "15,ESPER,&,0,NULL,NULL"))
+		|| !manage_operator_line(list, "15,ESPER,&,0,NULL,NULL")
+		|| !manage_operator_line(list, "15,BANG,!,0,NULL,NULL"))
 		return (FALSE);
 	return (TRUE);
 }
