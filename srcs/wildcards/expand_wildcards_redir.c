@@ -6,7 +6,7 @@
 /*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 15:04:35 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/31 17:11:01 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:44:17 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ static int	match_number(char *name, char **files)
 	j = 0;
 	while (files[i])
 	{
+		if (name[0] != '.' && files[i][0] == '.')
+		{
+			i++;
+			continue ;
+		}
 		if (check_pattern(files[i], name))
 			j++;
 		i++;
@@ -58,7 +63,12 @@ static int	sub_expand_wildcards_redir(char **str, char **files)
 	i = 0;
 	while (files[i])
 	{
-		if (check_pattern(files[i], *str))
+		if (str[0][0] != '.' && files[i][0] == '.')
+		{
+			i++;
+			continue ;
+		}
+		else if (check_pattern(files[i], *str))
 		{
 			free(*str);
 			*str = ft_strdup(files[i]);
