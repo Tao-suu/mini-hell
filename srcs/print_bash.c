@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 02:57:08 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 17:59:01 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:00:47 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,18 @@ void	print_bash_name(void)
 {
 	// TODO: replace 'bash' by $TERM
 	ft_putstr_fd("bash: ", 2);
+}
+
+int	print_bash_ambiguous_redirection(char *name)
+{
+	write(2, "bash: ", 6);
+	if (name)
+	{
+		write(2, name, ft_strlen(name));
+		write(2, ": ", 2);
+	}
+	write(2, "ambiguous redirect\n", 19);
+	return (FALSE);
 }
 
 void	print_bash_heredoc_warning(int nb_execution, char *delimiter)

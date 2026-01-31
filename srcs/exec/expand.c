@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/31 17:52:44 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:59:05 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 // Expand une ligne. Pour chaque caractere:
 // 		si c'est un $, expand la variable d'environement
 // 		sinon, stock la chaine
-
-
 static int	is_to_expand_argv(char *s)
 {
 	char	quote;
@@ -39,7 +37,7 @@ static int	is_to_expand_argv(char *s)
 	return (0);
 }
 
-int		set_is_to_expand(t_cmd *cmd)
+static int	set_is_to_expand(t_cmd *cmd)
 {
 	int	i;
 

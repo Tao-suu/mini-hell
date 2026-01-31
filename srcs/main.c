@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 13:51:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/28 20:52:25 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:57:24 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	main(void)
 		// 1) check numeri
 		// 2) nb args
 		// 3) nb_args = 0 exit exit_status
-
 	ret = ft_atoi(find_env_var(data.env, "?")->value);
 	free_data(&data, TRUE, TRUE);
 	return (ret);

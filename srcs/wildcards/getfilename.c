@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getfilename.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:23:02 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/31 17:38:51 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:32:06 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	**realloc_arr(char **arr)
 	int		i;
 
 	if (!arr)
-		return (ft_calloc(1, sizeof(char *)));
+		return (ft_calloc(2, sizeof(char *)));
 	i = 0;
 	while (arr[i])
 		i++;
@@ -31,7 +31,6 @@ static char	**realloc_arr(char **arr)
 		new[i] = arr[i];
 		i++;
 	}
-	new[i] = NULL;
 	free(arr);
 	return (new);
 }
@@ -51,8 +50,14 @@ static char	**get_filename_arr(DIR *dir)
 			break ;
 		ret = realloc_arr(ret);
 		if (!ret)
-			return (ft_tabclear(ret), NULL);
-		ret[i++] = ft_strdup(file->d_name);
+			return (NULL);
+		ret[i] = ft_strdup(file->d_name);
+		if (!ret[i])
+		{
+			ft_tabclear(ret);
+			return (NULL);
+		}
+		i++;
 	}
 	if (!ret)
 		ret = ft_calloc(1, sizeof(char *));

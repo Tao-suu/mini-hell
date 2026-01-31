@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:31:41 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 18:10:47 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:02:43 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	check_if_elem_can_be_after_prev(t_lexem *elem)
 {
-	char		*op_name;
+	char	*op_name;
 
 	op_name = OP_START;
 	if (elem->prev)
@@ -61,8 +61,6 @@ int	manage_lexems(t_data *data)
 	{
 		if (!check_if_elem_can_be_after_prev(elem))
 			return (FALSE);
-		// WTF this case seems stupid "ls (cat)" => "syntax error near 'cat'""
-		// Is there a case where "cmd (something)" is valid ?
 		if (!ft_strcmp(elem->type->name, "PO") && elem->next
 			&& elem_prev && !ft_strcmp(elem_prev->type->name, "cmd"))
 			return (print_syntax_error(elem->next->value));

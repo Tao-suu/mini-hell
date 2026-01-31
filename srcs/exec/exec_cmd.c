@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/28 20:58:27 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:00:44 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,6 @@ static int	redir_is_last(t_redirection *redir, char is_out)
 		redir = redir->next;
 	}
 	return (TRUE);
-}
-
-static int	ambiguous_redirection(char *name)
-{
-	write(2, "bash: ", 6);
-	if (name)
-	{
-		write(2, name, ft_strlen(name));
-		write(2, ": ", 2);
-	}
-	write(2, "ambiguous redirect\n", 19);
-	return (FALSE);
 }
 
 static int	open_redir_file(t_redirection *redir)
@@ -58,7 +46,7 @@ int	manage_redirections(t_redirection *redir)
 	while (redir)
 	{
 		if (!redir->name || !redir->valid_wild)
-			return (ambiguous_redirection(redir->name));
+			return (print_bash_ambiguous_redirection(redir->name));
 		fd = open_redir_file(redir);
 		if (fd < 0)
 			return (print_bash_cmd_error(NULL, redir->name, NULL));

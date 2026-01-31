@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 12:46:22 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/25 19:10:16 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:21:28 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,29 @@ static int	export_print(t_env *env)
 	return (0);
 }
 
-int	builtin_export(t_env **env, t_cmd *cmd)
+static void	manage_export(t_env **env, char *argv, int *ret)
 {
 	char	*equal_index;
+	t_env	*existing_key;
+
+	equal_index = ft_strchr(argv, '=');
+	if (equal_index)
+	{
+		*equal_index = 0;
+		equal_index++;
+		if (!create_or_update_env(env, argv, equal_index, STATE_ENV))
+			*ret = 1;
+		return ;
+	}
+	existing_key = find_env_var(*env, argv);
+	if (existing_key)
+		return ;
+	if (!create_or_update_env(env, argv, NULL, STATE_ENV))
+		*ret = 1;
+}
+
+int	builtin_export(t_env **env, t_cmd *cmd)
+{
 	int		i;
 	int		ret;
 
@@ -61,15 +81,7 @@ int	builtin_export(t_env **env, t_cmd *cmd)
 			ret = print_builtin_export_error(cmd->argv[i]);
 			continue ;
 		}
-		equal_index = ft_strchr(cmd->argv[i], '=');
-		if (equal_index)
-		{
-			*equal_index = 0;
-			equal_index++;
-		}
-		// TODO: si value est NULL, ne pas modifier la key si elle existe MAIS la creer si elle n'existe pas
-		if (!create_or_update_env(env, cmd->argv[i], equal_index, STATE_ENV))
-			ret = 1;
+		manage_export(env, cmd->argv[i], &ret);
 	}
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:35:28 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 18:20:27 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:14:11 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	manage_line(t_data *data)
 	t_lexem	*tmp_elem;
 
 	i = 0;
+	ret = 0;
 	while (data->line[i])
 	{
 		while (ft_isspace(data->line[i]))
@@ -114,12 +115,10 @@ int	manage_line(t_data *data)
 		if (ret <= 0)
 		{
 			free_lexem_elem(tmp_elem);
-			if (ret < 0)
-				return (FALSE);
-			continue ;
+			break ;
 		}
 		add_lexem_elem(&data->head, tmp_elem);
 		i += ret;
 	}
-	return (TRUE);
+	return (ret >= 0);
 }

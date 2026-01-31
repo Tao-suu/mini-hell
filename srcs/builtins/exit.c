@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 01:40:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/25 21:30:20 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:26:57 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,37 @@ static int	ft_strisnum(char *str)
 	if (*str == '-' || *str == '+')
 		str++;
 	if (!*str)
-		return (0);
+		return (FALSE);
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
-			return (0);
+			return (FALSE);
 		str++;
 	}
-	return (1);
+	return (TRUE);
+}
+
+static int	is_long(char *str)
+{
+	size_t	str_size;
+	size_t	long_max_size;
+	int		cmp;
+
+	if (str[0] == '+')
+		str++;
+	str_size = ft_strlen(str);
+	long_max_size = ft_strlen("9223372036854775807");
+	if (str[0] == '-')
+		long_max_size++;
+	if (str_size > long_max_size)
+		return (FALSE);
+	if (str_size < long_max_size)
+		return (TRUE);
+	if (str[0] == '-')
+		cmp = ft_strcmp(str, "-9223372036854775808");
+	else
+		cmp = ft_strcmp(str, "9223372036854775807");
+	return (cmp <= 0);
 }
 
 int	builtin_exit(t_data *data, t_cmd *cmd, int flag)
@@ -37,7 +60,7 @@ int	builtin_exit(t_data *data, t_cmd *cmd, int flag)
 		return (print_builtin_exit_error(NULL, "too many arguments"));
 	if (cmd->argv[1])
 	{
-		if (!ft_strisnum(cmd->argv[1]))
+		if (!ft_strisnum(cmd->argv[1]) || !is_long(cmd->argv[1]))
 		{
 			print_builtin_exit_error(cmd->argv[1], "numeric argument required");
 			free_data(data, TRUE, !flag);
