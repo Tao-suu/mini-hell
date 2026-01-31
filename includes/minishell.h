@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/31 17:45:14 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:48:17 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,5 +327,8 @@ char			**get_files_name(void);
 int				expand_wildcards_cmd(t_cmd *cmd);
 int				check_pattern(char *file, char *pattern);
 int				expand_wildcards_redir(t_cmd *cmd, char **files);
+void			sort_files(char **files);
+void			its_just_void(void *content);
+int				check_pattern(char *file, char *pattern);
 
 #endif

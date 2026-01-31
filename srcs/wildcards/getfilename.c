@@ -6,7 +6,7 @@
 /*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:23:02 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/28 09:38:07 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:38:51 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	**get_filename_arr(DIR *dir)
 	return (ret);
 }
 
-char		**get_files_name(void)
+char	**get_files_name(void)
 {
 	char	pwd[5000];
 	DIR		*cdir;
