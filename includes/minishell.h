@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/31 17:48:17 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:54:17 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,7 @@ int				manage_string_token(t_data *data, t_list **lst, char *line,
 int				count_var_key_size(char *arg);
 int				expand_find_next_word(char *line);
 int				expand_env_var(t_list **lst, char *line);
+int				expand_token(t_data *data, t_list **lst, char *line, char expand);
 //cmd_path_utils.c
 char			*get_cmd_path(t_env *env, char **argv, int *exit_code);
 

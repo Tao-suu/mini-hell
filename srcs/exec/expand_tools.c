@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 21:12:53 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 22:19:06 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:52:58 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,31 @@ int	expand_env_var(t_list **lst, char *line)
 		i += ret;
 		if (line[i])
 			create_lst_empty(lst);
+	}
+	return (TRUE);
+}
+
+int	expand_token(t_data *data, t_list **lst, char *line, char expand)
+{
+	int		size;
+	int		i;
+
+	i = 0;
+	// dprintf(2, "Arg %s\n", line);
+	while (line[i])
+	{
+		// dprintf(2, "testing from %s\n", &(line[i]));
+		if (line[i] == '$')
+		{
+			i++;
+			size = manage_env_var_token(data, lst, line + i, expand);
+			if (size < 0)
+				return (FALSE);
+			i += size;
+			continue ;
+		}
+		if (!manage_string_token(data, lst, line, &i))
+			return (FALSE);
 	}
 	return (TRUE);
 }

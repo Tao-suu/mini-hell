@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/28 20:54:41 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:52:44 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,7 @@
 // Expand une ligne. Pour chaque caractere:
 // 		si c'est un $, expand la variable d'environement
 // 		sinon, stock la chaine
-static int	expand_token(t_data *data, t_list **lst, char *line, char expand)
-{
-	int		size;
-	int		i;
 
-	i = 0;
-	// dprintf(2, "Arg %s\n", line);
-	while (line[i])
-	{
-		// dprintf(2, "testing from %s\n", &(line[i]));
-		if (line[i] == '$')
-		{
-			i++;
-			size = manage_env_var_token(data, lst, line + i, expand);
-			if (size < 0)
-				return (FALSE);
-			i += size;
-			continue ;
-		}
-		if (!manage_string_token(data, lst, line, &i))
-			return (FALSE);
-	}
-	return (TRUE);
-}
 
 static int	is_to_expand_argv(char *s)
 {
