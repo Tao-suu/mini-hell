@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/02 11:12:11 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:40:46 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	manage_redirections(t_redirection *redir)
 
 	while (redir)
 	{
-		if (!redir->expanded_params || !redir->valid_wild)
+		if ((ft_strcmp(redir->operator->value, "<<") && !redir->expanded_params)
+			|| !redir->valid_wild)
 			return (print_bash_ambiguous_redirection(redir->name));
 		fd = open_redir_file(redir);
 		if (fd < 0)
