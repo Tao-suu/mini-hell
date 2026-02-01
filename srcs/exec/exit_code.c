@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 14:36:52 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 17:39:14 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/01 01:43:07 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@ int	set_exit_code(t_env **env, int code)
 	ret = create_or_update_env(env, "?", value, STATE_HIDDEN);
 	free(value);
 	return (ret);
+}
+
+int	get_exit_code(t_data *data)
+{
+	t_env	*exit_code_env_var;
+	int		exit_code;
+
+	exit_code_env_var = find_env_var(data->env, "?");
+	exit_code = 0;
+	if (exit_code_env_var)
+		exit_code = ft_atoi(exit_code_env_var->value);
+	return (exit_code);
 }
 
 int	compute_exit_code(int status)

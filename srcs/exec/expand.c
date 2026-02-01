@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/31 17:59:05 by picheval         ###   ########.fr       */
+/*   Updated: 2026/01/31 21:12:54 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	expand_pipe(t_data *data, t_cmd *cmds)
 
 	while (cmds)
 	{
-		if (!set_is_to_expand(cmds) || !expand_cmd(data, cmds))
+		if (!expand_cmd(data, cmds) || !set_is_to_expand(cmds))
 			return (FALSE);
 		tmp = cmds->redir;
 		while (tmp)

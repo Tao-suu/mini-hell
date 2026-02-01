@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/31 18:51:09 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/01 01:58:29 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,23 @@ static void	manage_loop(t_data *data)
 
 void	main_loop(t_data *data)
 {
-	t_env	*exit_code_env_var;
 	int		exit_code;
 
-	exit_code_env_var = find_env_var(data->env, "?");
-	exit_code = 0;
-	if (exit_code_env_var)
-		exit_code = ft_atoi(exit_code_env_var->value);
 	while (42)
 	{
+		exit_code = get_exit_code(data);
 		data->nb_execution++;
 		if (exit_code == 130)
 			printf("\n");
 		else if (exit_code == 131)
 			printf("quit (core dumped)\n");
-		// TODO: generate prompt dynamicaly
-		data->line = readline("~o~ $> ");
+		ft_printf("%s", data->color[data->prompt_n++ % 6]);
+		data->line = readline(get_prompt(data));
 		if (!data->line)
 			break ;
 		manage_loop(data);
 		add_history(data->line);
 		free_data(data, FALSE, TRUE);
 	}
-	ft_putstr_fd("exit\n", 1);
+	ft_putstr_fd("exit\n"CLR_RESET, 1);
 }

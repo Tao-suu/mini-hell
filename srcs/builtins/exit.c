@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 01:40:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/31 17:26:57 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/01 01:56:53 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,27 @@ static int	is_long(char *str)
 int	builtin_exit(t_data *data, t_cmd *cmd, int flag)
 {
 	int	arg_number;
+	int	ret;
 
 	if (!flag)
 		printf("exit\n");
 	if (cmd->argv[1] && ft_strisnum(cmd->argv[1]) && cmd->argv[2])
 		return (print_builtin_exit_error(NULL, "too many arguments"));
+	ret = get_exit_code(data);
 	if (cmd->argv[1])
 	{
 		if (!ft_strisnum(cmd->argv[1]) || !is_long(cmd->argv[1]))
 		{
 			print_builtin_exit_error(cmd->argv[1], "numeric argument required");
-			free_data(data, TRUE, !flag);
-			exit(2);
+			ret = 2;
 		}
-		arg_number = ft_atoi(cmd->argv[1]);
-		free_data(data, TRUE, !flag);
-		exit(arg_number % 256);
+		else
+		{
+			arg_number = ft_atoi(cmd->argv[1]);
+			ret = arg_number % 256;
+		}
 	}
+	ft_putstr(CLR_RESET);
 	free_data(data, TRUE, !flag);
-	exit(0);
+	exit(ret);
 }

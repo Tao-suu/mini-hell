@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/01/31 17:48:58 by tbez--du         ###   ########.fr        #
+#    Updated: 2026/02/01 01:18:07 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,7 @@ SRCS_RAW			= main.c \
 					  signal.c \
 					  signal_handler.c \
 					  loop.c \
+					  prompt.c \
 					  tools.c \
 					  print.c \
 					  print_bash.c \

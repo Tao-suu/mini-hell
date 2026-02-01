@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 15:13:29 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 17:13:24 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/01 01:35:22 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	free_data(t_data *data, char full, char even_files)
 		free_env_list(data->env);
 	if (data->operators)
 		free_operator_tab(data->operators);
+	free_prompt(data);
 }
 
 static int	init_env_shlvl(t_env **env)
@@ -93,7 +94,7 @@ static int	init_env(t_env **env)
 int	init_data(t_data *data)
 {
 	ft_memset((void *)data, 0, sizeof(t_data));
-	if (!init_env(&(data->env)))
+	if (!init_env(&(data->env)) || !init_prompt(data))
 		return (FALSE);
 	if (!create_operators_array(&(data->operators)))
 		return (FALSE);

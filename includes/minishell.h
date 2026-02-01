@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/31 18:00:58 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/01 01:43:20 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,16 @@
 # define NODE_TYPE_AND			1
 # define NODE_TYPE_OR			2
 
-# define CLR_RED				"\x1b[31m"
+# define CLR_RED				"\x1b[1;38;2;255;0;0;49m"
 # define CLR_GREEN				"\x1b[32m"
+# define CLR_YELLOW				"\x1b[1;38;2;255;255;0;49m"
 # define CLR_MAG				"\x1B[35m"
 # define CLR_CYAN				"\x1B[36m"
 # define CLR_RESET				"\x1b[0m"
+
+# define LGBT					1
+# define NB_PROMPT_COLOR		6
+# define NB_PROMPT_MSG			1
 
 extern int						g_signal;
 
@@ -136,6 +141,9 @@ struct s_data {
 	t_lexem		*head;
 	t_ast		*ast;
 	t_heredoc	*heredocs;
+	char		*color[NB_PROMPT_COLOR];
+	char		*prompts[NB_PROMPT_MSG];
+	int			prompt_n;
 };
 
 /*****************/
@@ -241,6 +249,7 @@ int				manage_redirections(t_redirection *red);
 int				exec_heredocs(t_data *data);
 //exit_code.c
 int				set_exit_code(t_env **env, int code);
+int				get_exit_code(t_data *data);
 int				compute_exit_code(int status);
 int				wait_cmd_pid(t_cmd *cmd, t_env **env);
 //expand.c
@@ -290,6 +299,11 @@ void			heredoc_handler(int signal);
 
 // loop.c
 void			main_loop(t_data *data);
+
+// prompt.c
+void			free_prompt(t_data *data);
+char			*get_prompt(t_data *data);
+int				init_prompt(t_data *data);
 
 // tools.c
 int				merge_with_sep(char **ret, char *str1, char *str2, char *sep);

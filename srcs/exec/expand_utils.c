@@ -6,17 +6,18 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 21:10:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 22:20:14 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/01 00:10:20 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	manage_empty_env_var(t_list **lst, char expand, int size)
+static int	manage_empty_env_var(t_list **lst, char *line,
+	char expand, int size)
 {
 	char	*dollar;
 
-	if (expand)
+	if (expand && *line)
 		return (0);
 	dollar = ft_strdup("$");
 	if (!dollar)
@@ -64,7 +65,7 @@ int	manage_env_var_token(t_data *data, t_list **lst, char *line, char expand)
 
 	size = count_var_key_size(line);
 	if (!size)
-		return (manage_empty_env_var(lst, expand, size));
+		return (manage_empty_env_var(lst, line, expand, size));
 	var_key = ft_substr(line, 0, size);
 	if (!var_key)
 	{
@@ -73,7 +74,7 @@ int	manage_env_var_token(t_data *data, t_list **lst, char *line, char expand)
 	}
 	env_var = find_env_var(data->env, var_key);
 	free(var_key);
-	if (!env_var || !env_var->value)
+	if (!env_var || !env_var->value || !ft_strlen(env_var->value))
 		return (size);
 	return (manage_env_var_value(lst, env_var, size, expand));
 }
