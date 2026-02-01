@@ -6,7 +6,11 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/02/01 02:51:37 by picheval         ###   ########.fr       */
+=======
+/*   Updated: 2026/02/01 02:51:21 by tbez--du         ###   ########.fr       */
+>>>>>>> a20c850 (..........)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +49,8 @@ int	manage_redirections(t_redirection *redir)
 
 	while (redir)
 	{
-		if (!redir->name || !redir->valid_wild)
+		if ((ft_strcmp(redir->operator->value, "<<") && !redir->name)
+			|| !redir->valid_wild)
 			return (print_bash_ambiguous_redirection(redir->name));
 		fd = open_redir_file(redir);
 		if (fd < 0)
