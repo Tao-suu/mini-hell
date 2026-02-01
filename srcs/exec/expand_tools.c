@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 21:12:53 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/31 17:52:58 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/01 02:46:36 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,9 @@ int	expand_env_var(t_list **lst, char *line)
 	return (TRUE);
 }
 
+// Expand une ligne. Pour chaque caractere:
+// 		si c'est un $, expand la variable d'environement
+// 		sinon, stock la chaine
 int	expand_token(t_data *data, t_list **lst, char *line, char expand)
 {
 	int		size;

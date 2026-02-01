@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/02/01 01:18:07 by picheval         ###   ########.fr        #
+#    Updated: 2026/02/01 03:51:42 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,14 +90,20 @@ C_BLUE				= \033[36m
 
 SYMBOL				= $(C_RED)==> $(C_NONE)
 
+LOVE_FLAG			=
+LOVE_MSG			=
+
 
 all: libft $(NAME)
 
 re: fclean all
 
+love:
+	@make --no-print-directory LOVE_FLAG=-DLGBT=1 LOVE_MSG="with love ❤️ 🌈" re
+
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(LIBS_FLAGS) $^ -o $@ $(LIBFT_FLAGS)
-	@echo "$(SYMBOL)$(C_BLUE)$(NAME) compiled !$(C_NONE)"
+	@echo "$(SYMBOL)$(C_BLUE)$(NAME) compiled $(LOVE_MSG)!$(C_NONE)"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p $(OBJS_DIR)$(STRUCT_DIR)
@@ -105,7 +111,7 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p $(OBJS_DIR)$(EXEC_DIR)
 	@mkdir -p $(OBJS_DIR)$(BUILTIN_DIR)
 	@mkdir -p $(OBJS_DIR)$(WILDCARDS_DIR)
-	@$(CC) $(CFLAGS) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_INC_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@ -I$(INC_DIR) -I$(LIBFT_INC_DIR) $(LOVE_FLAG)
 
 clean:
 	@make --no-print-directory -C $(LIBFT_DIR) clean

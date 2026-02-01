@@ -6,15 +6,12 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/31 21:12:54 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/01 02:46:27 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Expand une ligne. Pour chaque caractere:
-// 		si c'est un $, expand la variable d'environement
-// 		sinon, stock la chaine
 static int	is_to_expand_argv(char *s)
 {
 	char	quote;

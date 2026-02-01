@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/01 01:43:20 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/01 03:39:11 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@
 # define CLR_CYAN				"\x1B[36m"
 # define CLR_RESET				"\x1b[0m"
 
-# define LGBT					1
+# ifndef LGBT
+#  define LGBT					0
+# endif
 # define NB_PROMPT_COLOR		6
 # define NB_PROMPT_MSG			1
 
