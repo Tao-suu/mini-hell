@@ -58,7 +58,7 @@ int	builtin_exit(t_data *data, t_cmd *cmd, int flag)
 	if (!flag)
 		printf("exit\n");
 	if (cmd->argv[1] && ft_strisnum(cmd->argv[1]) && cmd->argv[2])
-		return (print_builtin_exit_error(NULL, "too many arguments"));
+		return (print_builtin_exit_error(NULL, "too many arguments") + 1);
 	ret = get_exit_code(data);
 	if (cmd->argv[1])
 	{

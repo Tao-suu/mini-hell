@@ -18,7 +18,7 @@ static int	expand_env_var(t_data *data, t_cmd_param *param_elem)
 
 	if (!ft_strcmp(param_elem->original_value, "$"))
 	{
-		if (param_elem->next)
+		if (param_elem->state == PARAM_UQUOTED && param_elem->next)
 			return (TRUE);
 		param_elem->expanded_value = ft_strdup("$");
 		if (!param_elem->expanded_value)
