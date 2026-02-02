@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/03 01:37:48 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/03 01:40:42 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,27 @@ static int	create_elems_expanded_value(t_data *data, t_cmd_param *param_elems)
 	return (TRUE);
 }
 
+static int	expand_redir(t_data *data, t_cmd *cmd)
+{
+	t_redirection	*redir;
+
+	redir = cmd->redir;
+	while (redir)
+	{
+		if (redir->name && (!explode_cmd_param(&(redir->elements),
+					redir->name, 0)
+				|| !create_elems_expanded_value(data, redir->elements)
+				|| !merge_exploded_params(&(redir->expanded_params),
+					redir->elements, FALSE)))
+			return (FALSE);
+		redir = redir->next;
+	}
+	return (TRUE);
+}
+
 static int	expand_cmd(t_data *data, t_cmd *cmd)
 {
 	t_cmd_param		*param;
-	t_redirection	*redir;
 
 	param = cmd->params;
 	while (param)
@@ -67,17 +84,6 @@ static int	expand_cmd(t_data *data, t_cmd *cmd)
 			|| !merge_exploded_params(&(cmd->expanded_params), param->elements,
 				TRUE))
 			return (FALSE);
-		redir = cmd->redir;
-		while (redir)
-		{
-			if (redir->name && (!explode_cmd_param(&(redir->elements),
-						redir->name, 0)
-					|| !create_elems_expanded_value(data, redir->elements)
-					|| !merge_exploded_params(&(redir->expanded_params),
-						redir->elements, FALSE)))
-				return (FALSE);
-			redir = redir->next;
-		}
 		param = param->next;
 	}
 	return (TRUE);
@@ -96,7 +102,7 @@ int	expand_pipe(t_data *data, t_cmd *cmds)
 	cmd = cmds;
 	while (cmd)
 	{
-		if (!expand_cmd(data, cmd))
+		if (!expand_cmd(data, cmd) || !expand_redir(data, cmd))
 			return (FALSE);
 		cmd = cmd->next;
 	}

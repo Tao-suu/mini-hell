@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:40:45 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/03 01:39:09 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/03 01:41:04 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,7 @@ void	print_cmd_params(t_cmd *cmd, int lvl)
 	ft_printf("Expanded redirections:\n");
 	while (redir)
 	{
-		print_tabs(lvl + 2);
-		ft_printf("%s %s\n", redir->operator->value, redir->name);
-		print_cmd_expanded_args(redir->expanded_params, lvl + 3);
+		print_cmd_expanded_args(redir->expanded_params, lvl + 2);
 		redir = redir->next;
 	}
 }
@@ -140,15 +138,25 @@ void	print_cmd(t_cmd *cmd, int lvl)
 		print_ast(cmd->ast, lvl);
 }
 
+void	print_final_cmds(t_cmd *cmds)
+{
+	int	i;
+
+	while (cmds)
+	{
+		i = -1;
+		while (cmds->argv[++i])
+			;
+		cmds = cmds->next;
+	}
+}
+
 void	print_cmds(t_cmd *cmds, int lvl)
 {
-	t_cmd	*cursor;
-	
-	cursor = cmds;
-	while (cursor)
+	while (cmds)
 	{
-		print_cmd(cursor, lvl);
-		cursor = cursor->next;
+		print_cmd(cmds, lvl);
+		cmds = cmds->next;
 	}
 }
 

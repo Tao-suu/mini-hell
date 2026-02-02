@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/02 11:46:51 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:49:47 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static int	open_redir_file(t_redirection *redir)
 {
 	char	*name;
 
-	name = redir->expanded_params->original_value;
+	name = NULL;
+	if (redir->expanded_params)
+		name = redir->expanded_params->original_value;
 	if (!ft_strcmp(redir->operator->value, ">>"))
 		return (open(name, O_CREAT | O_APPEND | O_WRONLY, 0644));
 	else if (!ft_strcmp(redir->operator->value, ">"))
@@ -99,6 +101,7 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 		else
 		{
 			execve(cmd->path, cmd->argv, env);
+			// Set exit_code if execve fail ?
 			perror(NULL);
 			ft_tabclear(env);
 		}
