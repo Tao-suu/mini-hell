@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 21:40:47 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 14:23:19 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/02 09:01:50 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,18 @@ void	free_cmd(t_cmd *elem)
 		return ;
 	if (elem->path)
 		free(elem->path);
-	if (elem->argv)
-		ft_tabclear(elem->argv);
 	if (elem->ast)
 		free_ast_tree(elem->ast);
 	if (elem->redir)
 		free_redirection_list(elem->redir);
-	if (elem->to_expand)
-		free(elem->to_expand);
+	if (elem->params)
+		free_cmd_params_list(elem->params);
+	if (elem->expanded_params)
+		free_cmd_params_list(elem->expanded_params);
+	// if (elem->to_expand)
+	// 	free(elem->to_expand);
+	if (elem->argv) // DEBUG
+		ft_tabclear(elem->argv);
 	free(elem);
 }
 
@@ -56,20 +60,21 @@ void	add_cmd_elem_in_list(t_cmd **list, t_cmd *elem)
 	cursor->next = elem;
 }
 
-t_cmd	*create_cmd_elem(size_t nb_argv)
+// t_cmd	*create_cmd_elem(size_t nb_argv)
+t_cmd	*create_cmd_elem(void)
 {
 	t_cmd	*ret;
 
 	ret = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
 	if (!ret)
 		return (NULL);
-	if (nb_argv == 0)
-		return (ret);
-	ret->argv = (char **)ft_calloc(nb_argv + 1, sizeof(char *));
-	if (!ret->argv)
-	{
-		free_cmd(ret);
-		return (NULL);
-	}
+	// if (nb_argv == 0)
+	// 	return (ret);
+	ret->argv = (char **)ft_calloc(1, sizeof(char *)); // DEBUG
+	// if (!ret->argv)
+	// {
+	// 	free_cmd(ret);
+	// 	return (NULL);
+	// }
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/01 03:39:11 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:40:13 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,13 @@
 extern int						g_signal;
 
 typedef enum e_env_state		t_env_state;
+typedef enum e_param_state		t_param_state;
 typedef struct s_operator		t_operator;
 typedef struct s_lexem			t_lexem;
 typedef struct s_ast			t_ast;
 typedef struct s_heredoc		t_heredoc;
 typedef struct s_redirection	t_redirection;
+typedef struct s_cmd_param		t_cmd_param;
 typedef struct s_cmd			t_cmd;
 typedef struct s_env			t_env;
 typedef struct s_data			t_data;
@@ -73,6 +75,13 @@ enum e_env_state {
 	STATE_SET = 1,
 	STATE_HIDDEN = 2,
 	STATE_DEAD = 3
+};
+
+enum e_param_state {
+	PARAM_NONE = 0,
+	PARAM_UQUOTED = 1,
+	PARAM_SQUOTED = 2,
+	PARAM_DQUOTED = 3
 };
 
 struct s_operator {
@@ -112,19 +121,31 @@ struct s_redirection {
 	char			*name;
 	int				valid_wild;
 	t_operator		*operator;
+	t_cmd_param		*elements;
+	t_cmd_param		*expanded_params;
 	t_heredoc		*heredoc;
 	t_redirection	*next;
 };
 
+struct s_cmd_param {
+	char			*original_value;
+	char			*expanded_value;
+	t_param_state	state;
+	t_cmd_param		*elements;
+	t_cmd_param		*next;
+};
+
 struct s_cmd {
+	int				argc; // DEBUG
+	char			**argv; // DEBUG
+	char			**argv_expanded; // DEBUG
+	char			*to_expand; // DEBUG
 	char			*path;
-	int				argc;
-	char			**argv;
-	char			**argv_expanded;
-	char			*to_expand;
 	int				pid;
 	t_ast			*ast;
 	t_cmd			*next;
+	t_cmd_param		*params;
+	t_cmd_param		*expanded_params;
 	t_redirection	*redir;
 };
 
@@ -191,7 +212,14 @@ t_lexem			*create_lexem_elem(void);
 void			free_cmd(t_cmd *elem);
 void			free_cmds_list(t_cmd *list);
 void			add_cmd_elem_in_list(t_cmd **list, t_cmd *elem);
-t_cmd			*create_cmd_elem(size_t nb_argv);
+t_cmd			*create_cmd_elem(void);
+// t_cmd			*create_cmd_elem(size_t nb_argv);
+
+// struct_cmd_param.c
+void			free_cmd_param(t_cmd_param *elem);
+void			free_cmd_params_list(t_cmd_param *list);
+int				new_cmd_param(t_cmd_param **param_elems, char *original,
+					char *expanded, char quote);
 
 // struct_redirection.c
 void			free_redirection(t_redirection *elem);
@@ -231,13 +259,17 @@ int				manage_line(t_data *data);
 int				manage_lexems(t_data *data);
 
 // ast.c
+int				create_ast_recurse(t_data *data, t_ast **root,
+					t_lexem *store[2], int level);
 int				create_ast(t_data *data);
 
 // ast_utlis.c
+int				manage_cmd_pipeline_elem(t_data *data, t_cmd *cmd,
+					t_lexem **start, t_lexem *end);
 t_lexem			*find_last_operator_in_level(t_lexem *start, t_lexem *end,
 					int level);
 void			skip_parenthesis(t_lexem **start, t_lexem *end);
-size_t			compute_nb_params(t_lexem *start, t_lexem *end);
+// size_t			compute_nb_params(t_lexem *start, t_lexem *end);
 
 /*******************/
 /*    EXECUTION    */
@@ -249,25 +281,36 @@ int				exec_ast(t_data *data, t_ast *ast);
 void			exec_cmd(t_data *data, t_cmd *cmd);
 int				manage_redirections(t_redirection *red);
 int				exec_heredocs(t_data *data);
-//exit_code.c
+// exit_code.c
 int				set_exit_code(t_env **env, int code);
 int				get_exit_code(t_data *data);
 int				compute_exit_code(int status);
 int				wait_cmd_pid(t_cmd *cmd, t_env **env);
-//expand.c
+// expand.c
 int				expand_pipe(t_data *data, t_cmd *cmds);
-//expand_utils.c
-int				manage_env_var_token(t_data *data, t_list **lst, char *line,
-					char expand);
-int				manage_string_token(t_data *data, t_list **lst, char *line,
-					int *i);
-//expand_tools.c
-int				count_var_key_size(char *arg);
-int				expand_find_next_word(char *line);
-int				expand_env_var(t_list **lst, char *line);
-int				expand_token(t_data *data, t_list **lst, char *line,
-					char expand);
-//cmd_path_utils.c
+// expand_explode.c
+int				explode_cmd_param(t_cmd_param **param_elems, char *value,
+					char quote);
+// expand_merge.c
+int				merge_exploded_params(t_cmd_param **new_params,
+					t_cmd_param *param, char trim_env_var);
+// expand_tools.c
+char			*create_empty_structure(size_t size);
+int				is_last_param_elem_an_unquoted_wild(t_cmd_param *param_elems);
+int				count_env_var_key_size(char *arg);
+
+// // expand_utils.c
+// int				manage_env_var_token(t_data *data, t_list **lst, char *line,
+// 					char expand);
+// int				manage_string_token(t_data *data, t_list **lst, char *line,
+// 					int *i);
+// // expand_tools.c
+// int				count_var_key_size(char *arg);
+// int				expand_find_next_word(char *line);
+// int				expand_env_var(t_list **lst, char *line);
+// int				expand_token(t_data *data, t_list **lst, char *line,
+// 					char expand);
+// cmd_path_utils.c
 char			*get_cmd_path(t_env *env, char **argv, int *exit_code);
 
 /******************/
@@ -308,6 +351,7 @@ char			*get_prompt(t_data *data);
 int				init_prompt(t_data *data);
 
 // tools.c
+int				strjoin_free(char **dst, char *elem);
 int				merge_with_sep(char **ret, char *str1, char *str2, char *sep);
 char			*create_file_name(char *base_file_name, size_t number);
 
@@ -337,6 +381,7 @@ int				print_builtin_export_error(char *arg);
 // print_debug.c
 void			print_tabs(int nb_tabs);
 void			print_cmd(t_cmd *cmd, int lvl);
+void			print_cmds(t_cmd *cmds, int lvl);
 void			print_ast(t_ast *ast, int lvl);
 void			print_operators(t_operator **tab);
 void			print_debug_env(t_env *env);

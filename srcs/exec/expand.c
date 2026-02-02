@@ -6,124 +6,100 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/03 01:23:37 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/03 01:26:23 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_to_expand_argv(char *s)
+static int	expand_env_var(t_data *data, t_cmd_param *param_elem)
 {
-	char	quote;
-	int		i;
+	t_env	*env_var;
 
-	i = 0;
-	quote = 0;
-	while (s[i])
+	if (!ft_strcmp(param_elem->original_value, "$"))
 	{
-		if (s[i] == '*')
-			return (1);
-		if (s[i] == '"' || s[i] == '\'')
+		if (param_elem->next)
+			return (TRUE);
+		param_elem->expanded_value = ft_strdup("$");
+		if (!param_elem->expanded_value)
+			return (print_sys_error("expand_env_var ft_strdup $"));
+		return (TRUE);
+	}
+	env_var = find_env_var(data->env, param_elem->original_value + 1);
+	if (!env_var || !env_var->value)
+		return (TRUE);
+	param_elem->expanded_value = ft_strdup(env_var->value);
+	if (!param_elem->expanded_value)
+		return (print_sys_error("expand_env_var ft_strdup"));
+	return (TRUE);
+}
+
+static int	create_elems_expanded_value(t_data *data, t_cmd_param *param_elems)
+{
+	while (param_elems)
+	{
+		if (param_elems->state != PARAM_SQUOTED
+			&& param_elems->original_value[0] == '$')
 		{
-			quote = s[i++];
-			while (s[i] && s[i] != quote)
-				i++;
+			if (!expand_env_var(data, param_elems))
+				return (FALSE);
+			param_elems = param_elems->next;
+			continue ;
 		}
-		i++;
+		param_elems->expanded_value = ft_strdup(param_elems->original_value);
+		if (!param_elems->expanded_value)
+			return (print_sys_error("create_elems_expanded_value ft_strdup"));
+		param_elems = param_elems->next;
 	}
-	return (0);
+	return (TRUE);
 }
 
-static int	set_is_to_expand(t_cmd *cmd)
-{
-	int	i;
-
-	if (!cmd->argv)
-		return (1);
-	i = 0;
-	while (cmd->argv[i])
-		i++;
-	cmd->to_expand = ft_calloc(i + 1, 1);
-	if (!cmd->to_expand)
-		return (0);
-	i = 0;
-	while (cmd->argv[i])
-	{
-		if (is_to_expand_argv(cmd->argv[i]))
-			cmd->to_expand[i] = 'y';
-		else
-			cmd->to_expand[i] = 'n';
-		i++;
-	}
-	cmd->to_expand[i] = 0;
-	return (1);
-}
-
-// Cree une liste chainee contenant chaque argv expanded
-// Transforme cette liste en tableau pour remplacer l'ancien cmd->argv
 static int	expand_cmd(t_data *data, t_cmd *cmd)
 {
-	t_list	*lst;
-	char	**argv;
-	int		i;
+	t_cmd_param		*param;
+	t_redirection	*redir;
 
-	i = -1;
-	lst = NULL;
-	while (cmd->argv && cmd->argv[++i])
+	param = cmd->params;
+	while (param)
 	{
-		if (create_lst_empty(&lst)
-			&& expand_token(data, &lst, cmd->argv[i], TRUE))
-			continue ;
-		ft_lstclear(&lst, free);
-		return (FALSE);
+		if (!explode_cmd_param(&(param->elements), param->original_value, 0)
+			|| !create_elems_expanded_value(data, param->elements)
+			|| !merge_exploded_params(&(cmd->expanded_params), param->elements,
+				TRUE))
+			return (FALSE);
+		redir = cmd->redir;
+		while (redir)
+		{
+			if (redir->name && (!explode_cmd_param(&(redir->elements),
+						redir->name, 0)
+					|| !create_elems_expanded_value(data, redir->elements)
+					|| !merge_exploded_params(&(redir->expanded_params),
+						redir->elements, FALSE)))
+				return (FALSE);
+			redir = redir->next;
+		}
+		param = param->next;
 	}
-	argv = create_tab_from_lst(lst);
-	if (!argv)
-	{
-		ft_lstclear(&lst, free);
-		return (print_sys_error("create_tab_from_lst"));
-	}
-	if (cmd->argv)
-		ft_tabclear(cmd->argv);
-	cmd->argv = argv;
-	cmd->argc = ft_tablen(cmd->argv);
 	return (TRUE);
 }
-
-static int	expand_file(t_data *data, char **name)
-{
-	t_list	*lst;
-
-	lst = NULL;
-	if (!create_lst_empty(&lst) || !expand_token(data, &lst, *name, FALSE))
-	{
-		ft_lstclear(&lst, free);
-		return (FALSE);
-	}
-	free(*name);
-	*name = lst->content;
-	free(lst);
-	return (TRUE);
-}
-
-// TODO
 
 int	expand_pipe(t_data *data, t_cmd *cmds)
 {
-	t_redirection	*tmp;
+	t_cmd	*cmd;
 
-	while (cmds)
+	// DEBUG
+	create_or_update_env(&(data->env), "A", "*", STATE_ENV);
+	create_or_update_env(&(data->env), "B", " *", STATE_ENV);
+	create_or_update_env(&(data->env), "C", "* ", STATE_ENV);
+	create_or_update_env(&(data->env), "LS_W", "ls *", STATE_ENV);
+	// DEBUG
+	cmd = cmds;
+	while (cmd)
 	{
-		if (!expand_cmd(data, cmds) || !set_is_to_expand(cmds))
+		if (!expand_cmd(data, cmd))
 			return (FALSE);
-		tmp = cmds->redir;
-		while (tmp)
-		{
-			if (tmp->name && !expand_file(data, &(tmp->name)))
-				return (FALSE);
-			tmp = tmp->next;
-		}
-		cmds = cmds->next;
+		cmd = cmd->next;
 	}
+	print_cmds(cmds, 0);
 	return (TRUE);
 }

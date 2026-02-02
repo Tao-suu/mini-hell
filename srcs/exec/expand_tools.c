@@ -5,14 +5,39 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/25 21:12:53 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/01 05:59:22 by tbez--du         ###   ########.fr       */
+/*   Created: 2026/02/03 01:26:03 by tbez--du          #+#    #+#             */
+/*   Updated: 2026/02/03 01:26:03 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_var_key_size(char *arg)
+char	*create_empty_structure(size_t size)
+{
+	char	*ret;
+
+	ret = ft_calloc(size + 1, sizeof(char));
+	if (!ret)
+	{
+		print_sys_error("create_empty_structure ft_calloc");
+		return (NULL);
+	}
+	ft_memset((void *)ret, 'n', size);
+	return (ret);
+}
+
+int	is_last_param_elem_an_unquoted_wild(t_cmd_param *param_elems)
+{
+	if (!param_elems)
+		return (FALSE);
+	while (param_elems->next)
+		param_elems = param_elems->next;
+	if (param_elems->state != PARAM_UQUOTED)
+		return (FALSE);
+	return (!ft_strcmp(param_elems->original_value, "*"));
+}
+
+int	count_env_var_key_size(char *arg)
 {
 	int	size;
 
@@ -29,89 +54,4 @@ int	count_var_key_size(char *arg)
 		size++;
 	}
 	return (size);
-}
-
-int	expand_skip_quoted_area(char *line, int *ret, char c)
-{
-	if (line[*ret] != c)
-		return (FALSE);
-	(*ret)++;
-	while (line[*ret] && line[*ret] != c)
-		(*ret)++;
-	return (TRUE);
-}
-
-int	expand_find_next_word(char *line)
-{
-	int	ret;
-
-	ret = 0;
-	while (line[ret] && !ft_isspace(line[ret]) && line[ret] != '$')
-	{
-		if (ret > 0 && (line[ret] == '"' || line[ret] == '\''))
-			return (ret);
-		if (expand_skip_quoted_area(line, &ret, '\'')
-			|| expand_skip_quoted_area(line, &ret, '"'))
-			return (ret);
-		ret++;
-	}
-	return (ret);
-}
-
-// Recupere chaque mot d'une variable d'environnement
-// Supprime les espaces surnumeraires
-int	expand_env_var(t_list **lst, char *line)
-{
-	int		i;
-	int		ret;
-	char	*tmp;
-
-	i = 0;
-	while (line[i])
-	{
-		while (ft_isspace(line[i]))
-			i++;
-		ret = 0;
-		while (line[i + ret] && !ft_isspace(line[i + ret]))
-			ret++;
-		if (!ret)
-			continue ;
-		tmp = ft_substr(line, i, ret);
-		if (!tmp)
-			return (print_sys_error("expand_env_var ft_substr"));
-		if (!lst_add_or_join_back(lst, tmp))
-			return (FALSE);
-		i += ret;
-		if (line[i])
-			create_lst_empty(lst);
-	}
-	return (TRUE);
-}
-
-// Expand une ligne. Pour chaque caractere:
-// 		si c'est un $, expand la variable d'environement
-// 		sinon, stock la chaine
-int	expand_token(t_data *data, t_list **lst, char *line, char expand)
-{
-	int		size;
-	int		i;
-
-	i = 0;
-	// dprintf(2, "Arg %s\n", line);
-	while (line[i])
-	{
-		// dprintf(2, "testing from %s\n", &(line[i]));
-		if (line[i] == '$')
-		{
-			i++;
-			size = manage_env_var_token(data, lst, line + i, expand);
-			if (size < 0)
-				return (FALSE);
-			i += size;
-			continue ;
-		}
-		if (!manage_string_token(data, lst, line, &i))
-			return (FALSE);
-	}
-	return (TRUE);
 }

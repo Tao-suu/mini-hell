@@ -6,11 +6,34 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 14:03:44 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 21:42:56 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 08:06:02 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	strjoin_free(char **dst, char *elem)
+{
+	char	*old;
+
+	if (!elem)
+		return (print_sys_error("strjoin_free elem"));
+	if (!*dst)
+	{
+		*dst = ft_strdup(elem);
+		free(elem);
+		if (!*dst)
+			return (print_sys_error("strjoin_free ft_strdup"));
+		return (TRUE);
+	}
+	old = *dst;
+	*dst = ft_strjoin(*dst, elem);
+	free(old);
+	free(elem);
+	if (!*dst)
+		return (print_sys_error("strjoin_free ft_strjoin"));
+	return (TRUE);
+}
 
 int	merge_with_sep(char **ret, char *str1, char *str2, char *sep)
 {

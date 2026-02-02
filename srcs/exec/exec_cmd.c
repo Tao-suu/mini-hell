@@ -6,11 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2026/02/01 02:51:37 by picheval         ###   ########.fr       */
-=======
-/*   Updated: 2026/02/01 02:51:21 by tbez--du         ###   ########.fr       */
->>>>>>> a20c850 (..........)
+/*   Updated: 2026/02/01 22:35:24 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +85,7 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 	char	**env;
 	int		exit_code;
 
+	exit(0); // debug
 	exec_redir_ast(data, cmd);
 	exit_code = 0;
 	cmd->path = get_cmd_path(data->env, cmd->argv, &exit_code);

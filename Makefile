@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/02/01 03:51:42 by picheval         ###   ########.fr        #
+#    Updated: 2026/02/02 08:42:56 by picheval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS_RAW			= main.c \
 					  $(STRUCT_DIR)struct_operator_utils.c \
 					  $(STRUCT_DIR)struct_lexem.c \
 					  $(STRUCT_DIR)struct_cmd.c \
+					  $(STRUCT_DIR)struct_cmd_param.c \
 					  $(STRUCT_DIR)struct_redirection.c \
 					  $(STRUCT_DIR)struct_ast.c \
 					  $(STRUCT_DIR)struct_list_utils.c \
@@ -48,7 +49,8 @@ SRCS_RAW			= main.c \
 					  $(EXEC_DIR)exec_ast.c \
 					  $(EXEC_DIR)exec_heredocs.c \
 					  $(EXEC_DIR)expand.c \
-					  $(EXEC_DIR)expand_utils.c \
+					  $(EXEC_DIR)expand_explode.c \
+					  $(EXEC_DIR)expand_merge.c \
 					  $(EXEC_DIR)expand_tools.c \
 					  $(EXEC_DIR)exit_code.c \
 					  $(EXEC_DIR)cmd_path_utils.c \
@@ -75,6 +77,8 @@ SRCS_RAW			= main.c \
 					  print_syntax.c \
 					  print_builtin.c \
 					  print_debug.c
+# 					  $(EXEC_DIR)expand_utils.c \
+# 					  $(EXEC_DIR)expand_tools.c
 
 OBJS_RAW			= $(SRCS_RAW:.c=.o)
 SRCS				= $(addprefix $(SRCS_DIR), $(SRCS_RAW))

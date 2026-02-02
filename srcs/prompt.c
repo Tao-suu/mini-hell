@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 21:22:57 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/01 01:34:55 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:42:52 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ static int	init_prompt_color(t_data *data)
 		data->color[4] = ft_strdup(CLR_RESET);
 		data->color[5] = ft_strdup(CLR_RESET);
 	}
-	if (!data->color[0] || !data->color[1] || !data->color[2] || !data->color[3]
-		|| !data->color[4] || !data->color[5])
+	if (!data->color[0] || !data->color[1] || !data->color[2]
+		|| !data->color[3] || !data->color[4] || !data->color[5])
 		return (FALSE);
 	return (TRUE);
 }
@@ -86,8 +86,10 @@ static int	init_prompt_msg(t_data *data)
 		user = ft_strdup(env_user->value);
 	if (!user)
 		return (FALSE);
-	// prompts[0] = ft_strjoin(ft_strjoin(CLR_YELLOW, data->user), CLR_RED" $> "CLR_RESET);
-	// prompts[1] = ft_strjoin(ft_strjoin(CLR_RED, data->user), CLR_YELLOW" $> "CLR_RESET);
+	// prompts[0] = ft_strjoin(ft_strjoin(CLR_YELLOW, data->user),
+		// CLR_RED" $> "CLR_RESET);
+	// prompts[1] = ft_strjoin(ft_strjoin(CLR_RED, data->user),
+		// CLR_YELLOW" $> "CLR_RESET);
 	// prompts[2] = ft_strdup(CLR_YELLOW" ~o~"CLR_RED" $> "CLR_RESET);
 	// prompts[3] = ft_strdup(CLR_RED" ~o~"CLR_YELLOW" $> "CLR_RESET);
 	// prompts[0] = ft_strjoin(data->color[get_random_value(0, 6)],

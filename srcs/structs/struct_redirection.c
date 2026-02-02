@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 23:17:46 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/22 18:13:49 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 09:17:16 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ void	free_redirection(t_redirection *elem)
 		return ;
 	if (elem->name)
 		free(elem->name);
+	if (elem->elements)
+		free_cmd_params_list(elem->elements);
+	if (elem->expanded_params)
+		free_cmd_params_list(elem->expanded_params);
 	free(elem);
 }
 
@@ -59,6 +63,7 @@ t_redirection	*create_redirection_elem(t_operator *operator, char *name)
 		return (NULL);
 	}
 	ret->operator = operator;
+	ret->valid_wild = TRUE;
 	if (!name) // heredoc
 		return (ret);
 	ret->name = ft_strdup(name);
