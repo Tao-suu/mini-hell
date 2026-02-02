@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/02 11:45:09 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:46:59 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 	int		ret;
 
 	ft_printf("%s", data->color[data->prompt_n++ % 6]);
-	if (!expand_pipe(data, cmds)/* || !expand_wildcards_cmd(cmds)*/)
+	if (!expand_pipe(data, cmds) || !expand_wildcards_cmd(cmds))
 		return (FALSE);
 	if (!cmds->next && is_builtin(cmds))
 		return (exec_builtin(data, cmds, 0));
