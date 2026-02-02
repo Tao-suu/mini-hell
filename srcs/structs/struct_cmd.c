@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 21:40:47 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 09:01:50 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:20:26 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_cmd	*create_cmd_elem(void)
 		return (NULL);
 	// if (nb_argv == 0)
 	// 	return (ret);
-	ret->argv = (char **)ft_calloc(1, sizeof(char *)); // DEBUG
+	//ret->argv = (char **)ft_calloc(1, sizeof(char *)); // DEBUG
 	// if (!ret->argv)
 	// {
 	// 	free_cmd(ret);

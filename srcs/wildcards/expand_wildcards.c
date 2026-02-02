@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand_wildcards.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbez--du <tbez--du@student.42.fr>          +#+  +:+       +#+        */
+/*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:24:12 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/01 03:41:16 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/03 01:28:20 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	expand_wildcards(char *str, char **files, t_list **new_argv)
+static int	expand_wildcards(t_cmd_param *param, char **files, t_list **new_argv)
 {
 	int	i;
 	int	flag;
@@ -21,9 +21,9 @@ int	expand_wildcards(char *str, char **files, t_list **new_argv)
 	flag = 0;
 	while (files[i])
 	{
-		if (str[0] != '.' && *(files[i]) == '.')
+		if (param->original_value[0] != '.' && *(files[i]) == '.')
 			;
-		else if (check_pattern(files[i], str))
+		else if (check_pattern(files[i], param, 0))
 		{
 			flag = 1;
 			ft_lstadd_back(new_argv, ft_lstnew(ft_strdup(files[i])));
@@ -31,7 +31,7 @@ int	expand_wildcards(char *str, char **files, t_list **new_argv)
 		i++;
 	}
 	if (!flag)
-		ft_lstadd_back(new_argv, ft_lstnew(ft_strdup(str)));
+		ft_lstadd_back(new_argv, ft_lstnew(ft_strdup(param->original_value)));
 	return (1);
 }
 
@@ -54,25 +54,25 @@ static char	**create_tab_from_argv_list(t_list *lst)
 
 int	expand_wildcards_argv(t_cmd *cmd, char **files_name)
 {
-	int		i;
+	t_cmd_param	*cursor;
 	t_list	*new_argv;
 
 	new_argv = NULL;
 	if (!files_name)
 		return (0);
-	i = 0;
-	while (cmd->argv[i])
+	cursor = cmd->expanded_params;
+	while (cursor)
 	{
-		if (cmd->to_expand[i] == 'y')
+		if (ft_strchr(cursor->expanded_value, 'y'))
 		{
-			if (!expand_wildcards(cmd->argv[i], files_name, &new_argv))
+			if (!expand_wildcards(cursor, files_name, &new_argv))
 				return (0);
 		}
 		else
-			ft_lstadd_back(&new_argv, ft_lstnew(ft_strdup(cmd->argv[i])));
-		i++;
+			ft_lstadd_back(&new_argv, ft_lstnew(ft_strdup(cursor->original_value)));
+		cursor = cursor->next;
 	}
-	ft_tabclear(cmd->argv);
+	//ft_tabclear(cmd->argv);
 	cmd->argv = create_tab_from_argv_list(new_argv);
 	if (!cmd->argv)
 		return (0);

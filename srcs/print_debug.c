@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:40:45 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 09:27:51 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:13:05 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,9 @@ void	print_cmd(t_cmd *cmd, int lvl)
 		ft_printf("%s%s(%s)", (cursor_redir == cmd->redir ? "" : " "), cursor_redir->name, cursor_redir->operator->name);
 		cursor_redir = cursor_redir->next;
 	}
-	ft_printf("%s\n", CLR_RESET);
+	ft_printf("\n");
 	print_cmd_params(cmd, lvl);
+	ft_printf("%s", CLR_RESET);
 	if (cmd->ast)
 		print_ast(cmd->ast, lvl);
 }

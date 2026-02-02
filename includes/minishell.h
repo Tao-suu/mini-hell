@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 10:40:13 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:07:57 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -389,10 +389,9 @@ void			print_debug_env(t_env *env);
 // wildcards
 char			**get_files_name(void);
 int				expand_wildcards_cmd(t_cmd *cmd);
-int				check_pattern(char *file, char *pattern);
+int				check_pattern(char *file, t_cmd_param *param, int param_index);
 int				expand_wildcards_redir(t_cmd *cmd, char **files);
 void			sort_files(char **files);
 void			its_just_void(void *content);
-int				check_pattern(char *file, char *pattern);
 
 #endif
