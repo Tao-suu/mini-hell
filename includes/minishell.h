@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 11:46:18 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 17:57:47 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,6 @@ int				merge_exploded_params(t_cmd_param **new_params,
 					t_cmd_param *param, char trim_env_var);
 // expand_tools.c
 char			*create_empty_structure(size_t size);
-int				is_last_param_elem_an_unquoted_wild(t_cmd_param *param_elems);
 int				count_env_var_key_size(char *arg);
 
 // // expand_utils.c

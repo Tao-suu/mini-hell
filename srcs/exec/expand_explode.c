@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 01:49:34 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 10:38:48 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 17:57:40 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ static int	manage_cmd_param_elem_value(t_cmd_param **param_elems, char *value,
 		return (manage_cmd_param_elem_env_var(param_elems, value, i, quote));
 	if (!quote && value[*i] == '*')
 	{
-		if (!is_last_param_elem_an_unquoted_wild(*param_elems)
-			&& !new_cmd_param(param_elems, ft_strdup("*"), NULL, 0))
+		if (!new_cmd_param(param_elems, ft_strdup("*"), NULL, 0))
 			return (FALSE);
 		(*i)++;
 		return (TRUE);
