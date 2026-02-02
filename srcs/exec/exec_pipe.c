@@ -60,6 +60,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 	ft_printf("%s", data->color[data->prompt_n++ % 6]);
 	if (!expand_pipe(data, cmds) || !expand_wildcards_cmd(cmds))
 		return (FALSE);
+	print_final_cmds(cmds);
 	if (!cmds->next && is_builtin(cmds))
 		return (exec_builtin(data, cmds, 0));
 	save_in = dup(STDIN_FILENO);

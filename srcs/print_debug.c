@@ -140,15 +140,37 @@ void	print_cmd(t_cmd *cmd, int lvl)
 
 void	print_final_cmds(t_cmd *cmds)
 {
-	int	i;
+	t_redirection	*redir;
+	int				i;
 
+	print_color(0);
 	while (cmds)
 	{
-		i = -1;
-		while (cmds->argv[++i])
-			;
+		ft_printf("Final command:\n");
+		if (cmds->argv[0])
+		{
+			print_tabs(1);
+			i = -1;
+			while (cmds->argv[++i])
+				ft_printf("%s ", cmds->argv[i]);
+			ft_printf("\n");
+		}
+		redir = cmds->redir;
+		if (redir)
+		{
+			print_tabs(1);
+			while (redir)
+			{
+				ft_printf("%s %s ", redir->operator->value,
+					(!ft_strcmp(redir->operator->value, "<<") ? redir->heredoc->delimiter :
+						(redir->expanded_params ? redir->expanded_params->original_value : NULL)));
+				redir = redir->next;
+			}
+			ft_printf("\n");
+		}
 		cmds = cmds->next;
 	}
+	ft_printf("%s", CLR_RESET);
 }
 
 void	print_cmds(t_cmd *cmds, int lvl)

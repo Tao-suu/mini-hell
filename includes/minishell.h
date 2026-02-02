@@ -381,6 +381,7 @@ int				print_builtin_export_error(char *arg);
 // print_debug.c
 void			print_tabs(int nb_tabs);
 void			print_cmd(t_cmd *cmd, int lvl);
+void			print_final_cmds(t_cmd *cmds);
 void			print_cmds(t_cmd *cmds, int lvl);
 void			print_ast(t_ast *ast, int lvl);
 void			print_operators(t_operator **tab);
