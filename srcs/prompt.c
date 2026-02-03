@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 21:22:57 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/03 01:51:22 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/03 02:00:34 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,8 @@ static int	init_prompt_msg(t_data *data)
 
 int	init_prompt(t_data *data)
 {
-
+	data->prompt_n = 0;
+	if (!init_prompt_msg(data) || !init_prompt_color(data))
+		return (FALSE);
+	return (TRUE);
+}
