@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 14:28:07 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 17:57:47 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 01:50:19 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,10 +136,10 @@ struct s_cmd_param {
 };
 
 struct s_cmd {
-	int				argc; // DEBUG
-	char			**argv; // DEBUG
-	char			**argv_expanded; // DEBUG
-	char			*to_expand; // DEBUG
+	int				argc;
+	char			**argv;
+	char			**argv_expanded;
+	char			*to_expand;
 	char			*path;
 	int				pid;
 	t_ast			*ast;

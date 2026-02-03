@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:01:01 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/01 01:58:29 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 01:50:56 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	manage_loop(t_data *data)
 {
 	if (manage_line(data) && manage_lexems(data) && create_ast(data))
 	{
-		// TODO ? Revoir quand on [ign|init]_signal exactement ?
 		ign_signal();
 		if (exec_heredocs(data))
 			set_exit_code(&data->env, exec_ast(data, data->ast));

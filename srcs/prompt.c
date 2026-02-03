@@ -6,24 +6,11 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 21:22:57 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 10:42:52 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 01:51:22 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static int	get_random_value(int min, int max)
-// {
-// 	char	buff;
-// 	int		fd;
-
-// 	fd = open("/dev/urandom", O_RDONLY);
-// 	if (fd < 0)
-// 		return (0);
-// 	if (read(fd, &buff, 1) < 0)
-// 		return (1);
-// 	return (((int)buff + 128 + min) % max);
-// }
 
 void	free_prompt(t_data *data)
 {
@@ -86,16 +73,6 @@ static int	init_prompt_msg(t_data *data)
 		user = ft_strdup(env_user->value);
 	if (!user)
 		return (FALSE);
-	// prompts[0] = ft_strjoin(ft_strjoin(CLR_YELLOW, data->user),
-		// CLR_RED" $> "CLR_RESET);
-	// prompts[1] = ft_strjoin(ft_strjoin(CLR_RED, data->user),
-		// CLR_YELLOW" $> "CLR_RESET);
-	// prompts[2] = ft_strdup(CLR_YELLOW" ~o~"CLR_RED" $> "CLR_RESET);
-	// prompts[3] = ft_strdup(CLR_RED" ~o~"CLR_YELLOW" $> "CLR_RESET);
-	// prompts[0] = ft_strjoin(data->color[get_random_value(0, 6)],
-	// 	ft_strjoin(data->user, 
-	// 	ft_strjoin(data->color[get_random_value(0, 6)], 
-	// 	ft_strjoin(" $>", CLR_RESET))));
 	data->prompts[0] = ft_strjoin(user, " <3 ");
 	free(user);
 	if (!data->prompts[0])
@@ -105,8 +82,4 @@ static int	init_prompt_msg(t_data *data)
 
 int	init_prompt(t_data *data)
 {
-	data->prompt_n = 0;
-	if (!init_prompt_msg(data) || !init_prompt_color(data))
-		return (FALSE);
-	return (TRUE);
-}
+
