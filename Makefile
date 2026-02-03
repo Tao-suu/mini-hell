@@ -6,7 +6,7 @@
 #    By: picheval <picheval@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/05 12:28:46 by picheval          #+#    #+#              #
-#    Updated: 2026/02/02 08:42:56 by picheval         ###   ########.fr        #
+#    Updated: 2026/02/03 02:21:33 by tbez--du         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,8 +75,7 @@ SRCS_RAW			= main.c \
 					  print.c \
 					  print_bash.c \
 					  print_syntax.c \
-					  print_builtin.c \
-					  print_debug.c
+					  print_builtin.c
 # 					  $(EXEC_DIR)expand_utils.c \
 # 					  $(EXEC_DIR)expand_tools.c
 
