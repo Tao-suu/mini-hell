@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 10:42:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/01/25 21:30:54 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 01:01:15 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	builtin_cd(t_env **env, t_cmd *cmd)
 	t_env	*pwd_var;
 	char	*pwd_var_tmp;
 
-	if (cmd->argc > 2)
+	if (cmd->argv[1] && cmd->argv[2])
 		return (print_builtin_cd_error(NULL, "too many arguments"));
 	pwd_var = find_env_var(*env, "PWD");
 	if (!pwd_var || !pwd_var->value)

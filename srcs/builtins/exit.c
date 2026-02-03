@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 01:40:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/01 01:56:53 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/02 23:37:53 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,13 @@ int	builtin_exit(t_data *data, t_cmd *cmd, int flag)
 	if (!flag)
 		printf("exit\n");
 	if (cmd->argv[1] && ft_strisnum(cmd->argv[1]) && cmd->argv[2])
-		return (print_builtin_exit_error(NULL, "too many arguments") + 1);
+	{
+		print_builtin_exit_error(NULL, "too many arguments");
+		if (get_exit_code(data) != 0)
+			return (get_exit_code(data));
+		else
+			return (1);
+	}
 	ret = get_exit_code(data);
 	if (cmd->argv[1])
 	{
