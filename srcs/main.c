@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 13:51:35 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/31 17:57:24 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 01:57:23 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,6 @@ int	main(void)
 		return (1);
 	}
 	main_loop(&data);
-	// Init
-		// env / set
-			// recreate if not exist (SHLVL TERM LINES COLUMNS PWD ...
-				// ... SHELL/BASH HOSTNAME?/USERNAME?)
-			// .bash_history ?
-	// exit --> exit status --> cast unsigned char --> % 255 --> atoll --> ...
-			// ... no numeri si depasse long long max == char * != int 
-		// 1) check numeri
-		// 2) nb args
-		// 3) nb_args = 0 exit exit_status
 	ret = ft_atoi(find_env_var(data.env, "?")->value);
 	free_data(&data, TRUE, TRUE);
 	return (ret);
