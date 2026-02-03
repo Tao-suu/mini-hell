@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 02:54:51 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 10:41:13 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 02:15:11 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ static int	manage_cmd_redir(t_data *data, t_cmd *cmd, t_lexem **start,
 		&& ft_strcmp((*start)->type->name, "APPEND")
 		&& ft_strcmp((*start)->type->name, "HEREDOC"))
 		return (TRUE);
-	// If suivant inutile ? (pas reussi a le declencher)
-	// En theorie il est deja gere par le parser
 	if (!(*start)->next || (*start)->next == end
 		|| ft_strcmp((*start)->next->type->name, "file"))
 		return (print_error("cmd_redir: no file"));

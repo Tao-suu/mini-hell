@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:21:19 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 17:16:47 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 02:15:19 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,5 @@ int	create_operators_array(t_operator ***tab)
 	}
 	if (!manage_operator_deps(*tab))
 		return (FALSE);
-	//print_operators(*tab);
 	return (TRUE);
 }

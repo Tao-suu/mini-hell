@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_tools.c                                     :+:      :+:    :+:   */
+/*   old_expand_tools.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 21:12:53 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/01 02:46:36 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 02:10:36 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,8 @@ int	expand_token(t_data *data, t_list **lst, char *line, char expand)
 	int		i;
 
 	i = 0;
-	// dprintf(2, "Arg %s\n", line);
 	while (line[i])
 	{
-		// dprintf(2, "testing from %s\n", &(line[i]));
 		if (line[i] == '$')
 		{
 			i++;

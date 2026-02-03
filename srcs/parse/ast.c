@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:45:34 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 10:40:51 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 02:14:47 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,8 @@ static int	create_cmd_pipeline(t_data *data, t_cmd **list, t_lexem *start,
 {
 	t_cmd	*cmd;
 
-	// size_t	nb_argv;
 	while (start && start != end)
 	{
-		// nb_argv = compute_nb_params(start, end);
-		// cmd = create_cmd_elem(nb_argv);
 		cmd = create_cmd_elem();
 		if (!cmd)
 			return (FALSE);
@@ -76,7 +73,5 @@ int	create_ast(t_data *data)
 	store[1] = NULL;
 	if (!create_ast_recurse(data, &(data->ast), store, 0))
 		return (FALSE);
-	// ft_printf("\n");
-	// print_ast(data->ast, 0);
 	return (TRUE);
 }
