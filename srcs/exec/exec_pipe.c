@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/05 14:43:42 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:49:03 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,18 @@ static void	exec_pipe_child(t_data *data, t_cmd *cmd, int pipefd[2],
 	exec_cmd(data, cmd);
 }
 
+static void	exit_manage(t_data *data, int save_in)
+{
+	int	exit_code;
+
+	exit_code = get_exit_code(data);
+	if (exit_code == 130)
+		printf("\n");
+	else if (exit_code == 131)
+		printf("Quit (core dumped)\n");
+	dup2(save_in, STDIN_FILENO);
+}
+
 int	exec_pipe(t_data *data, t_cmd *cmds)
 {
 	int		pipefd[2];
@@ -74,15 +86,7 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 	}
 	close(STDIN_FILENO);
 	ret = wait_cmd_pid(cmds, &data->env);
-
-	int		exit_code;
-	exit_code = get_exit_code(data);
-	if (exit_code == 130)
-		printf("\n");
-	else if (exit_code == 131)
-		printf("Quit (core dumped)\n");
-
-	dup2(save_in, STDIN_FILENO);
+	exit_manage(data, save_in);
 	close(save_in);
 	return (ret);
 }
