@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:24:12 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/03 02:19:14 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/05 15:52:46 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,10 @@ int	expand_wildcards_argv(t_cmd *cmd, char **files_name)
 	t_list		*new_argv;
 
 	new_argv = NULL;
-	if (!files_name)
-		return (0);
 	cursor = cmd->expanded_params;
 	while (cursor)
 	{
-		if (ft_strchr(cursor->expanded_value, 'y'))
+		if (files_name && ft_strchr(cursor->expanded_value, 'y'))
 		{
 			if (!expand_wildcards(cursor, files_name, &new_argv))
 				return (0);
@@ -86,9 +84,8 @@ int	expand_wildcards_cmd(t_cmd *cmd)
 	char	**files_name;
 
 	files_name = get_files_name();
-	if (!files_name)
-		return (0);
-	sort_files(files_name);
+	if (files_name)
+		sort_files(files_name);
 	while (cmd)
 	{
 		if (!(expand_wildcards_argv(cmd, files_name)
@@ -96,6 +93,7 @@ int	expand_wildcards_cmd(t_cmd *cmd)
 			return (0);
 		cmd = cmd->next;
 	}
-	ft_tabclear(files_name);
+	if (files_name)
+		ft_tabclear(files_name);
 	return (1);
 }

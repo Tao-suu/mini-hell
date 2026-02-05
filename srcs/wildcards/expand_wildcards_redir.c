@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 15:04:35 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/03 01:39:53 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/05 15:50:47 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	expand_wildcards_redir(t_cmd *cmd, char **files)
 	t_redirection	*redir;
 
 	redir = cmd->redir;
-	while (redir)
+	while (files && redir)
 	{
 		if (set_valid_wildcard(redir, files)
 			&& !sub_expand_wildcards_redir(redir->expanded_params, files))
