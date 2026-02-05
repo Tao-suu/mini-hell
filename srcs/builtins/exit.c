@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/10 01:40:32 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/05 14:14:42 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:43:35 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ static int	is_long(char *str)
 	return (cmp <= 0);
 }
 
+int	return_exit_error(t_data *data)
+{
+	print_builtin_exit_error(NULL, "too many arguments");
+	if (get_exit_code(data) != 0)
+		return (get_exit_code(data));
+	return (1);
+}
+
 int	builtin_exit(t_data *data, t_cmd *cmd, int flag)
 {
 	int	arg_number;
@@ -58,12 +66,7 @@ int	builtin_exit(t_data *data, t_cmd *cmd, int flag)
 	if (!flag)
 		printf("exit\n");
 	if (cmd->argv[1] && ft_strisnum(cmd->argv[1]) && cmd->argv[2])
-	{
-		print_builtin_exit_error(NULL, "too many arguments");
-		if (get_exit_code(data) != 0)
-			return (get_exit_code(data));
-		return (1);
-	}
+		return (return_exit_error(data));
 	ret = get_exit_code(data);
 	if (cmd->argv[1])
 	{

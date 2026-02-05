@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:43:19 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/02 12:49:47 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 02:11:29 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	open_redir_file(t_redirection *redir)
 		return (open(name, O_CREAT | O_TRUNC | O_WRONLY, 0644));
 	else if (!ft_strcmp(redir->operator->value, "<<"))
 		return (open(redir->heredoc->filename, O_RDONLY));
-	return (open(name, O_RDONLY)); // <
+	return (open(name, O_RDONLY));
 }
 
 int	manage_redirections(t_redirection *redir)
@@ -55,7 +55,8 @@ int	manage_redirections(t_redirection *redir)
 			return (print_bash_ambiguous_redirection(redir->name));
 		fd = open_redir_file(redir);
 		if (fd < 0)
-			return (print_bash_cmd_error(NULL, redir->expanded_params->original_value, NULL));
+			return (print_bash_cmd_error(NULL,
+					redir->expanded_params->original_value, NULL));
 		op_value = redir->operator->value;
 		if ((!ft_strcmp(op_value, ">>") || !ft_strcmp(op_value, ">"))
 			&& redir_is_last(redir, TRUE))
@@ -101,7 +102,6 @@ void	exec_cmd(t_data *data, t_cmd *cmd)
 		else
 		{
 			execve(cmd->path, cmd->argv, env);
-			// Set exit_code if execve fail ?
 			perror(NULL);
 			ft_tabclear(env);
 		}

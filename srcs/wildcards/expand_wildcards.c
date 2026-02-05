@@ -6,13 +6,14 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:24:12 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/03 01:39:34 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/03 02:19:14 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	expand_wildcards(t_cmd_param *param, char **files, t_list **new_argv)
+static int	expand_wildcards(t_cmd_param *param,
+	char **files, t_list **new_argv)
 {
 	int	i;
 	int	flag;
@@ -55,7 +56,7 @@ static char	**create_tab_from_argv_list(t_list *lst)
 int	expand_wildcards_argv(t_cmd *cmd, char **files_name)
 {
 	t_cmd_param	*cursor;
-	t_list	*new_argv;
+	t_list		*new_argv;
 
 	new_argv = NULL;
 	if (!files_name)
@@ -69,10 +70,10 @@ int	expand_wildcards_argv(t_cmd *cmd, char **files_name)
 				return (0);
 		}
 		else
-			ft_lstadd_back(&new_argv, ft_lstnew(ft_strdup(cursor->original_value)));
+			ft_lstadd_back(&new_argv,
+				ft_lstnew(ft_strdup(cursor->original_value)));
 		cursor = cursor->next;
 	}
-	//ft_tabclear(cmd->argv);
 	cmd->argv = create_tab_from_argv_list(new_argv);
 	if (!cmd->argv)
 		return (0);

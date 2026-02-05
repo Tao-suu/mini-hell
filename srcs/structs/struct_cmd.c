@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 21:40:47 by picheval          #+#    #+#             */
-/*   Updated: 2026/02/02 11:46:39 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 02:17:10 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ void	free_cmd(t_cmd *elem)
 		free_cmd_params_list(elem->params);
 	if (elem->expanded_params)
 		free_cmd_params_list(elem->expanded_params);
-	// if (elem->to_expand)
-	// 	free(elem->to_expand);
-	if (elem->argv) // DEBUG
+	if (elem->argv)
 		ft_tabclear(elem->argv);
 	free(elem);
 }
@@ -60,7 +58,6 @@ void	add_cmd_elem_in_list(t_cmd **list, t_cmd *elem)
 	cursor->next = elem;
 }
 
-// t_cmd	*create_cmd_elem(size_t nb_argv)
 t_cmd	*create_cmd_elem(void)
 {
 	t_cmd	*ret;
@@ -68,13 +65,5 @@ t_cmd	*create_cmd_elem(void)
 	ret = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
 	if (!ret)
 		return (NULL);
-	// if (nb_argv == 0)
-	// 	return (ret);
-	//ret->argv = (char **)ft_calloc(1, sizeof(char *)); // DEBUG
-	// if (!ret->argv)
-	// {
-	// 	free_cmd(ret);
-	// 	return (NULL);
-	// }
 	return (ret);
 }

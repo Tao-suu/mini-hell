@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 12:36:38 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/05 11:50:52 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:43:48 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,12 @@ int	expand_pipe(t_data *data, t_cmd *cmds)
 {
 	t_cmd	*cmd;
 
-/*	// DEBUG
-	create_or_update_env(&(data->env), "A", "*", STATE_ENV);
-	create_or_update_env(&(data->env), "B", " *", STATE_ENV);
-	create_or_update_env(&(data->env), "C", "* ", STATE_ENV);
-	create_or_update_env(&(data->env), "LS_W", "ls *", STATE_ENV);
-	// DEBUG
-*/	cmd = cmds;
+	cmd = cmds;
 	while (cmd)
 	{
 		if (!expand_cmd(data, cmd) || !expand_redir(data, cmd))
 			return (FALSE);
 		cmd = cmd->next;
 	}
-	//print_cmds(cmds, 0);
 	return (TRUE);
 }

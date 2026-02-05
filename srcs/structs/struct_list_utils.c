@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 16:37:13 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/25 21:36:47 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/03 02:16:41 by tbez--du         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,10 @@ int	lst_add_or_join_back(t_list **lst, char *value)
 	if (!last->content)
 	{
 		last->content = value;
-		// dprintf(2, "value created %s\n", (char *)last->content);
 		return (TRUE);
 	}
 	tmp = last->content;
 	last->content = ft_strjoin(tmp, value);
-	// dprintf(2, "value joined %s\n", (char *)last->content);
 	free(tmp);
 	free(value);
 	if (!last->content)
