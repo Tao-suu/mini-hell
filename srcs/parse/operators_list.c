@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 16:09:51 by picheval          #+#    #+#             */
-/*   Updated: 2026/01/30 16:50:38 by picheval         ###   ########.fr       */
+/*   Updated: 2026/02/05 10:55:34 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static int	create_operators_2(t_operator **list)
 			"|START,NULL")
 		|| !manage_operator_line(list, "14,SEMI,;,0,NULL,NULL")
 		|| !manage_operator_line(list, "15,ESPER,&,0,NULL,NULL")
-		|| !manage_operator_line(list, "15,BANG,!,0,NULL,NULL"))
+		|| !manage_operator_line(list, "16,BANG,!,0,NULL,NULL")
+		|| !manage_operator_line(list, "17,COLON,:,0,NULL,NULL"))
 		return (FALSE);
 	return (TRUE);
 }

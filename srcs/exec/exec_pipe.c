@@ -6,7 +6,7 @@
 /*   By: picheval <picheval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:55:03 by tbez--du          #+#    #+#             */
-/*   Updated: 2026/02/02 23:04:44 by tbez--du         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:14:16 by picheval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ int	exec_pipe(t_data *data, t_cmd *cmds)
 	}
 	close(STDIN_FILENO);
 	ret = wait_cmd_pid(cmds, &data->env);
+
+	int		exit_code;
+	exit_code = get_exit_code(data);
+	if (exit_code == 130)
+		printf("\n");
+	else if (exit_code == 131)
+		printf("Quit (core dumped)\n");
+
 	dup2(save_in, STDIN_FILENO);
 	close(save_in);
 	return (ret);
